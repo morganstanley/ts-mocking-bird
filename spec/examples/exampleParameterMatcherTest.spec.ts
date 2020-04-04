@@ -16,14 +16,12 @@ describe('match function paramters', () => {
         const sampleObject: IPerson = { name: 'Fred', id: 1 };
         sampleMock.mock.functionOne('one', 2, sampleObject);
 
-        sampleMock
-            .withFunction('functionOne')
-            .withParameters('one', 2, sampleObject) // strict equality
-            .wasCalledOnce();
-        sampleMock
-            .withFunction('functionOne')
-            .withParameters('one', 2, { name: 'Fred', id: 1 }) // strict equality
-            .wasNotCalled();
+        expect(
+            sampleMock.withFunction('functionOne').withParameters('one', 2, sampleObject), // strict equality
+        ).wasCalledOnce();
+        expect(
+            sampleMock.withFunction('functionOne').withParameters('one', 2, { name: 'Fred', id: 1 }), // strict equality
+        ).wasNotCalled();
     });
 
     it('parameters should equal value when withParametersEqualTo used', () => {
@@ -31,10 +29,9 @@ describe('match function paramters', () => {
 
         sampleMock.mock.functionOne('one', 2, { name: 'Fred', id: 1 });
 
-        sampleMock
-            .withFunction('functionOne')
-            .withParametersEqualTo('one', 2, { name: 'Fred', id: 1 }) // equals used to match
-            .wasCalledOnce();
+        expect(
+            sampleMock.withFunction('functionOne').withParametersEqualTo('one', 2, { name: 'Fred', id: 1 }), // equals used to match
+        ).wasCalledOnce();
     });
 
     it('alternate paramter matchers can be used', () => {
@@ -42,10 +39,7 @@ describe('match function paramters', () => {
 
         sampleMock.mock.functionOne('one', 2, { name: 'Fred', id: 1 });
 
-        sampleMock
-            .withFunction('functionOne')
-            .withParameters('one', toBeDefined(), any())
-            .wasCalledOnce();
+        expect(sampleMock.withFunction('functionOne').withParameters('one', toBeDefined(), any())).wasCalledOnce();
     });
 
     it('parameter matcher functions can be used instead of default matchers', () => {
@@ -58,10 +52,9 @@ describe('match function paramters', () => {
 
         sampleMock.mock.functionOne('one', 2, { name: 'Fred', id: 1 });
 
-        sampleMock
-            .withFunction('functionOne')
-            .withParameters('one', 2, person => person.id === 1)
-            .wasCalledOnce();
+        expect(
+            sampleMock.withFunction('functionOne').withParameters('one', 2, person => person.id === 1),
+        ).wasCalledOnce();
     });
 
     it('custom parameter matchers can be used to implement complex matching logic with better failure messages', () => {
@@ -69,13 +62,12 @@ describe('match function paramters', () => {
 
         sampleMock.mock.functionOne('one', 2, { name: 'Fred', id: 1 });
 
-        sampleMock
-            .withFunction('functionOne')
-            .withParameters(toBe('one'), toBe(2), {
+        expect(
+            sampleMock.withFunction('functionOne').withParameters(toBe('one'), toBe(2), {
                 isExpectedValue: person => person.id === 1,
                 expectedDisplayValue: 'Person with id 1', // Used to display expected parameter value in failure message
                 parameterToString: person => `Person with id ${person.id}`, // Used to display value of actual parameters passed in failure message
-            })
-            .wasCalledOnce();
+            }),
+        ).wasCalledOnce();
     });
 });

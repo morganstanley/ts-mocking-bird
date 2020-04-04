@@ -5,7 +5,6 @@ import { IMyService, MyService, someFunction } from './exampleImports';
  */
 export class ClassWithInstanceArgument {
     constructor(public readonly service: IMyService) {
-        console.log(`SUT created`);
     }
 }
 

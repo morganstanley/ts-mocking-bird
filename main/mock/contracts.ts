@@ -41,13 +41,18 @@ export type StaticFunctionTypes = 'staticFunction' | 'staticGetter' | 'staticSet
 export type InstanceFunctionTypes = 'function' | 'getter' | 'setter';
 export type SetterTypes = 'staticSetter' | 'setter';
 
+export type VerifierTarget<T, C extends ConstructorFunction<T>, U extends FunctionType> = U extends StaticFunctionTypes
+    ? C
+    : T;
 export type FunctionType = StaticFunctionTypes | InstanceFunctionTypes;
+export type FunctionName<T, C extends ConstructorFunction<T>, U extends FunctionType> = keyof VerifierTarget<T, C, U>;
 
 export interface IFunctionWithParametersVerification<
     P extends Array<any>,
     T,
+    U extends FunctionType,
     C extends new (...args: any[]) => T = never
-> extends IFunctionVerification<T, C> {
+> extends IFunctionVerifier<T, U, C> {
     /**
      * Checks the parameters in a non-strict equality way.
      * defaults to the toEqual() matcher
@@ -64,7 +69,7 @@ export interface IFunctionWithParametersVerification<
      *
      * @param args list of parameters to compare against
      */
-    withParameters(...args: FunctionParameterMatchers<P>): IStrictFunctionVerification<T, C>;
+    withParameters(...args: FunctionParameterMatchers<P>): IStrictFunctionVerification<T, U, C>;
     /**
      * Checks the parameters in a strict euqlity way.
      * defaults to the toBe() matcher
@@ -81,28 +86,23 @@ export interface IFunctionWithParametersVerification<
      *
      * @param args list of parameters to compare against
      */
-    withParametersEqualTo(...args: FunctionParameterMatchers<P>): IStrictFunctionVerification<T, C>;
+    withParametersEqualTo(...args: FunctionParameterMatchers<P>): IStrictFunctionVerification<T, U, C>;
 }
 
-export interface IStrictFunctionVerification<T, C extends new (...args: any[]) => T = never>
-    extends IFunctionVerification<T, C> {
+export interface IStrictFunctionVerification<T, U extends FunctionType, C extends new (...args: any[]) => T = never>
+    extends IFunctionVerifier<T, U, C> {
     /**
      * verify that the function has been called ONLY with the specified parameters and never without
      */
-    strict(): IFunctionVerification<T, C>;
+    strict(): IFunctionVerifier<T, U, C>;
 }
 
-export interface IFunctionVerification<T, C extends new (...args: any[]) => T = never> {
+export interface IFunctionVerifier<T, U extends FunctionType, C extends new (...args: any[]) => T = never> {
+    type: U;
+    functionName: FunctionName<T, C, U>;
+    parameterMatchers?: (MatchFunction<any> | IParameterMatcher<any>)[];
+    strictCallCount: boolean;
     getMock(): IMocked<T, C>;
-    wasCalledOnce(): void;
-    /**
-     * Verifies that the function was called a given number of times.
-     * If times is not specified it is verified that the function was called at least once.
-     *
-     * @param times optional number of times the function is expected to have been called
-     */
-    wasCalled(times?: number): void;
-    wasNotCalled(): void;
 }
 
 export interface IMocked<T, C extends new (...args: any[]) => T = never> {
@@ -146,14 +146,14 @@ export interface IMocked<T, C extends new (...args: any[]) => T = never> {
     setupFunction<K extends keyof FunctionsOnly<T>>(
         functionName: K,
         mockFunction?: T[K],
-    ): IFunctionWithParametersVerification<FunctionParams<T[K]>, T, C>;
+    ): IFunctionWithParametersVerification<FunctionParams<T[K]>, T, 'function', C>;
     /**
      * Sets up a single property and returns a function verifier to verify value get or set operations.
      *
      * @param propertyname
      * @param value
      */
-    setupProperty<K extends keyof T>(propertyname: K, value?: T[K]): IFunctionVerification<T, C>;
+    setupProperty<K extends keyof T>(propertyname: K, value?: T[K]): IFunctionVerifier<T, 'getter', C>;
     /**
      * Defines a single property and allows getters and setters to be defined.
      * Returns a function verifier to verify get and set operations
@@ -166,7 +166,7 @@ export interface IMocked<T, C extends new (...args: any[]) => T = never> {
         propertyname: K,
         getter?: () => T[K],
         setter?: (value: T[K]) => void,
-    ): IFunctionVerification<T, C>;
+    ): IFunctionVerifier<T, 'getter', C>;
 
     /**
      * Sets up a single static function and returns a function verifier to verify calls made and parameters passed.
@@ -177,14 +177,14 @@ export interface IMocked<T, C extends new (...args: any[]) => T = never> {
     setupStaticFunction<K extends keyof FunctionsOnly<C>>(
         functionName: K,
         mockFunction?: C[K],
-    ): IFunctionWithParametersVerification<FunctionParams<C[K]>, T, C>;
+    ): IFunctionWithParametersVerification<FunctionParams<C[K]>, T, 'staticFunction', C>;
     /**
      * Sets up a single static property and returns a function verifier to verify value get or set operations.
      *
      * @param propertyname
      * @param value
      */
-    setupStaticProperty<K extends keyof C>(propertyname: K, value?: C[K]): IFunctionVerification<T, C>;
+    setupStaticProperty<K extends keyof C>(propertyname: K, value?: C[K]): IFunctionVerifier<T, 'staticGetter', C>;
     /**
      * Defines a single static property and allows getters and setters to be defined.
      * Returns a function verifier to verify get and set operations
@@ -197,63 +197,65 @@ export interface IMocked<T, C extends new (...args: any[]) => T = never> {
         propertyname: K,
         getter?: () => C[K],
         setter?: (value: C[K]) => void,
-    ): IFunctionVerification<T, C>;
+    ): IFunctionVerifier<T, 'staticGetter', C>;
 
     /**
      * Verifies calls to a previously setup function.
-     * myMock.withFunction("functionName").wasNotCalled():
-     * myMock.withFunction("functionName").wasCalledOnce():
-     * myMock.withFunction("functionName").withParameters("one", 2).wasCalledOnce():
+     * expect(myMock.withFunction("functionName")).wasNotCalled():
+     * expect(myMock.withFunction("functionName")).wasCalledOnce():
+     * expect(myMock.withFunction("functionName").withParameters("one", 2)).wasCalledOnce():
      *
      * @param functionName
      */
     withFunction<K extends keyof FunctionsOnly<T>>(
         functionName: K,
-    ): IFunctionWithParametersVerification<FunctionParams<T[K]>, T, C>;
+    ): IFunctionWithParametersVerification<FunctionParams<T[K]>, T, 'function', C>;
     /**
      * Verifies calls to a previously setup getter.
-     * myMock.withGetter("propertyName").wasNotCalled():
-     * myMock.withGetter("propertyName").wasCalledOnce():
+     * expect(myMock.withGetter("propertyName")).wasNotCalled():
+     * expect(myMock.withGetter("propertyName")).wasCalledOnce():
      *
      * @param functionName
      */
-    withGetter<K extends keyof T>(propertyname: K): IFunctionVerification<T, C>;
+    withGetter<K extends keyof T>(propertyname: K): IFunctionVerifier<T, 'getter', C>;
     /**
      * Verifies calls to a previously setup setter.
-     * myMock.withSetter("propertyName").wasNotCalled():
-     * myMock.withSetter("propertyName").wasCalledOnce():
-     * myMock.withSetter("propertyName").withParameters("one").wasCalledOnce():
+     * expect(myMock.withSetter("propertyName")).wasNotCalled():
+     * expect(myMock.withSetter("propertyName")).wasCalledOnce():
+     * expect(myMock.withSetter("propertyName").withParameters("one")).wasCalledOnce():
      *
      * @param functionName
      */
-    withSetter<K extends keyof T>(propertyname: K): IFunctionWithParametersVerification<[T[K]], T, C>;
+    withSetter<K extends keyof T>(propertyname: K): IFunctionWithParametersVerification<[T[K]], T, 'setter', C>;
 
     /**
      * Verifies calls to a previously setup static function.
-     * myMock.withStaticFunction("functionName").wasNotCalled():
-     * myMock.withStaticFunction("functionName").wasCalledOnce():
-     * myMock.withStaticFunction("functionName").withParameters("one", 2).wasCalledOnce():
+     * expect(myMock.withStaticFunction("functionName")).wasNotCalled():
+     * expect(myMock.withStaticFunction("functionName")).wasCalledOnce():
+     * expect(myMock.withStaticFunction("functionName").withParameters("one", 2)).wasCalledOnce():
      *
      * @param functionName
      */
     withStaticFunction<K extends keyof FunctionsOnly<C>>(
         functionName: K,
-    ): IFunctionWithParametersVerification<FunctionParams<C[K]>, T, C>;
+    ): IFunctionWithParametersVerification<FunctionParams<C[K]>, T, 'staticFunction', C>;
     /**
      * Verifies calls to a previously setup static getter.
-     * myMock.withStaticGetter("functionName").wasNotCalled():
-     * myMock.withStaticGetter("functionName").wasCalledOnce():
+     * expect(myMock.withStaticGetter("functionName")).wasNotCalled():
+     * expect(myMock.withStaticGetter("functionName")).wasCalledOnce():
      *
      * @param functionName
      */
-    withStaticGetter<K extends keyof C>(propertyname: K): IFunctionVerification<T, C>;
+    withStaticGetter<K extends keyof C>(propertyname: K): IFunctionVerifier<T, 'staticGetter', C>;
     /**
      * Verifies calls to a previously setup static setter.
-     * myMock.withStaticSetter("functionName").wasNotCalled():
-     * myMock.withStaticSetter("functionName").wasCalledOnce():
-     * myMock.withStaticSetter("functionName").withParameters("one").wasCalledOnce():
+     * expect(myMock.withStaticSetter("functionName")).wasNotCalled():
+     * expect(myMock.withStaticSetter("functionName")).wasCalledOnce():
+     * expect(myMock.withStaticSetter("functionName").withParameters("one")).wasCalledOnce():
      *
      * @param functionName
      */
-    withStaticSetter<K extends keyof C>(propertyname: K): IFunctionWithParametersVerification<[C[K]], T, C>;
+    withStaticSetter<K extends keyof C>(
+        propertyname: K,
+    ): IFunctionWithParametersVerification<[C[K]], T, 'staticSetter', C>;
 }

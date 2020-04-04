@@ -6,7 +6,7 @@
     "types": "./dist/main/index.d.ts",
     "scripts": {
         "clean": "rimraf dist reports ../build ../install ../packages",
-        "build": "tsc",
+        "build": "tsc -p main/tsconfig.json",
         "postbuild": "npm run copy",
         "copy": "copyfiles main/**/*.html main/**/*.css main/**/*.jpg dist",
         "prebuild-release": "npm ci && npm run clean && npm run verify-release",

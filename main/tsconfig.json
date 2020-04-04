@@ -1,0 +1,12 @@
+{
+    "extends": "../tsconfig.json",
+    "compilerOptions": {
+        "declaration": false
+    },
+    "exclude": [
+        "dist"
+    ],
+    "files": [
+        "index.ts"
+    ]
+}

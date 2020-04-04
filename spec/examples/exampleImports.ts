@@ -25,7 +25,6 @@ export class MyService implements IMyService {
     public propTwo: string = '';
 
     constructor(_constrParamOne: string, _constrParamTwo: number) {
-        console.log(`class constructed`);
     }
 
     public functionTwo(_value: string) {
@@ -33,7 +32,6 @@ export class MyService implements IMyService {
     }
 
     public functionOne() {
-        console.log('sample implementation');
     }
 
     public functionThree() {
