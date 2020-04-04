@@ -2,6 +2,8 @@
 [![Build Status](https://travis-ci.com/Morgan-Stanley/ts-mocking-bird.svg?branch=master)](https://travis-ci.com/Morgan-Stanley/ts-mocking-bird)
 > A fully type safe mocking, call verification and import replacement library that works with jasmine and jest
 
+Documentation: https://morgan-stanley.github.io/ts-mocking-bird/
+
 # Why use this?
 
 * All operations fully type safe
