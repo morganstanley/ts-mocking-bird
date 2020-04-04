@@ -140,6 +140,14 @@ describe('mock', () => {
                     );
                 });
 
+                it("should throw an error if 'times: number' not passed to wasCalled", () => {
+                    expect(() =>
+                        (expect(mocked.withFunction('functionWithNoParamsAndNoReturn')) as any).wasCalled(),
+                    ).toThrowError(
+                        'Expected call count must be passed to wasCalled(times: number). To verify that it was called at least once use wasCalledAtLeastOnce().',
+                    );
+                });
+
                 it('should fail when function has been called multiple times', () => {
                     mock.functionWithNoParamsAndNoReturn();
                     mock.functionWithNoParamsAndNoReturn();

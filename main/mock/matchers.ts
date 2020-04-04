@@ -43,7 +43,7 @@ function wasCalled(): jasmine.CustomMatcher {
         compare: (actual: IFunctionVerifier<any, any>, times: number) => {
             if (typeof times !== 'number') {
                 throw new Error(
-                    `Expected call count must be passed to wasCalled(times: number). To verify that it was caleld at least once use wasCalledAtLeastOnce()`,
+                    `Expected call count must be passed to wasCalled(times: number). To verify that it was called at least once use wasCalledAtLeastOnce().`,
                 );
             }
 
