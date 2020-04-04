@@ -214,8 +214,11 @@ export function verifyFunctionCalled<T, C extends ConstructorFunction<T>, U exte
     } else {
         if (matchingCalls.length === 0) {
             let calledWithMessage: string;
-            if(functionCalls.length > 0){
-                calledWithMessage = `it was only called with these parameters:${buildAllCallsString(functionCalls, parameterMatchers)}`
+            if (functionCalls.length > 0) {
+                calledWithMessage = `it was only called with these parameters:${buildAllCallsString(
+                    functionCalls,
+                    parameterMatchers,
+                )}`;
             } else {
                 calledWithMessage = `it was not.`;
             }

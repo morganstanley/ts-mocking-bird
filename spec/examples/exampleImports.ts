@@ -24,12 +24,14 @@ export class MyService implements IMyService {
     public propOne: string = '';
     public propTwo: string = '';
 
+    // tslint:disable-next-line:no-empty
     constructor(_constrParamOne: string, _constrParamTwo: number) {}
 
     public functionTwo(_value: string) {
         return true;
     }
 
+    // tslint:disable-next-line:no-empty
     public functionOne() {}
 
     public functionThree() {
