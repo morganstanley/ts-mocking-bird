@@ -1,6 +1,7 @@
 language: node_js
 node_js: 12
 script: npm run build-release
+install: skip
 
 deploy:
   provider: pages:git
