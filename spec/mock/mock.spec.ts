@@ -346,7 +346,7 @@ describe('mock', () => {
                 it('should not fail when function has been called once with different parameters', () => {
                     mock.functionWithParamsAndReturn('two', 123, true);
 
-                    mocked.withFunction('functionWithParamsAndReturn').withParameters('one', 123, true);
+                    expect(mocked.withFunction('functionWithParamsAndReturn').withParameters('one', 123, true)).wasNotCalled();
                 });
 
                 it('should fail when function has been called multiple times with matching params', () => {
@@ -362,7 +362,7 @@ describe('mock', () => {
                 });
 
                 it('should not fail when function has not been called', () => {
-                    mocked.withFunction('functionWithParamsAndReturn').withParameters('one', 123, true);
+                    expect(mocked.withFunction('functionWithParamsAndReturn').withParameters('one', 123, true)).wasNotCalled();
                 });
             });
 
@@ -999,7 +999,7 @@ describe('mock', () => {
                 it('should not fail when function has been called once with different parameters', () => {
                     mock.propertyOne = 'one';
 
-                    mocked.withSetter('propertyOne').withParameters('one');
+                    expect(mocked.withSetter('propertyOne').withParameters('two')).wasNotCalled();
                 });
 
                 it('should fail when function has been called multiple times with matching params', () => {
@@ -1015,7 +1015,7 @@ describe('mock', () => {
                 });
 
                 it('should not fail when function has not been called', () => {
-                    mocked.withSetter('propertyOne').withParameters('one');
+                    expect(mocked.withSetter('propertyOne').withParameters('one')).wasNotCalled();
                 });
             });
 
@@ -1454,10 +1454,10 @@ describe('mock', () => {
                 setupFunction('functionWithParamsAndReturn'),
             ).mock;
 
-            newMock.functionWithNoParamsAndNoReturn();
-            newMock.functionWithNoParamsAndReturnType();
-            newMock.functionWithParamsAndNoReturn('', 123, true);
-            newMock.functionWithParamsAndReturn('');
+            expect(newMock.functionWithNoParamsAndNoReturn()).toBeUndefined();
+            expect(newMock.functionWithNoParamsAndReturnType()).toBeUndefined();
+            expect(newMock.functionWithParamsAndNoReturn('', 123, true)).toBeUndefined();
+            expect(newMock.functionWithParamsAndReturn('')).toBeUndefined();
         });
     });
 

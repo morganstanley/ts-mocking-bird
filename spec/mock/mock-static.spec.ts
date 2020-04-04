@@ -336,9 +336,9 @@ describe('mock with statics', () => {
                 });
 
                 it('should not fail when function has been called once with different parameters', () => {
-                    mocked.mockConstructor.functionWithParamsAndReturn('two', 123, true);
+                    mocked.mockConstructor.functionWithParamsAndReturn('one', 123, true);
 
-                    mocked.withStaticFunction('functionWithParamsAndReturn').withParameters('one', 123, true);
+                    expect(mocked.withStaticFunction('functionWithParamsAndReturn').withParameters('two', 123, true)).wasNotCalled();
                 });
 
                 it('should fail when function has been called multiple times with matching params', () => {
@@ -354,7 +354,7 @@ describe('mock with statics', () => {
                 });
 
                 it('should not fail when function has not been called', () => {
-                    mocked.withStaticFunction('functionWithParamsAndReturn').withParameters('one', 123, true);
+                    expect(mocked.withStaticFunction('functionWithParamsAndReturn').withParameters('one', 123, true)).wasNotCalled();
                 });
             });
 
@@ -986,7 +986,7 @@ describe('mock with statics', () => {
                 it('should not fail when function has been called once with different parameters', () => {
                     mocked.mockConstructor.propertyOne = 'one';
 
-                    mocked.withStaticSetter('propertyOne').withParameters('one');
+                    expect(mocked.withStaticSetter('propertyOne').withParameters('two')).wasNotCalled();
                 });
 
                 it('should fail when function has been called multiple times with matching params', () => {
@@ -1002,7 +1002,7 @@ describe('mock with statics', () => {
                 });
 
                 it('should not fail when function has not been called', () => {
-                    mocked.withStaticSetter('propertyOne').withParameters('one');
+                    expect(mocked.withStaticSetter('propertyOne').withParameters('one')).wasNotCalled();
                 });
             });
 
@@ -1405,10 +1405,10 @@ describe('mock with statics', () => {
                 setupStaticFunction('functionWithParamsAndReturn'),
             );
 
-            newMock.mockConstructor.functionWithNoParamsAndNoReturn();
-            newMock.mockConstructor.functionWithNoParamsAndReturnType();
-            newMock.mockConstructor.functionWithParamsAndNoReturn('', 123, true);
-            newMock.mockConstructor.functionWithParamsAndReturn('');
+            expect(newMock.mockConstructor.functionWithNoParamsAndNoReturn()).toBeUndefined();
+            expect(newMock.mockConstructor.functionWithNoParamsAndReturnType()).toBeUndefined();
+            expect(newMock.mockConstructor.functionWithParamsAndNoReturn('', 123, true)).toBeUndefined();
+            expect(newMock.mockConstructor.functionWithParamsAndReturn('')).toBeUndefined();
         });
     });
 });
