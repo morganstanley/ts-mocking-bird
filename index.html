@@ -65,6 +65,7 @@
 				<blockquote>
 					<p>A fully type safe mocking, call verification and import replacement library that works with jasmine and jest</p>
 				</blockquote>
+				<p>Documentation: <a href="https://morgan-stanley.github.io/ts-mocking-bird/">https://morgan-stanley.github.io/ts-mocking-bird/</a></p>
 				<h1 id="why-use-this-">Why use this?</h1>
 				<ul>
 					<li>All operations fully type safe</li>
@@ -80,7 +81,7 @@
 				<h1 id="usage">Usage</h1>
 				<pre><code class="language-typescript">npm install <span class="hljs-meta">@morgan</span>-stanley/ts-mocking-bird</code></pre>
 				<h2 id="create-a-mock">Create a Mock</h2>
-				<p><a href="spec/examples/exampleTests.spec.ts">Examples</a></p>
+				<p><a href="https://github.com/Morgan-Stanley/ts-mocking-bird/tree/master/spec/examples/exampleTests.spec.ts">Examples</a></p>
 				<p>Creates a mock that is typed as <code>IMyService</code>. Properties and functions can be setup using <code>mockedService</code>. The actual mocked service is accessible at <code>mockedService.mock</code>.</p>
 				<pre><code class="language-typescript"><span class="hljs-keyword">import</span> {
     defineProperty,
@@ -109,7 +110,7 @@
 
 <span class="hljs-keyword">const</span> systemUnderTest = <span class="hljs-keyword">new</span> ClassWithConstructorArgument(mockedService.mockConstructor); <span class="hljs-comment">// pass mock constructor to system under test</span></code></pre>
 				<h2 id="verify-calls">Verify Calls</h2>
-				<p><a href="spec/examples/exampleTests.spec.ts">Examples</a></p>
+				<p><a href="https://github.com/Morgan-Stanley/ts-mocking-bird/tree/master/spec/examples/exampleTests.spec.ts">Examples</a></p>
 				<h3 id="verify-that-a-function-was-called-a-number-of-times-without-checking-parameters">Verify that a function was called a number of times without checking parameters</h3>
 				<pre><code class="language-typescript"><span class="hljs-keyword">const</span> mockedService: IMocked&lt;IMyService&gt; = Mock.create&lt;IMyService&gt;().setup(setupFunction(<span class="hljs-string">'functionOne'</span>));
 
@@ -167,7 +168,7 @@ mockedService
 
 functionVerifier.withParameters(<span class="hljs-string">'someValue'</span>).wasCalledOnce();</code></pre>
 				<h2 id="verify-function-parameters">Verify Function Parameters</h2>
-				<p><a href="spec/examples/exampleParameterMatcherTest.spec.ts">Examples</a></p>
+				<p><a href="https://github.com/Morgan-Stanley/ts-mocking-bird/tree/master/spec/examples/exampleParameterMatcherTest.spec.ts">Examples</a></p>
 				<h3 id="verify-that-function-parameters-match-using-strict-equality">Verify that function parameters match using strict equality</h3>
 				<pre><code class="language-typescript"><span class="hljs-keyword">const</span> sampleMock = Mock.create&lt;ISampleMocked&gt;().setup(setupFunction(<span class="hljs-string">'functionOne'</span>));
 
@@ -222,7 +223,7 @@ sampleMock
     })
     .wasCalledOnce();</code></pre>
 				<h2 id="replace-imports">Replace Imports</h2>
-				<p><a href="spec/examples/exampleImportReplacementTest.spec.ts">Examples</a></p>
+				<p><a href="https://github.com/Morgan-Stanley/ts-mocking-bird/tree/master/spec/examples/exampleImportReplacementTest.spec.ts">Examples</a></p>
 				<h3 id="jest-modules">Jest Modules</h3>
 				<p>Using <code>proxyModule</code> we proxy all functions and constructors in a module so that they can be replaced at a later point. This allows us to create a new mock implementation of a class or function for each test run and means that concurrent tests are not polluted by the state of previous tests.</p>
 				<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { proxyModule, registerMock, reset } <span class="hljs-keyword">from</span> <span class="hljs-string">'@morgan-stanley/ts-mocking-bird'</span>;
