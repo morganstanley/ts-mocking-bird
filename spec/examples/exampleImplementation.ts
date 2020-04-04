@@ -4,8 +4,7 @@ import { IMyService, MyService, someFunction } from './exampleImports';
  * An example class that we want to test by mocking its constructor arguments
  */
 export class ClassWithInstanceArgument {
-    constructor(public readonly service: IMyService) {
-    }
+    constructor(public readonly service: IMyService) {}
 }
 
 /**

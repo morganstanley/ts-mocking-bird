@@ -183,17 +183,6 @@ export function verifyFunctionCalled<T, C extends ConstructorFunction<T>, U exte
             errorMessageDescription = `Function`;
     }
 
-    let withParamsMessage: string;
-
-    if (Array.isArray(parameterMatchers) && parameterMatchers.length > 0) {
-        withParamsMessage = `with params [${expectedParametersToString(parameterMatchers)}] `;
-        if (strict) {
-            withParamsMessage = `${withParamsMessage}and 0 times with any other parameters `;
-        }
-    } else {
-        withParamsMessage = '';
-    }
-
     if (functionCalls === undefined) {
         return {
             pass: false,
@@ -212,30 +201,65 @@ export function verifyFunctionCalled<T, C extends ConstructorFunction<T>, U exte
 
     if (times !== undefined) {
         if (times !== matchingCalls.length || (strict && times !== functionCalls.length)) {
-            let allCalls: string;
-            if (functionCalls.some(call => call.length > 0)) {
-                allCalls = ` \n[\n${functionCalls
-                    .map(call => functionCallToString(call, parameterMatchers))
-                    .join('\n')}\n]`;
-            } else {
-                allCalls = '';
-            }
-
             return {
                 pass: false,
-                message: `${expectationMessage} ${times} times ${withParamsMessage}but it was called ${matchingCalls.length} times with matching parameters and ${functionCalls.length} times in total${allCalls}.`,
+                message: `${expectationMessage} ${times} times ${buildWithParamsString(
+                    parameterMatchers,
+                    strict,
+                )}but it was called ${matchingCalls.length} times with matching parameters and ${
+                    functionCalls.length
+                } times in total.${buildAllCallsString(functionCalls, parameterMatchers)}`,
             };
         }
     } else {
         if (matchingCalls.length === 0) {
+            let calledWithMessage: string;
+            if(functionCalls.length > 0){
+                calledWithMessage = `it was only called with these parameters:${buildAllCallsString(functionCalls, parameterMatchers)}`
+            } else {
+                calledWithMessage = `it was not.`;
+            }
+
             return {
                 pass: false,
-                message: `${expectationMessage} ${withParamsMessage}but it was not.`,
+                message: `${expectationMessage} ${buildWithParamsString(
+                    parameterMatchers,
+                    strict,
+                )}but ${calledWithMessage}`,
             };
         }
     }
 
     return { pass: true };
+}
+
+function buildWithParamsString(
+    parameterMatchers: (IParameterMatcher<any> | MatchFunction<any>)[] | undefined,
+    strict: boolean,
+) {
+    let withParamsMessage: string;
+    if (Array.isArray(parameterMatchers) && parameterMatchers.length > 0) {
+        withParamsMessage = `with params [${expectedParametersToString(parameterMatchers)}] `;
+        if (strict) {
+            withParamsMessage = `${withParamsMessage}and 0 times with any other parameters `;
+        }
+    } else {
+        withParamsMessage = '';
+    }
+    return withParamsMessage;
+}
+
+function buildAllCallsString(
+    functionCalls: any[][],
+    parameterMatchers: (IParameterMatcher<any> | MatchFunction<any>)[] | undefined,
+) {
+    let allCalls: string;
+    if (functionCalls.some(call => call.length > 0)) {
+        allCalls = `\n[\n${functionCalls.map(call => functionCallToString(call, parameterMatchers)).join('\n')}\n]`;
+    } else {
+        allCalls = '';
+    }
+    return allCalls;
 }
 
 function expectedParametersToString(parameterMatchers: ParameterMatcher<any>[]): string {

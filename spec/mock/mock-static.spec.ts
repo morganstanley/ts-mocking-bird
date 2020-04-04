@@ -271,7 +271,7 @@ describe('mock with statics', () => {
                     verifyFailure(
                         mocked.withStaticFunction('functionWithParamsAndReturn').withParameters('one', 123, true),
                         matchers.wasCalledAtLeastOnce(),
-                        `Expected static function "functionWithParamsAndReturn" to be called with params ["one", 123, true] but it was not.`,
+                        `Expected static function "functionWithParamsAndReturn" to be called with params ["one", 123, true] but it was only called with these parameters:\n[\n["two",123,true]\n]`,
                     );
                 });
 
@@ -281,7 +281,7 @@ describe('mock with statics', () => {
                     verifyFailure(
                         mocked.withStaticFunction('functionWithParamsAndReturn').withParameters('one', 123, true),
                         matchers.wasCalledAtLeastOnce(),
-                        `Expected static function "functionWithParamsAndReturn" to be called with params ["one", 123, true] but it was not.`,
+                        `Expected static function "functionWithParamsAndReturn" to be called with params ["one", 123, true] but it was only called with these parameters:\n[\n["one",456,true]\n]`,
                     );
                 });
 
@@ -291,7 +291,7 @@ describe('mock with statics', () => {
                     verifyFailure(
                         mocked.withStaticFunction('functionWithParamsAndReturn').withParameters('one', 123, true),
                         matchers.wasCalledAtLeastOnce(),
-                        `Expected static function "functionWithParamsAndReturn" to be called with params ["one", 123, true] but it was not.`,
+                        `Expected static function "functionWithParamsAndReturn" to be called with params ["one", 123, true] but it was only called with these parameters:\n[\n["one",123,false]\n]`,
                     );
                 });
 
@@ -301,7 +301,7 @@ describe('mock with statics', () => {
                     verifyFailure(
                         mocked.withStaticFunction('functionWithParamsAndReturn').withParameters('one', 123, true),
                         matchers.wasCalledAtLeastOnce(),
-                        `Expected static function "functionWithParamsAndReturn" to be called with params ["one", 123, true] but it was not.`,
+                        `Expected static function "functionWithParamsAndReturn" to be called with params ["one", 123, true] but it was only called with these parameters:\n[\n["one"]\n]`,
                     );
                 });
 
@@ -331,14 +331,16 @@ describe('mock with statics', () => {
                     verifyFailure(
                         mocked.withStaticFunction('functionWithParamsAndReturn').withParameters('one', 123, true),
                         matchers.wasNotCalled(),
-                        `Expected static function "functionWithParamsAndReturn" to be called 0 times with params ["one", 123, true] but it was called 1 times with matching parameters and 1 times in total \n[\n["one",123,true]\n].`,
+                        `Expected static function "functionWithParamsAndReturn" to be called 0 times with params ["one", 123, true] but it was called 1 times with matching parameters and 1 times in total.\n[\n["one",123,true]\n]`,
                     );
                 });
 
                 it('should not fail when function has been called once with different parameters', () => {
                     mocked.mockConstructor.functionWithParamsAndReturn('one', 123, true);
 
-                    expect(mocked.withStaticFunction('functionWithParamsAndReturn').withParameters('two', 123, true)).wasNotCalled();
+                    expect(
+                        mocked.withStaticFunction('functionWithParamsAndReturn').withParameters('two', 123, true),
+                    ).wasNotCalled();
                 });
 
                 it('should fail when function has been called multiple times with matching params', () => {
@@ -349,12 +351,14 @@ describe('mock with statics', () => {
                     verifyFailure(
                         mocked.withStaticFunction('functionWithParamsAndReturn').withParameters('one', 123, true),
                         matchers.wasNotCalled(),
-                        `Expected static function "functionWithParamsAndReturn" to be called 0 times with params ["one", 123, true] but it was called 3 times with matching parameters and 3 times in total \n[\n["one",123,true]\n["one",123,true]\n["one",123,true]\n].`,
+                        `Expected static function "functionWithParamsAndReturn" to be called 0 times with params ["one", 123, true] but it was called 3 times with matching parameters and 3 times in total.\n[\n["one",123,true]\n["one",123,true]\n["one",123,true]\n]`,
                     );
                 });
 
                 it('should not fail when function has not been called', () => {
-                    expect(mocked.withStaticFunction('functionWithParamsAndReturn').withParameters('one', 123, true)).wasNotCalled();
+                    expect(
+                        mocked.withStaticFunction('functionWithParamsAndReturn').withParameters('one', 123, true),
+                    ).wasNotCalled();
                 });
             });
 
@@ -387,7 +391,7 @@ describe('mock with statics', () => {
                     verifyFailure(
                         mocked.withStaticFunction('functionWithParamsAndReturn').withParameters('one', 123, true),
                         matchers.wasCalledOnce(),
-                        `Expected static function "functionWithParamsAndReturn" to be called 1 times with params ["one", 123, true] but it was called 3 times with matching parameters and 3 times in total \n[\n["one",123,true]\n["one",123,true]\n["one",123,true]\n].`,
+                        `Expected static function "functionWithParamsAndReturn" to be called 1 times with params ["one", 123, true] but it was called 3 times with matching parameters and 3 times in total.\n[\n["one",123,true]\n["one",123,true]\n["one",123,true]\n]`,
                     );
                 });
 
@@ -399,7 +403,7 @@ describe('mock with statics', () => {
                     verifyFailure(
                         mocked.withStaticFunction('functionWithParamsAndReturn').withParameters('one', 123, true),
                         matchers.wasCalledOnce(),
-                        `Expected static function "functionWithParamsAndReturn" to be called 1 times with params ["one", 123, true] but it was called 0 times with matching parameters and 3 times in total \n[\n["two",123,true]\n["one",456,true]\n["one",456,false]\n].`,
+                        `Expected static function "functionWithParamsAndReturn" to be called 1 times with params ["one", 123, true] but it was called 0 times with matching parameters and 3 times in total.\n[\n["two",123,true]\n["one",456,true]\n["one",456,false]\n]`,
                     );
                 });
             });
@@ -415,7 +419,7 @@ describe('mock with statics', () => {
                     verifyFailure(
                         mocked.withStaticFunction('functionWithParamsAndReturn').withParameters('one', 123, true),
                         matchers.wasCalled(),
-                        `Expected static function "functionWithParamsAndReturn" to be called 2 times with params ["one", 123, true] but it was called 1 times with matching parameters and 4 times in total \n[\n["one",123,true]\n["two",123,true]\n["one",456,true]\n["one",456,false]\n].`,
+                        `Expected static function "functionWithParamsAndReturn" to be called 2 times with params ["one", 123, true] but it was called 1 times with matching parameters and 4 times in total.\n[\n["one",123,true]\n["two",123,true]\n["one",456,true]\n["one",456,false]\n]`,
                         2,
                     );
                 });
@@ -427,7 +431,7 @@ describe('mock with statics', () => {
                     verifyFailure(
                         mocked.withStaticFunction('functionWithParamsAndReturn').withParameters('one', 123, true),
                         matchers.wasCalled(),
-                        `Expected static function "functionWithParamsAndReturn" to be called 2 times with params ["one", 123, true] but it was called 0 times with matching parameters and 2 times in total \n[\n["two",123,true]\n["one",456,true]\n].`,
+                        `Expected static function "functionWithParamsAndReturn" to be called 2 times with params ["one", 123, true] but it was called 0 times with matching parameters and 2 times in total.\n[\n["two",123,true]\n["one",456,true]\n]`,
                         2,
                     );
                 });
@@ -453,7 +457,7 @@ describe('mock with statics', () => {
                     verifyFailure(
                         mocked.withStaticFunction('functionWithParamsAndReturn').withParameters('one', 123, true),
                         matchers.wasCalled(),
-                        `Expected static function "functionWithParamsAndReturn" to be called 2 times with params ["one", 123, true] but it was called 3 times with matching parameters and 3 times in total \n[\n["one",123,true]\n["one",123,true]\n["one",123,true]\n].`,
+                        `Expected static function "functionWithParamsAndReturn" to be called 2 times with params ["one", 123, true] but it was called 3 times with matching parameters and 3 times in total.\n[\n["one",123,true]\n["one",123,true]\n["one",123,true]\n]`,
                         2,
                     );
                 });
@@ -466,7 +470,7 @@ describe('mock with statics', () => {
                     verifyFailure(
                         mocked.withStaticFunction('functionWithParamsAndReturn').withParameters('one', 123, true),
                         matchers.wasCalled(),
-                        `Expected static function "functionWithParamsAndReturn" to be called 2 times with params ["one", 123, true] but it was called 0 times with matching parameters and 3 times in total \n[\n["two",123,true]\n["one",456,true]\n["one",456,false]\n].`,
+                        `Expected static function "functionWithParamsAndReturn" to be called 2 times with params ["one", 123, true] but it was called 0 times with matching parameters and 3 times in total.\n[\n["two",123,true]\n["one",456,true]\n["one",456,false]\n]`,
                         2,
                     );
                 });
@@ -488,7 +492,7 @@ describe('mock with statics', () => {
                             .withParameters('one', 123, true)
                             .strict(),
                         matchers.wasNotCalled(),
-                        `Expected static function "functionWithParamsAndReturn" to be called 0 times with params ["one", 123, true] and 0 times with any other parameters but it was called 1 times with matching parameters and 1 times in total \n[\n["one",123,true]\n].`,
+                        `Expected static function "functionWithParamsAndReturn" to be called 0 times with params ["one", 123, true] and 0 times with any other parameters but it was called 1 times with matching parameters and 1 times in total.\n[\n["one",123,true]\n]`,
                     );
                 });
 
@@ -501,7 +505,7 @@ describe('mock with statics', () => {
                             .withParameters('one', 123, true)
                             .strict(),
                         matchers.wasNotCalled(),
-                        `Expected static function "functionWithParamsAndReturn" to be called 0 times with params ["one", 123, true] and 0 times with any other parameters but it was called 0 times with matching parameters and 1 times in total \n[\n["two",123,true]\n].`,
+                        `Expected static function "functionWithParamsAndReturn" to be called 0 times with params ["one", 123, true] and 0 times with any other parameters but it was called 0 times with matching parameters and 1 times in total.\n[\n["two",123,true]\n]`,
                     );
                 });
 
@@ -516,7 +520,7 @@ describe('mock with statics', () => {
                             .withParameters('one', 123, true)
                             .strict(),
                         matchers.wasNotCalled(),
-                        `Expected static function "functionWithParamsAndReturn" to be called 0 times with params ["one", 123, true] and 0 times with any other parameters but it was called 3 times with matching parameters and 3 times in total \n[\n["one",123,true]\n["one",123,true]\n["one",123,true]\n].`,
+                        `Expected static function "functionWithParamsAndReturn" to be called 0 times with params ["one", 123, true] and 0 times with any other parameters but it was called 3 times with matching parameters and 3 times in total.\n[\n["one",123,true]\n["one",123,true]\n["one",123,true]\n]`,
                     );
                 });
 
@@ -555,7 +559,7 @@ describe('mock with statics', () => {
                             .withParameters('one', 123, true)
                             .strict(),
                         matchers.wasCalledOnce(),
-                        `Expected static function "functionWithParamsAndReturn" to be called 1 times with params ["one", 123, true] and 0 times with any other parameters but it was called 1 times with matching parameters and 4 times in total \n[\n["one",123,true]\n["two",123,true]\n["one",456,true]\n["one",456,false]\n].`,
+                        `Expected static function "functionWithParamsAndReturn" to be called 1 times with params ["one", 123, true] and 0 times with any other parameters but it was called 1 times with matching parameters and 4 times in total.\n[\n["one",123,true]\n["two",123,true]\n["one",456,true]\n["one",456,false]\n]`,
                     );
                 });
 
@@ -570,7 +574,7 @@ describe('mock with statics', () => {
                             .withParameters('one', 123, true)
                             .strict(),
                         matchers.wasCalledOnce(),
-                        `Expected static function "functionWithParamsAndReturn" to be called 1 times with params ["one", 123, true] and 0 times with any other parameters but it was called 3 times with matching parameters and 3 times in total \n[\n["one",123,true]\n["one",123,true]\n["one",123,true]\n].`,
+                        `Expected static function "functionWithParamsAndReturn" to be called 1 times with params ["one", 123, true] and 0 times with any other parameters but it was called 3 times with matching parameters and 3 times in total.\n[\n["one",123,true]\n["one",123,true]\n["one",123,true]\n]`,
                     );
                 });
 
@@ -585,7 +589,7 @@ describe('mock with statics', () => {
                             .withParameters('one', 123, true)
                             .strict(),
                         matchers.wasCalledOnce(),
-                        `Expected static function "functionWithParamsAndReturn" to be called 1 times with params ["one", 123, true] and 0 times with any other parameters but it was called 0 times with matching parameters and 3 times in total \n[\n["two",123,true]\n["one",456,true]\n["one",456,false]\n].`,
+                        `Expected static function "functionWithParamsAndReturn" to be called 1 times with params ["one", 123, true] and 0 times with any other parameters but it was called 0 times with matching parameters and 3 times in total.\n[\n["two",123,true]\n["one",456,true]\n["one",456,false]\n]`,
                     );
                 });
             });
@@ -604,7 +608,7 @@ describe('mock with statics', () => {
                             .withParameters('one', 123, true)
                             .strict(),
                         matchers.wasCalled(),
-                        `Expected static function "functionWithParamsAndReturn" to be called 2 times with params ["one", 123, true] and 0 times with any other parameters but it was called 1 times with matching parameters and 4 times in total \n[\n["one",123,true]\n["two",123,true]\n["one",456,true]\n["one",456,false]\n].`,
+                        `Expected static function "functionWithParamsAndReturn" to be called 2 times with params ["one", 123, true] and 0 times with any other parameters but it was called 1 times with matching parameters and 4 times in total.\n[\n["one",123,true]\n["two",123,true]\n["one",456,true]\n["one",456,false]\n]`,
                         2,
                     );
                 });
@@ -619,7 +623,7 @@ describe('mock with statics', () => {
                             .withParameters('one', 123, true)
                             .strict(),
                         matchers.wasCalled(),
-                        `Expected static function "functionWithParamsAndReturn" to be called 2 times with params ["one", 123, true] and 0 times with any other parameters but it was called 0 times with matching parameters and 2 times in total \n[\n["two",123,true]\n["one",456,true]\n].`,
+                        `Expected static function "functionWithParamsAndReturn" to be called 2 times with params ["one", 123, true] and 0 times with any other parameters but it was called 0 times with matching parameters and 2 times in total.\n[\n["two",123,true]\n["one",456,true]\n]`,
                         2,
                     );
                 });
@@ -638,7 +642,7 @@ describe('mock with statics', () => {
                             .withParameters('one', 123, true)
                             .strict(),
                         matchers.wasCalled(),
-                        `Expected static function "functionWithParamsAndReturn" to be called 2 times with params ["one", 123, true] and 0 times with any other parameters but it was called 2 times with matching parameters and 5 times in total \n[\n["one",123,true]\n["one",123,true]\n["two",123,true]\n["one",456,true]\n["one",456,false]\n].`,
+                        `Expected static function "functionWithParamsAndReturn" to be called 2 times with params ["one", 123, true] and 0 times with any other parameters but it was called 2 times with matching parameters and 5 times in total.\n[\n["one",123,true]\n["one",123,true]\n["two",123,true]\n["one",456,true]\n["one",456,false]\n]`,
                         2,
                     );
                 });
@@ -654,7 +658,7 @@ describe('mock with statics', () => {
                             .withParameters('one', 123, true)
                             .strict(),
                         matchers.wasCalled(),
-                        `Expected static function "functionWithParamsAndReturn" to be called 2 times with params ["one", 123, true] and 0 times with any other parameters but it was called 3 times with matching parameters and 3 times in total \n[\n["one",123,true]\n["one",123,true]\n["one",123,true]\n].`,
+                        `Expected static function "functionWithParamsAndReturn" to be called 2 times with params ["one", 123, true] and 0 times with any other parameters but it was called 3 times with matching parameters and 3 times in total.\n[\n["one",123,true]\n["one",123,true]\n["one",123,true]\n]`,
                         2,
                     );
                 });
@@ -670,7 +674,7 @@ describe('mock with statics', () => {
                             .withParameters('one', 123, true)
                             .strict(),
                         matchers.wasCalled(),
-                        `Expected static function "functionWithParamsAndReturn" to be called 2 times with params ["one", 123, true] and 0 times with any other parameters but it was called 0 times with matching parameters and 3 times in total \n[\n["two",123,true]\n["one",456,true]\n["one",456,false]\n].`,
+                        `Expected static function "functionWithParamsAndReturn" to be called 2 times with params ["one", 123, true] and 0 times with any other parameters but it was called 0 times with matching parameters and 3 times in total.\n[\n["two",123,true]\n["one",456,true]\n["one",456,false]\n]`,
                         2,
                     );
                 });
@@ -951,7 +955,7 @@ describe('mock with statics', () => {
                     verifyFailure(
                         mocked.withStaticSetter('propertyOne').withParameters('one'),
                         matchers.wasCalledAtLeastOnce(),
-                        `Expected static property "propertyOne" to be set with params ["one"] but it was not.`,
+                        `Expected static property "propertyOne" to be set with params ["one"] but it was only called with these parameters:\n[\n["two"]\n]`,
                     );
                 });
 
@@ -979,7 +983,7 @@ describe('mock with statics', () => {
                     verifyFailure(
                         mocked.withStaticSetter('propertyOne').withParameters('one'),
                         matchers.wasNotCalled(),
-                        `Expected static property "propertyOne" to be set 0 times with params ["one"] but it was called 1 times with matching parameters and 1 times in total \n[\n["one"]\n].`,
+                        `Expected static property "propertyOne" to be set 0 times with params ["one"] but it was called 1 times with matching parameters and 1 times in total.\n[\n["one"]\n]`,
                     );
                 });
 
@@ -997,7 +1001,7 @@ describe('mock with statics', () => {
                     verifyFailure(
                         mocked.withStaticSetter('propertyOne').withParameters('one'),
                         matchers.wasNotCalled(),
-                        `Expected static property "propertyOne" to be set 0 times with params ["one"] but it was called 3 times with matching parameters and 3 times in total \n[\n["one"]\n["one"]\n["one"]\n].`,
+                        `Expected static property "propertyOne" to be set 0 times with params ["one"] but it was called 3 times with matching parameters and 3 times in total.\n[\n["one"]\n["one"]\n["one"]\n]`,
                     );
                 });
 
@@ -1031,7 +1035,7 @@ describe('mock with statics', () => {
                     verifyFailure(
                         mocked.withStaticSetter('propertyOne').withParameters('one'),
                         matchers.wasCalledOnce(),
-                        `Expected static property "propertyOne" to be set 1 times with params ["one"] but it was called 3 times with matching parameters and 3 times in total \n[\n["one"]\n["one"]\n["one"]\n].`,
+                        `Expected static property "propertyOne" to be set 1 times with params ["one"] but it was called 3 times with matching parameters and 3 times in total.\n[\n["one"]\n["one"]\n["one"]\n]`,
                     );
                 });
 
@@ -1043,7 +1047,7 @@ describe('mock with statics', () => {
                     verifyFailure(
                         mocked.withStaticSetter('propertyOne').withParameters('one'),
                         matchers.wasCalledOnce(),
-                        `Expected static property "propertyOne" to be set 1 times with params ["one"] but it was called 0 times with matching parameters and 3 times in total \n[\n["two"]\n["three"]\n["four"]\n].`,
+                        `Expected static property "propertyOne" to be set 1 times with params ["one"] but it was called 0 times with matching parameters and 3 times in total.\n[\n["two"]\n["three"]\n["four"]\n]`,
                     );
                 });
             });
@@ -1059,7 +1063,7 @@ describe('mock with statics', () => {
                     verifyFailure(
                         mocked.withStaticSetter('propertyOne').withParameters('one'),
                         matchers.wasCalled(),
-                        `Expected static property "propertyOne" to be set 2 times with params ["one"] but it was called 1 times with matching parameters and 4 times in total \n[\n["one"]\n["two"]\n["three"]\n["four"]\n].`,
+                        `Expected static property "propertyOne" to be set 2 times with params ["one"] but it was called 1 times with matching parameters and 4 times in total.\n[\n["one"]\n["two"]\n["three"]\n["four"]\n]`,
                         2,
                     );
                 });
@@ -1071,7 +1075,7 @@ describe('mock with statics', () => {
                     verifyFailure(
                         mocked.withStaticSetter('propertyOne').withParameters('one'),
                         matchers.wasCalled(),
-                        `Expected static property "propertyOne" to be set 2 times with params ["one"] but it was called 0 times with matching parameters and 2 times in total \n[\n["two"]\n["three"]\n].`,
+                        `Expected static property "propertyOne" to be set 2 times with params ["one"] but it was called 0 times with matching parameters and 2 times in total.\n[\n["two"]\n["three"]\n]`,
                         2,
                     );
                 });
@@ -1095,7 +1099,7 @@ describe('mock with statics', () => {
                     verifyFailure(
                         mocked.withStaticSetter('propertyOne').withParameters('one'),
                         matchers.wasCalled(),
-                        `Expected static property "propertyOne" to be set 2 times with params ["one"] but it was called 3 times with matching parameters and 3 times in total \n[\n["one"]\n["one"]\n["one"]\n].`,
+                        `Expected static property "propertyOne" to be set 2 times with params ["one"] but it was called 3 times with matching parameters and 3 times in total.\n[\n["one"]\n["one"]\n["one"]\n]`,
                         2,
                     );
                 });
@@ -1108,7 +1112,7 @@ describe('mock with statics', () => {
                     verifyFailure(
                         mocked.withStaticSetter('propertyOne').withParameters('one'),
                         matchers.wasCalled(),
-                        `Expected static property "propertyOne" to be set 2 times with params ["one"] but it was called 0 times with matching parameters and 3 times in total \n[\n["two"]\n["three"]\n["four"]\n].`,
+                        `Expected static property "propertyOne" to be set 2 times with params ["one"] but it was called 0 times with matching parameters and 3 times in total.\n[\n["two"]\n["three"]\n["four"]\n]`,
                         2,
                     );
                 });
@@ -1130,7 +1134,7 @@ describe('mock with statics', () => {
                             .withParameters('one')
                             .strict(),
                         matchers.wasNotCalled(),
-                        `Expected static property "propertyOne" to be set 0 times with params ["one"] and 0 times with any other parameters but it was called 1 times with matching parameters and 1 times in total \n[\n["one"]\n].`,
+                        `Expected static property "propertyOne" to be set 0 times with params ["one"] and 0 times with any other parameters but it was called 1 times with matching parameters and 1 times in total.\n[\n["one"]\n]`,
                     );
                 });
 
@@ -1143,7 +1147,7 @@ describe('mock with statics', () => {
                             .withParameters('one')
                             .strict(),
                         matchers.wasNotCalled(),
-                        `Expected static property "propertyOne" to be set 0 times with params ["one"] and 0 times with any other parameters but it was called 0 times with matching parameters and 1 times in total \n[\n["two"]\n].`,
+                        `Expected static property "propertyOne" to be set 0 times with params ["one"] and 0 times with any other parameters but it was called 0 times with matching parameters and 1 times in total.\n[\n["two"]\n]`,
                     );
                 });
 
@@ -1158,7 +1162,7 @@ describe('mock with statics', () => {
                             .withParameters('one')
                             .strict(),
                         matchers.wasNotCalled(),
-                        `Expected static property "propertyOne" to be set 0 times with params ["one"] and 0 times with any other parameters but it was called 3 times with matching parameters and 3 times in total \n[\n["one"]\n["one"]\n["one"]\n].`,
+                        `Expected static property "propertyOne" to be set 0 times with params ["one"] and 0 times with any other parameters but it was called 3 times with matching parameters and 3 times in total.\n[\n["one"]\n["one"]\n["one"]\n]`,
                     );
                 });
 
@@ -1197,7 +1201,7 @@ describe('mock with statics', () => {
                             .withParameters('one')
                             .strict(),
                         matchers.wasCalledOnce(),
-                        `Expected static property "propertyOne" to be set 1 times with params ["one"] and 0 times with any other parameters but it was called 1 times with matching parameters and 4 times in total \n[\n["one"]\n["two"]\n["three"]\n["four"]\n].`,
+                        `Expected static property "propertyOne" to be set 1 times with params ["one"] and 0 times with any other parameters but it was called 1 times with matching parameters and 4 times in total.\n[\n["one"]\n["two"]\n["three"]\n["four"]\n]`,
                     );
                 });
 
@@ -1212,7 +1216,7 @@ describe('mock with statics', () => {
                             .withParameters('one')
                             .strict(),
                         matchers.wasCalledOnce(),
-                        `Expected static property "propertyOne" to be set 1 times with params ["one"] and 0 times with any other parameters but it was called 3 times with matching parameters and 3 times in total \n[\n["one"]\n["one"]\n["one"]\n].`,
+                        `Expected static property "propertyOne" to be set 1 times with params ["one"] and 0 times with any other parameters but it was called 3 times with matching parameters and 3 times in total.\n[\n["one"]\n["one"]\n["one"]\n]`,
                     );
                 });
 
@@ -1227,7 +1231,7 @@ describe('mock with statics', () => {
                             .withParameters('one')
                             .strict(),
                         matchers.wasCalledOnce(),
-                        `Expected static property "propertyOne" to be set 1 times with params ["one"] and 0 times with any other parameters but it was called 0 times with matching parameters and 3 times in total \n[\n["two"]\n["three"]\n["four"]\n].`,
+                        `Expected static property "propertyOne" to be set 1 times with params ["one"] and 0 times with any other parameters but it was called 0 times with matching parameters and 3 times in total.\n[\n["two"]\n["three"]\n["four"]\n]`,
                     );
                 });
             });
@@ -1246,7 +1250,7 @@ describe('mock with statics', () => {
                             .withParameters('one')
                             .strict(),
                         matchers.wasCalled(),
-                        `Expected static property "propertyOne" to be set 2 times with params ["one"] and 0 times with any other parameters but it was called 1 times with matching parameters and 4 times in total \n[\n["one"]\n["two"]\n["three"]\n["four"]\n].`,
+                        `Expected static property "propertyOne" to be set 2 times with params ["one"] and 0 times with any other parameters but it was called 1 times with matching parameters and 4 times in total.\n[\n["one"]\n["two"]\n["three"]\n["four"]\n]`,
                         2,
                     );
                 });
@@ -1261,7 +1265,7 @@ describe('mock with statics', () => {
                             .withParameters('one')
                             .strict(),
                         matchers.wasCalled(),
-                        `Expected static property "propertyOne" to be set 2 times with params ["one"] and 0 times with any other parameters but it was called 0 times with matching parameters and 2 times in total \n[\n["two"]\n["three"]\n].`,
+                        `Expected static property "propertyOne" to be set 2 times with params ["one"] and 0 times with any other parameters but it was called 0 times with matching parameters and 2 times in total.\n[\n["two"]\n["three"]\n]`,
                         2,
                     );
                 });
@@ -1279,7 +1283,7 @@ describe('mock with statics', () => {
                             .withParameters('one')
                             .strict(),
                         matchers.wasCalled(),
-                        `Expected static property "propertyOne" to be set 2 times with params ["one"] and 0 times with any other parameters but it was called 2 times with matching parameters and 4 times in total \n[\n["one"]\n["one"]\n["three"]\n["four"]\n].`,
+                        `Expected static property "propertyOne" to be set 2 times with params ["one"] and 0 times with any other parameters but it was called 2 times with matching parameters and 4 times in total.\n[\n["one"]\n["one"]\n["three"]\n["four"]\n]`,
                         2,
                     );
                 });
@@ -1295,7 +1299,7 @@ describe('mock with statics', () => {
                             .withParameters('one')
                             .strict(),
                         matchers.wasCalled(),
-                        `Expected static property "propertyOne" to be set 2 times with params ["one"] and 0 times with any other parameters but it was called 3 times with matching parameters and 3 times in total \n[\n["one"]\n["one"]\n["one"]\n].`,
+                        `Expected static property "propertyOne" to be set 2 times with params ["one"] and 0 times with any other parameters but it was called 3 times with matching parameters and 3 times in total.\n[\n["one"]\n["one"]\n["one"]\n]`,
                         2,
                     );
                 });
@@ -1311,7 +1315,7 @@ describe('mock with statics', () => {
                             .withParameters('one')
                             .strict(),
                         matchers.wasCalled(),
-                        `Expected static property "propertyOne" to be set 2 times with params ["one"] and 0 times with any other parameters but it was called 0 times with matching parameters and 3 times in total \n[\n["two"]\n["three"]\n["four"]\n].`,
+                        `Expected static property "propertyOne" to be set 2 times with params ["one"] and 0 times with any other parameters but it was called 0 times with matching parameters and 3 times in total.\n[\n["two"]\n["three"]\n["four"]\n]`,
                         2,
                     );
                 });

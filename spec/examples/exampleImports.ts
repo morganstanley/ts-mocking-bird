@@ -24,15 +24,13 @@ export class MyService implements IMyService {
     public propOne: string = '';
     public propTwo: string = '';
 
-    constructor(_constrParamOne: string, _constrParamTwo: number) {
-    }
+    constructor(_constrParamOne: string, _constrParamTwo: number) {}
 
     public functionTwo(_value: string) {
         return true;
     }
 
-    public functionOne() {
-    }
+    public functionOne() {}
 
     public functionThree() {
         return 'returnValue';
