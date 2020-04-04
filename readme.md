@@ -10,6 +10,10 @@
 * Verifies function calls (with type safe parameter verification), as well as getter and setter calls
 * Replaces imports (again, fully type safe)
 
+# Typescript Version
+
+Requires a minimum Typescript version of 3.1
+
 # Framework support
 
 This library has been extensively used with jasmine and has been tested without issue with jest. The mocking functionality should work in any environment as it has no dependencies on any particular framework. The import replacement functionality uses the jasmine `beforeAll` / `afterAll` and `beforeEach` / `afterEach` so will not work in other environments.

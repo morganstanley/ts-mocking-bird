@@ -1,6 +1,5 @@
 node_modules/
 dist/
-docs/
 reports/
 *.tgz
 $WORKSPACE/.npmrc

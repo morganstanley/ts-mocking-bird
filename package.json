@@ -11,7 +11,7 @@
         "copy": "copyfiles main/**/*.html main/**/*.css main/**/*.jpg dist",
         "prebuild-release": "npm ci && npm run clean && npm run verify-release",
         "verify-release": "concurrently npm:lint npm:test npm:build",
-        "build-release": "npm run copy-dist",
+        "build-release": "npm run copy-dist && typedoc",
         "watch-build": "tsc --watch",
         "test": "karma start --singleRun --browsers ChromeHeadlessNoSandbox",
         "lint": "tslint -c tslint.conf.js -p tsconfig.json",
@@ -24,7 +24,9 @@
     "devDependencies": {
         "@types/jasmine": "^3.3.0",
         "@types/jest": "^24.9.0",
+        "@types/lodash": "^4.14.149",
         "@types/node": "^10.17.13",
+        "@types/uuid": "^3.4.4",
         "ajv": "^6.10.2",
         "chromedriver": "^79.0.0",
         "circular-dependency-plugin": "^5.2.0",
@@ -52,13 +54,18 @@
         "tslint-config-prettier": "^1.18.0",
         "tslint-plugin-prettier": "^2.0.1",
         "typedoc": "^0.14.2",
-        "typedoc-plugin-sourcefile-url": "^1.0.4",
-        "typescript": "~3.1.6",
+        "typescript": "^3.1.6",
         "webpack": "^4.39.2"
     },
+    "peerDependencies": {
+        "typescript": ">=3.1"
+    },
     "license": "ISC",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Morgan-Stanley/ts-mocking-bird.git"
+    },
     "dependencies": {
-        "@types/uuid": "^3.4.4",
         "chalk": "^2.4.2",
         "lodash": "^4.17.15",
         "tsutils": "^3.17.1",
