@@ -1,5 +1,6 @@
 # @morgan-stanley/ts-mocking-bird
 [![Build Status](https://travis-ci.com/Morgan-Stanley/ts-mocking-bird.svg?branch=master)](https://travis-ci.com/Morgan-Stanley/ts-mocking-bird)
+[![codecov](https://codecov.io/gh/Morgan-Stanley/ts-mocking-bird/branch/master/graph/badge.svg)](https://codecov.io/gh/Morgan-Stanley/ts-mocking-bird)
 > A fully type safe mocking, call verification and import replacement library that works with jasmine and jest
 
 Documentation: https://morgan-stanley.github.io/ts-mocking-bird/
