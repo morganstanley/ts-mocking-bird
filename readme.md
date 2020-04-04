@@ -28,7 +28,7 @@ npm install @morgan-stanley/ts-mocking-bird
 
 ## Create a Mock
 
-[Examples](spec/examples/exampleTests.spec.ts)
+[Examples](https://github.com/Morgan-Stanley/ts-mocking-bird/tree/master/spec/examples/exampleTests.spec.ts)
 
 Creates a mock that is typed as `IMyService`. Properties and functions can be setup using `mockedService`. The actual mocked service is accessible at `mockedService.mock`.
 
@@ -67,7 +67,7 @@ const systemUnderTest = new ClassWithConstructorArgument(mockedService.mockConst
 ```
 
 ## Verify Calls
-[Examples](spec/examples/exampleTests.spec.ts)
+[Examples](https://github.com/Morgan-Stanley/ts-mocking-bird/tree/master/spec/examples/exampleTests.spec.ts)
 
 ### Verify that a function was called a number of times without checking parameters
 ```typescript
@@ -146,7 +146,7 @@ functionVerifier.withParameters('someValue').wasCalledOnce();
 ```
 
 ## Verify Function Parameters
-[Examples](spec/examples/exampleParameterMatcherTest.spec.ts)
+[Examples](https://github.com/Morgan-Stanley/ts-mocking-bird/tree/master/spec/examples/exampleParameterMatcherTest.spec.ts)
 
 ### Verify that function parameters match using strict equality
 ```typescript
@@ -217,7 +217,7 @@ sampleMock
 ```
 
 ## Replace Imports
-[Examples](spec/examples/exampleImportReplacementTest.spec.ts)
+[Examples](https://github.com/Morgan-Stanley/ts-mocking-bird/tree/master/spec/examples/exampleImportReplacementTest.spec.ts)
 
 ### Jest Modules
 
