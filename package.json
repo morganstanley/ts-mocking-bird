@@ -5,7 +5,7 @@
     "main": "./dist/main/index.js",
     "types": "./dist/main/index.d.ts",
     "scripts": {
-        "clean": "rimraf dist reports ../build ../install ../packages docs",
+        "clean": "rimraf dist reports ../build ../install ../packages",
         "build": "tsc",
         "postbuild": "npm run copy",
         "copy": "copyfiles main/**/*.html main/**/*.css main/**/*.jpg dist",
