@@ -1,12 +1,13 @@
 import {
     ConstructorFunction,
     FunctionCallLookup,
+    FunctionName,
     FunctionsOnly,
     FunctionType,
     IMocked,
     OperatorFunction,
 } from './contracts';
-import { FunctionName } from './verifiers';
+import { addMatchers } from './matchers';
 
 /**
  * Mocks a function on an existing Mock.
@@ -218,6 +219,8 @@ function trackSetterCall<T, C extends ConstructorFunction<T>>(
 }
 
 function trackCall(lookup: FunctionCallLookup, name: string, params: any[]) {
+    addMatchers();
+
     if (lookup[name as any] === undefined) {
         lookup[name as any] = [];
     }

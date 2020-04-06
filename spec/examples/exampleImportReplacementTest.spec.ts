@@ -1,10 +1,14 @@
-import { IMocked, Mock, replaceProperties, replacePropertiesBeforeEach, setupFunction } from '../../main';
+import { addMatchers, IMocked, Mock, replaceProperties, replacePropertiesBeforeEach, setupFunction } from '../../main';
 import { ClassUsingImports } from './exampleImplementation';
 import * as myImport from './exampleImports';
 import { IMyService } from './exampleImports';
 
 describe('replace imports', () => {
     const someFunctionMock = () => 'mockedReturnValue';
+
+    beforeEach(() => {
+        addMatchers();
+    });
 
     replaceProperties(myImport, { someFunction: someFunctionMock });
 
@@ -28,10 +32,10 @@ describe('replace imports', () => {
         it('so that we can assert number of calls', () => {
             const SUT = new ClassUsingImports('one', 2);
 
-            mockPackage.withFunction('someFunction').wasNotCalled();
+            expect(mockPackage.withFunction('someFunction')).wasNotCalled();
 
             SUT.someFunctionProxy();
-            mockPackage.withFunction('someFunction').wasCalledOnce();
+            expect(mockPackage.withFunction('someFunction')).wasCalledOnce();
 
             expect(SUT.service.functionThree()).toEqual('mockedFunctionReturn');
         });

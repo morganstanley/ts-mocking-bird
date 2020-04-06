@@ -70,13 +70,27 @@ const systemUnderTest = new ClassWithConstructorArgument(mockedService.mockConst
 ## Verify Calls
 [Examples](https://github.com/Morgan-Stanley/ts-mocking-bird/tree/master/spec/examples/exampleTests.spec.ts)
 
+### Jasmine / Jest Matchers
+
+When a mocked function is setup the custom matchers that are used by `ts-mocking-bird` are automatically setup. However this can only be done if this setup occurs within a `before` function. If you need to manually setup the custom matchers please call `addMatchers()`:
+
+```typescript
+import { addMatchers } from '@morgan-stanley/ts-mocking-bird'
+
+describe("my test", () => {
+    beforeEach(() => {
+        addMatchers();
+    })
+})
+```
+
 ### Verify that a function was called a number of times without checking parameters
 ```typescript
 const mockedService: IMocked<IMyService> = Mock.create<IMyService>().setup(setupFunction('functionOne'));
 
 const systemUnderTest = new ClassWithInstanceArgument(mockedService.mock);
 
-mockedService.withFunction('functionOne').wasCalled(5);
+expect(mockedService.withFunction('functionOne')).wasCalled(5);
 ```
 
 ### Verify that a function was called once with specific parameters:
@@ -85,10 +99,12 @@ const mockedService: IMocked<IMyService> = Mock.create<IMyService>().setup(setup
 
 const systemUnderTest = new ClassWithInstanceArgument(mockedService.mock);
 
-mockedService
-    .withFunction('functionTwo')
-    .withParameters('someValue')
-    .wasCalledOnce();
+expect(
+    mockedService
+        .withFunction('functionTwo')
+        .withParameters('someValue')
+        .strict(),
+).wasCalledOnce();
 ```
 
 ### Verify Getter:
@@ -97,7 +113,7 @@ const mockedService: IMocked<IMyService> = Mock.create<IMyService>().setup(setup
 
 const systemUnderTest = new ClassWithInstanceArgument(mockedService.mock);
 
-mockedService.withGetter('propOne').wasCalledOnce();
+expect(mockedService.withGetter('propOne')).wasCalledOnce();
 ```
 
 ### Verify Setter:
@@ -106,10 +122,12 @@ const mockedService: IMocked<IMyService> = Mock.create<IMyService>().setup(setup
 
 const systemUnderTest = new ClassWithInstanceArgument(mockedService.mock);
 
-mockedService
-    .withSetter('propOne')
-    .withParameters('someValue')
-    .wasCalledOnce();
+expect(
+    mockedService
+        .withSetter('propOne')
+        .withParameters('someValue')
+        .strict(),
+).wasCalledOnce();
 ```
 
 ### Verify that a function was called once and was not called any other times using strict:
@@ -124,16 +142,18 @@ const systemUnderTest = new ClassWithInstanceArgument(mockedService.mock);
 systemUnderTest.functionsTwo('someValue');
 systemUnderTest.functionsTwo('someOtherValue');
 
-mockedService
-    .withFunction('functionTwo')
-    .withParameters('someValue')
-    .strict()
-    .wasCalledOnce(); // this will fail as called twice in total
+expect(
+    mockedService
+        .withFunction('functionTwo')
+        .withParameters('someValue')
+        .strict()
+    ).wasCalledOnce(); // this will fail as called twice in total
 
-mockedService
-    .withFunction('functionTwo')
-    .withParameters('someValue')
-    .wasCalledOnce(); // this will pass as only called once with params 'someValue'
+expect(
+    mockedService
+        .withFunction('functionTwo')
+        .withParameters('someValue')
+    ).wasCalledOnce(); // this will pass as only called once with params 'someValue'
 ```
 
 ### Verify function calls using a function verifier returned from `myMock.setupFunction()`:
@@ -143,7 +163,7 @@ const functionVerifier = mockedService.setupFunction('functionTwo');
 
 const systemUnderTest = new ClassWithInstanceArgument(mockedService.mock);
 
-functionVerifier.withParameters('someValue').wasCalledOnce();
+expect(functionVerifier.withParameters('someValue')).wasCalledOnce();
 ```
 
 ## Verify Function Parameters
@@ -156,10 +176,11 @@ const sampleMock = Mock.create<ISampleMocked>().setup(setupFunction('functionOne
 const sampleObject: IPerson = { name: 'Fred', id: 1 };
 sampleMock.mock.functionOne('one', 2, sampleObject);
 
-sampleMock
-    .withFunction('functionOne')
-    .withParameters('one', 2, sampleObject) // strict equality
-    .wasCalledOnce();
+expect(
+    sampleMock
+        .withFunction('functionOne')
+        .withParameters('one', 2, sampleObject) // strict equality
+    ).wasCalledOnce();
 ```
 
 ### Verify that function parameter values are equal
@@ -168,10 +189,11 @@ const sampleMock = Mock.create<ISampleMocked>().setup(setupFunction('functionOne
 
 sampleMock.mock.functionOne('one', 2, { name: 'Fred', id: 1 });
 
-sampleMock
-    .withFunction('functionOne')
-    .withParametersEqualTo('one', 2, { name: 'Fred', id: 1 }) // equals used to match
-    .wasCalledOnce();
+expect(
+    sampleMock
+        .withFunction('functionOne')
+        .withParametersEqualTo('one', 2, { name: 'Fred', id: 1 }) // equals used to match
+    ).wasCalledOnce();
 ```
 
 ### Use alternate matchers
@@ -182,10 +204,11 @@ const sampleMock = Mock.create<ISampleMocked>().setup(setupFunction('functionOne
 
 sampleMock.mock.functionOne('one', 2, { name: 'Fred', id: 1 });
 
-sampleMock
-    .withFunction('functionOne')
-    .withParameters('one', toBeDefined(), any())
-    .wasCalledOnce();
+expect(
+    sampleMock
+        .withFunction('functionOne')
+        .withParameters('one', toBeDefined(), any())
+    ).wasCalledOnce();
 ```
 
 ### Match values with a function
@@ -195,10 +218,11 @@ const sampleMock = Mock.create<ISampleMocked>().setup(setupFunction('functionOne
 
 sampleMock.mock.functionOne('one', 2, { name: 'Fred', id: 1 });
 
-sampleMock
-    .withFunction('functionOne')
-    .withParameters('one', 2, person => person.id === 1)
-    .wasCalledOnce();
+expect(
+    sampleMock
+        .withFunction('functionOne')
+        .withParameters('one', 2, person => person.id === 1)
+    ).wasCalledOnce();
 ```
 
 ### Create a custom `IParameterMatcher` to create more informative failure messages
@@ -207,14 +231,15 @@ const sampleMock = Mock.create<ISampleMocked>().setup(setupFunction('functionOne
 
 sampleMock.mock.functionOne('one', 2, { name: 'Fred', id: 1 });
 
-sampleMock
-    .withFunction('functionOne')
-    .withParameters(toBe('one'), toBe(2), {
-        isExpectedValue: person => person.id === 1,
-        expectedDisplayValue: 'Person with id 1', // Used to display expected parameter value in failure message
-        parameterToString: person => `Person with id ${person.id}`, // Used to display value of actual parameters passed in failure message
-    })
-    .wasCalledOnce();
+expect(
+    sampleMock
+        .withFunction('functionOne')
+        .withParameters(toBe('one'), toBe(2), {
+            isExpectedValue: person => person.id === 1,
+            expectedDisplayValue: 'Person with id 1', // Used to display expected parameter value in failure message
+            parameterToString: person => `Person with id ${person.id}`, // Used to display value of actual parameters passed in failure message
+        })
+    ).wasCalledOnce();
 ```
 
 ## Replace Imports
@@ -320,10 +345,10 @@ describe('replace imports', () => {
             const SUT = new ClassUsingImports('one', 2);
 
             expect(SUT.service).toBe(mockService.mock);
-            mockPackage.withFunction('someFunction').wasNotCalled();
+            expect(mockPackage.withFunction('someFunction')).wasNotCalled();
 
             SUT.someFunctionProxy();
-            mockPackage.withFunction('someFunction').wasCalledOnce();
+            expect(mockPackage.withFunction('someFunction')).wasCalledOnce();
         });
     });
 });

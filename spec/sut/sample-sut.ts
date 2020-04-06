@@ -1,5 +1,4 @@
-// tslint:disable:ordered-imports
-import { sampleFunctionOne, sampleFunctionTwo, sampleFunctionThree, SampleClassImport } from './sample-import';
+import { SampleClassImport, sampleFunctionOne, sampleFunctionThree, sampleFunctionTwo } from './sample-import';
 
 export class SampleClass {
     public wrapFunctionOne() {

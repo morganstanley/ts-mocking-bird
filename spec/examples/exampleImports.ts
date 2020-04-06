@@ -24,17 +24,15 @@ export class MyService implements IMyService {
     public propOne: string = '';
     public propTwo: string = '';
 
-    constructor(_constrParamOne: string, _constrParamTwo: number) {
-        console.log(`class constructed`);
-    }
+    // tslint:disable-next-line:no-empty
+    constructor(_constrParamOne: string, _constrParamTwo: number) {}
 
     public functionTwo(_value: string) {
         return true;
     }
 
-    public functionOne() {
-        console.log('sample implementation');
-    }
+    // tslint:disable-next-line:no-empty
+    public functionOne() {}
 
     public functionThree() {
         return 'returnValue';

@@ -1,8 +1,9 @@
 import {
     ConstructorFunction,
+    FunctionName,
     FunctionParams,
     FunctionType,
-    IFunctionVerification,
+    IFunctionVerifier,
     IFunctionWithParametersVerification,
     IMocked,
     IParameterMatcher,
@@ -10,15 +11,9 @@ import {
     MatchFunction,
     ParameterMatcher,
     SetterTypes,
-    StaticFunctionTypes,
+    VerifierTarget,
 } from './contracts';
-import { isParameterMatcher, mapItemToString, toBe, toEqual } from './matchers';
-
-export type VerifierTarget<T, C extends ConstructorFunction<T>, U extends FunctionType> = U extends StaticFunctionTypes
-    ? C
-    : T;
-
-export type FunctionName<T, C extends ConstructorFunction<T>, U extends FunctionType> = keyof VerifierTarget<T, C, U>;
+import { isParameterMatcher, mapItemToString, toBe, toEqual } from './parameterMatchers';
 
 export type VerifierParams<
     T,
@@ -36,7 +31,7 @@ export function createFunctionParameterVerifier<
     mocked: IMocked<T, C>,
     type: U,
     functionName: K,
-): IFunctionWithParametersVerification<VerifierParams<T, C, U, K>, T, C> {
+): IFunctionWithParametersVerification<VerifierParams<T, C, U, K>, T, U, C> {
     return {
         ...createFunctionVerifier(mocked, type, functionName),
         /**
@@ -66,14 +61,15 @@ export function createFunctionVerifier<
     mocked: IMocked<T, C>,
     type: U,
     functionName: K,
-    matchers?: ParameterMatcher<any>[],
-    strict: boolean = false,
-): IFunctionVerification<T, C> {
+    parameterMatchers?: ParameterMatcher<any>[],
+    strictCallCount: boolean = false,
+): IFunctionVerifier<T, U, C> {
     return {
         getMock: () => mocked,
-        wasCalled: (times?: number) => verifyFunctionCalled(times, functionName, mocked, type, matchers, strict),
-        wasNotCalled: () => verifyFunctionCalled(0, functionName, mocked, type, matchers, strict),
-        wasCalledOnce: () => verifyFunctionCalled(1, functionName, mocked, type, matchers, strict),
+        type,
+        functionName,
+        parameterMatchers,
+        strictCallCount,
     };
 }
 
@@ -87,7 +83,7 @@ export function createStrictFunctionVerifier<
     type: U,
     functionName: K,
     matchers?: ParameterMatcher<any>[],
-): IStrictFunctionVerification<T, C> {
+): IStrictFunctionVerification<T, U, C> {
     return {
         ...createFunctionVerifier(mocked, type, functionName, matchers),
         strict: () => createFunctionVerifier(mocked, type, functionName, matchers, true),
@@ -105,7 +101,7 @@ export function verifyParameters<
     functionName: K,
     type: U,
     equals: boolean,
-): IStrictFunctionVerification<T, C> {
+): IStrictFunctionVerification<T, U, C> {
     const parameterMatchers: (MatchFunction<any> | IParameterMatcher)[] | undefined =
         parameters.length > 0
             ? parameters.map((parameter: any) => mapParameterToMatcher(parameter, equals))
@@ -129,19 +125,16 @@ function mapParameterToMatcher(
     return equals ? toEqual(param) : toBe(param);
 }
 
-function verifyFunctionCalled<
-    T,
-    C extends ConstructorFunction<T>,
-    U extends FunctionType,
-    K extends FunctionName<T, C, U>
->(
+export function verifyFunctionCalled<T, C extends ConstructorFunction<T>, U extends FunctionType>(
     times: number | undefined,
-    functionName: K,
-    mock: IMocked<T, C>,
-    type: U,
-    parameterMatchers?: (MatchFunction<any> | IParameterMatcher<any>)[],
-    strict?: boolean,
-) {
+    verifier: IFunctionVerifier<T, U, C>,
+): jasmine.CustomMatcherResult {
+    const mock = verifier.getMock();
+    const type = verifier.type;
+    const functionName = verifier.functionName;
+    const parameterMatchers = verifier.parameterMatchers;
+    const strict = verifier.strictCallCount;
+
     let functionCalls: any[][];
     let expectationMessage: string;
     let errorMessageSetupFunction: string;
@@ -190,8 +183,64 @@ function verifyFunctionCalled<
             errorMessageDescription = `Function`;
     }
 
-    let withParamsMessage: string;
+    if (functionCalls === undefined) {
+        return {
+            pass: false,
+            message: `${errorMessageDescription} "${functionName}" has not been setup. Please setup using ${errorMessageSetupFunction} before verifying calls.`,
+        };
+    }
 
+    const parameterMatchResults = functionCalls.map(params => matchParameters(params, parameterMatchers));
+    const customMatcherResults = parameterMatchResults.filter(isMatcherResultArray);
+
+    if (customMatcherResults.length > 0) {
+        return customMatcherResults[0][0];
+    }
+
+    const matchingCalls = parameterMatchResults.filter(paramMatch => paramMatch === true);
+
+    if (times !== undefined) {
+        if (times !== matchingCalls.length || (strict && times !== functionCalls.length)) {
+            return {
+                pass: false,
+                message: `${expectationMessage} ${times} times ${buildWithParamsString(
+                    parameterMatchers,
+                    strict,
+                )}but it was called ${matchingCalls.length} times with matching parameters and ${
+                    functionCalls.length
+                } times in total.${buildAllCallsString(functionCalls, parameterMatchers)}`,
+            };
+        }
+    } else {
+        if (matchingCalls.length === 0) {
+            let calledWithMessage: string;
+            if (functionCalls.length > 0) {
+                calledWithMessage = `it was only called with these parameters:${buildAllCallsString(
+                    functionCalls,
+                    parameterMatchers,
+                )}`;
+            } else {
+                calledWithMessage = `it was not.`;
+            }
+
+            return {
+                pass: false,
+                message: `${expectationMessage} ${buildWithParamsString(
+                    parameterMatchers,
+                    strict,
+                )}but ${calledWithMessage}`,
+            };
+        }
+    }
+
+    return { pass: true };
+}
+
+function buildWithParamsString(
+    parameterMatchers: (IParameterMatcher<any> | MatchFunction<any>)[] | undefined,
+    strict: boolean,
+) {
+    let withParamsMessage: string;
     if (Array.isArray(parameterMatchers) && parameterMatchers.length > 0) {
         withParamsMessage = `with params [${expectedParametersToString(parameterMatchers)}] `;
         if (strict) {
@@ -200,43 +249,20 @@ function verifyFunctionCalled<
     } else {
         withParamsMessage = '';
     }
+    return withParamsMessage;
+}
 
-    if (functionCalls === undefined) {
-        throw new Error(
-            `${errorMessageDescription} "${functionName}" has not been setup. Please setup using ${errorMessageSetupFunction} before verifying calls.`,
-        );
-    }
-
-    const matchingCalls = functionCalls.filter(params => matchParameters(params, parameterMatchers));
-
-    if (times !== undefined) {
-        if (times !== matchingCalls.length || (strict && times !== functionCalls.length)) {
-            let allCalls: string;
-            if (functionCalls.some(call => call.length > 0)) {
-                allCalls = ` \n[\n${functionCalls
-                    .map(call => functionCallToString(call, parameterMatchers))
-                    .join('\n')}\n]`;
-            } else {
-                allCalls = '';
-            }
-
-            throw Error(
-                `${expectationMessage} ${times} times ${withParamsMessage}but it was called ${matchingCalls.length} times with matching parameters and ${functionCalls.length} times in total${allCalls}.`,
-            );
-        }
-
-        if (strict) {
-            expect(functionCalls.length).toEqual(times);
-        } else {
-            expect(matchingCalls.length).toEqual(times);
-        }
+function buildAllCallsString(
+    functionCalls: any[][],
+    parameterMatchers: (IParameterMatcher<any> | MatchFunction<any>)[] | undefined,
+) {
+    let allCalls: string;
+    if (functionCalls.some(call => call.length > 0)) {
+        allCalls = `\n[\n${functionCalls.map(call => functionCallToString(call, parameterMatchers)).join('\n')}\n]`;
     } else {
-        if (matchingCalls.length === 0) {
-            throw Error(`${expectationMessage} ${withParamsMessage}but it was not.`);
-        }
-
-        expect(matchingCalls.length).toBeGreaterThanOrEqual(0);
+        allCalls = '';
     }
+    return allCalls;
 }
 
 function expectedParametersToString(parameterMatchers: ParameterMatcher<any>[]): string {
@@ -262,7 +288,28 @@ function functionCallToString(call: any[], parameterMatchers?: ParameterMatcher<
     return `[${params}]`;
 }
 
-function matchParameters(actualParameters: any[], parameterMatchers?: ParameterMatcher<any>[]): boolean {
+function isMatcherResultArray(
+    paramResult: boolean | jasmine.CustomMatcherResult[],
+): paramResult is jasmine.CustomMatcherResult[] {
+    if (Array.isArray(paramResult)) {
+        return paramResult.every(isMatcherResult);
+    }
+    return false;
+}
+
+function isMatcherResult(
+    paramResult: boolean | jasmine.CustomMatcherResult | jasmine.CustomMatcherResult[],
+): paramResult is jasmine.CustomMatcherResult {
+    if (Array.isArray(paramResult)) {
+        return paramResult.every(isMatcherResult);
+    }
+    return typeof paramResult !== 'boolean';
+}
+
+function matchParameters(
+    actualParameters: any[],
+    parameterMatchers?: (IParameterMatcher<any> | MatchFunction<any>)[],
+): boolean | jasmine.CustomMatcherResult[] {
     if (parameterMatchers == null) {
         return true;
     }
@@ -271,27 +318,39 @@ function matchParameters(actualParameters: any[], parameterMatchers?: ParameterM
         return false;
     }
 
-    return parameterMatchers.every((matcher, index) => {
-        if (typeof matcher === 'function') {
-            let matcherReturnValue: boolean;
+    const evaluatedParams = parameterMatchers.map((matcher, index) =>
+        evaluateParameterMatcher(actualParameters[index], matcher),
+    );
+    const matcherResults = evaluatedParams.filter(isMatcherResult);
 
-            try {
-                matcherReturnValue = matcher(actualParameters[index]);
-            } catch (e) {
-                throw new Error(
-                    `Error: calling custom parameter match function threw an error (${e}) rather returning a boolean. You must use an existing IParameterMatcher (such as toBe(value)) or implement your own if you want to verify functions passed as mocked function arguments.`,
-                );
-            }
+    return matcherResults.length > 0 ? matcherResults : (evaluatedParams as boolean[]).every(param => param === true);
+}
 
-            if (typeof matcherReturnValue !== 'boolean') {
-                throw new Error(
-                    `Error: calling custom parameter match function returned "${matcherReturnValue}" rather than a boolean. You must use an existing IParameterMatcher (such as toBe(value)) or implement your own if you want to verify functions passed as mocked function arguments.`,
-                );
-            }
+function evaluateParameterMatcher(
+    actualParam: any,
+    matcher: IParameterMatcher<any> | MatchFunction<any>,
+): boolean | jasmine.CustomMatcherResult {
+    if (typeof matcher === 'function') {
+        let matcherReturnValue: boolean;
 
-            return matcherReturnValue;
-        } else {
-            return matcher.isExpectedValue(actualParameters[index]);
+        try {
+            matcherReturnValue = matcher(actualParam);
+        } catch (e) {
+            return {
+                pass: false,
+                message: `Error: calling custom parameter match function threw an error (${e}) rather returning a boolean. You must use an existing IParameterMatcher (such as toBe(value)) or implement your own if you want to verify functions passed as mocked function arguments.`,
+            };
         }
-    });
+
+        if (typeof matcherReturnValue !== 'boolean') {
+            return {
+                pass: false,
+                message: `Error calling custom parameter match function. Function returned "${matcherReturnValue}" (typeof: ${typeof matcherReturnValue}) rather than a boolean. You must use an existing IParameterMatcher (such as toBe(value)) or implement your own if you want to verify functions passed as mocked function arguments.`,
+            };
+        }
+
+        return matcherReturnValue;
+    } else {
+        return matcher.isExpectedValue(actualParam);
+    }
 }

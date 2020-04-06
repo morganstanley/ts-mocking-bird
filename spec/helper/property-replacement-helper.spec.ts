@@ -1,17 +1,15 @@
 import { Mock, replaceProperties, replacePropertiesBeforeEach } from '../../main';
-import { SampleClass } from '../sut/sample-sut';
-
-// tslint:disable:ordered-imports
 import {
-    functionOneReturnValue,
-    functionTwoReturnValue,
-    functionThreeReturnValue,
     classReturnValue,
+    functionOneReturnValue,
+    functionThreeReturnValue,
+    functionTwoReturnValue,
     SampleClassImport,
 } from '../sut/sample-import';
+import { SampleClass } from '../sut/sample-sut';
 
-import * as sampleImport from '../sut/sample-import';
 import { setupFunction, setupProperty } from '../../main/mock/operators';
+import * as sampleImport from '../sut/sample-import';
 
 describe('property replacement helper', () => {
     let setterValues: string[];
@@ -124,10 +122,9 @@ describe('property replacement helper', () => {
             expect(classInstanceOne.getBaseString()).toEqual(mockedFunctionTwoResult);
             expect(classInstanceOne.valueReplacedWithMock).toEqual('value from Mock.create');
             classInstanceOne.valueReplacedWithMock = 'testing mock setter';
-            mockObject
-                .withSetter('valueReplacedWithMock')
-                .withParameters('testing mock setter')
-                .wasCalledOnce();
+            expect(
+                mockObject.withSetter('valueReplacedWithMock').withParameters('testing mock setter'),
+            ).wasCalledOnce();
             expect(classInstanceOne.simpleValue).toEqual('mockedSimpleValue');
             expect(classInstanceOne.sampleGetterSetter).toEqual('mockedGetterValue');
             classInstanceOne.sampleGetterSetter = 'mockedSetterValueOne';

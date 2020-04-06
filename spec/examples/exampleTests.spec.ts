@@ -56,7 +56,7 @@ describe('verify function calls', () => {
         systemUnderTest.service.functionOne();
 
         expect(systemUnderTest).toBeDefined();
-        mockedService.withFunction('functionOne').wasCalled(5);
+        expect(mockedService.withFunction('functionOne')).wasCalled(5);
     });
 
     it('should verify that a mocked function was called with specific parameters', () => {
@@ -67,10 +67,7 @@ describe('verify function calls', () => {
         systemUnderTest.service.functionTwo('someValue');
 
         expect(systemUnderTest).toBeDefined();
-        mockedService
-            .withFunction('functionTwo')
-            .withParameters('someValue')
-            .wasCalledOnce();
+        expect(mockedService.withFunction('functionTwo').withParameters('someValue')).wasCalledOnce();
     });
 
     it('should verify that a mocked getter was called', () => {
@@ -84,7 +81,7 @@ describe('verify function calls', () => {
 
         expect(systemUnderTest).toBeDefined();
         expect(value).toEqual('initialValue');
-        mockedService.withGetter('propOne').wasCalledOnce();
+        expect(mockedService.withGetter('propOne')).wasCalledOnce();
     });
 
     it('should verify that a mocked setter was called', () => {
@@ -95,10 +92,7 @@ describe('verify function calls', () => {
         systemUnderTest.service.propOne = 'someValue';
 
         expect(systemUnderTest).toBeDefined();
-        mockedService
-            .withSetter('propOne')
-            .withParameters('someValue')
-            .wasCalledOnce();
+        expect(mockedService.withSetter('propOne').withParameters('someValue')).wasCalledOnce();
     });
 
     it('should verify that a mocked function was called with specific parameters and was not called any other times', () => {
@@ -109,11 +103,12 @@ describe('verify function calls', () => {
         systemUnderTest.service.functionTwo('someValue');
 
         expect(systemUnderTest).toBeDefined();
-        mockedService
-            .withFunction('functionTwo')
-            .withParameters('someValue')
-            .strict()
-            .wasCalledOnce();
+        expect(
+            mockedService
+                .withFunction('functionTwo')
+                .withParameters('someValue')
+                .strict(),
+        ).wasCalledOnce();
     });
 
     it('should create and use a function verifier', () => {
@@ -125,6 +120,6 @@ describe('verify function calls', () => {
         systemUnderTest.service.functionTwo('someValue');
 
         expect(systemUnderTest).toBeDefined();
-        functionVerifier.withParameters('someValue').wasCalledOnce();
+        expect(functionVerifier.withParameters('someValue')).wasCalledOnce();
     });
 });
