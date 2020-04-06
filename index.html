@@ -112,36 +112,49 @@
 <span class="hljs-keyword">const</span> systemUnderTest = <span class="hljs-keyword">new</span> ClassWithConstructorArgument(mockedService.mockConstructor); <span class="hljs-comment">// pass mock constructor to system under test</span></code></pre>
 				<h2 id="verify-calls">Verify Calls</h2>
 				<p><a href="https://github.com/Morgan-Stanley/ts-mocking-bird/tree/master/spec/examples/exampleTests.spec.ts">Examples</a></p>
+				<h3 id="jasmine-jest-matchers">Jasmine / Jest Matchers</h3>
+				<p>When a mocked function is setup the custom matchers that are used by <code>ts-mocking-bird</code> are automatically setup. However this can only be done if this setup occurs within a <code>before</code> function. If you need to manually setup the custom matchers please call <code>addMatchers()</code>:</p>
+				<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { addMatchers } <span class="hljs-keyword">from</span> <span class="hljs-string">'@morgan-stanley/ts-mocking-bird'</span>
+
+describe(<span class="hljs-string">"my test"</span>, <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
+    beforeEach(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
+        addMatchers();
+    })
+})</code></pre>
 				<h3 id="verify-that-a-function-was-called-a-number-of-times-without-checking-parameters">Verify that a function was called a number of times without checking parameters</h3>
 				<pre><code class="language-typescript"><span class="hljs-keyword">const</span> mockedService: IMocked&lt;IMyService&gt; = Mock.create&lt;IMyService&gt;().setup(setupFunction(<span class="hljs-string">'functionOne'</span>));
 
 <span class="hljs-keyword">const</span> systemUnderTest = <span class="hljs-keyword">new</span> ClassWithInstanceArgument(mockedService.mock);
 
-mockedService.withFunction(<span class="hljs-string">'functionOne'</span>).wasCalled(<span class="hljs-number">5</span>);</code></pre>
+expect(mockedService.withFunction(<span class="hljs-string">'functionOne'</span>)).wasCalled(<span class="hljs-number">5</span>);</code></pre>
 				<h3 id="verify-that-a-function-was-called-once-with-specific-parameters-">Verify that a function was called once with specific parameters:</h3>
 				<pre><code class="language-typescript"><span class="hljs-keyword">const</span> mockedService: IMocked&lt;IMyService&gt; = Mock.create&lt;IMyService&gt;().setup(setupFunction(<span class="hljs-string">'functionOne'</span>));
 
 <span class="hljs-keyword">const</span> systemUnderTest = <span class="hljs-keyword">new</span> ClassWithInstanceArgument(mockedService.mock);
 
-mockedService
-    .withFunction(<span class="hljs-string">'functionTwo'</span>)
-    .withParameters(<span class="hljs-string">'someValue'</span>)
-    .wasCalledOnce();</code></pre>
+expect(
+    mockedService
+        .withFunction(<span class="hljs-string">'functionTwo'</span>)
+        .withParameters(<span class="hljs-string">'someValue'</span>)
+        .strict(),
+).wasCalledOnce();</code></pre>
 				<h3 id="verify-getter-">Verify Getter:</h3>
 				<pre><code class="language-typescript"><span class="hljs-keyword">const</span> mockedService: IMocked&lt;IMyService&gt; = Mock.create&lt;IMyService&gt;().setup(setupProperty(<span class="hljs-string">'propOne'</span>));
 
 <span class="hljs-keyword">const</span> systemUnderTest = <span class="hljs-keyword">new</span> ClassWithInstanceArgument(mockedService.mock);
 
-mockedService.withGetter(<span class="hljs-string">'propOne'</span>).wasCalledOnce();</code></pre>
+expect(mockedService.withGetter(<span class="hljs-string">'propOne'</span>)).wasCalledOnce();</code></pre>
 				<h3 id="verify-setter-">Verify Setter:</h3>
 				<pre><code class="language-typescript"><span class="hljs-keyword">const</span> mockedService: IMocked&lt;IMyService&gt; = Mock.create&lt;IMyService&gt;().setup(setupProperty(<span class="hljs-string">'propOne'</span>));
 
 <span class="hljs-keyword">const</span> systemUnderTest = <span class="hljs-keyword">new</span> ClassWithInstanceArgument(mockedService.mock);
 
-mockedService
-    .withSetter(<span class="hljs-string">'propOne'</span>)
-    .withParameters(<span class="hljs-string">'someValue'</span>)
-    .wasCalledOnce();</code></pre>
+expect(
+    mockedService
+        .withSetter(<span class="hljs-string">'propOne'</span>)
+        .withParameters(<span class="hljs-string">'someValue'</span>)
+        .strict(),
+).wasCalledOnce();</code></pre>
 				<h3 id="verify-that-a-function-was-called-once-and-was-not-called-any-other-times-using-strict-">Verify that a function was called once and was not called any other times using strict:</h3>
 				<p>If we use <code>strict()</code> we ensure that the function is ONLY called with the specified parameters</p>
 				<pre><code class="language-typescript"><span class="hljs-keyword">const</span> mockedService: IMocked&lt;IMyService&gt; = Mock.create&lt;IMyService&gt;().setup(setupFunction(<span class="hljs-string">'functionTwo'</span>));
@@ -151,23 +164,25 @@ mockedService
 systemUnderTest.functionsTwo(<span class="hljs-string">'someValue'</span>);
 systemUnderTest.functionsTwo(<span class="hljs-string">'someOtherValue'</span>);
 
-mockedService
-    .withFunction(<span class="hljs-string">'functionTwo'</span>)
-    .withParameters(<span class="hljs-string">'someValue'</span>)
-    .strict()
-    .wasCalledOnce(); <span class="hljs-comment">// this will fail as called twice in total</span>
+expect(
+    mockedService
+        .withFunction(<span class="hljs-string">'functionTwo'</span>)
+        .withParameters(<span class="hljs-string">'someValue'</span>)
+        .strict()
+    ).wasCalledOnce(); <span class="hljs-comment">// this will fail as called twice in total</span>
 
-mockedService
-    .withFunction(<span class="hljs-string">'functionTwo'</span>)
-    .withParameters(<span class="hljs-string">'someValue'</span>)
-    .wasCalledOnce(); <span class="hljs-comment">// this will pass as only called once with params 'someValue'</span></code></pre>
+expect(
+    mockedService
+        .withFunction(<span class="hljs-string">'functionTwo'</span>)
+        .withParameters(<span class="hljs-string">'someValue'</span>)
+    ).wasCalledOnce(); <span class="hljs-comment">// this will pass as only called once with params 'someValue'</span></code></pre>
 				<h3 id="verify-function-calls-using-a-function-verifier-returned-from-mymock-setupfunction-">Verify function calls using a function verifier returned from <code>myMock.setupFunction()</code>:</h3>
 				<pre><code class="language-typescript"><span class="hljs-keyword">const</span> mockedService: IMocked&lt;IMyService&gt; = Mock.create&lt;IMyService&gt;();
 <span class="hljs-keyword">const</span> functionVerifier = mockedService.setupFunction(<span class="hljs-string">'functionTwo'</span>);
 
 <span class="hljs-keyword">const</span> systemUnderTest = <span class="hljs-keyword">new</span> ClassWithInstanceArgument(mockedService.mock);
 
-functionVerifier.withParameters(<span class="hljs-string">'someValue'</span>).wasCalledOnce();</code></pre>
+expect(functionVerifier.withParameters(<span class="hljs-string">'someValue'</span>)).wasCalledOnce();</code></pre>
 				<h2 id="verify-function-parameters">Verify Function Parameters</h2>
 				<p><a href="https://github.com/Morgan-Stanley/ts-mocking-bird/tree/master/spec/examples/exampleParameterMatcherTest.spec.ts">Examples</a></p>
 				<h3 id="verify-that-function-parameters-match-using-strict-equality">Verify that function parameters match using strict equality</h3>
@@ -176,19 +191,21 @@ functionVerifier.withParameters(<span class="hljs-string">'someValue'</span>).wa
 <span class="hljs-keyword">const</span> sampleObject: IPerson = { name: <span class="hljs-string">'Fred'</span>, id: <span class="hljs-number">1</span> };
 sampleMock.mock.functionOne(<span class="hljs-string">'one'</span>, <span class="hljs-number">2</span>, sampleObject);
 
-sampleMock
-    .withFunction(<span class="hljs-string">'functionOne'</span>)
-    .withParameters(<span class="hljs-string">'one'</span>, <span class="hljs-number">2</span>, sampleObject) <span class="hljs-comment">// strict equality</span>
-    .wasCalledOnce();</code></pre>
+expect(
+    sampleMock
+        .withFunction(<span class="hljs-string">'functionOne'</span>)
+        .withParameters(<span class="hljs-string">'one'</span>, <span class="hljs-number">2</span>, sampleObject) <span class="hljs-comment">// strict equality</span>
+    ).wasCalledOnce();</code></pre>
 				<h3 id="verify-that-function-parameter-values-are-equal">Verify that function parameter values are equal</h3>
 				<pre><code class="language-typescript"><span class="hljs-keyword">const</span> sampleMock = Mock.create&lt;ISampleMocked&gt;().setup(setupFunction(<span class="hljs-string">'functionOne'</span>));
 
 sampleMock.mock.functionOne(<span class="hljs-string">'one'</span>, <span class="hljs-number">2</span>, { name: <span class="hljs-string">'Fred'</span>, id: <span class="hljs-number">1</span> });
 
-sampleMock
-    .withFunction(<span class="hljs-string">'functionOne'</span>)
-    .withParametersEqualTo(<span class="hljs-string">'one'</span>, <span class="hljs-number">2</span>, { name: <span class="hljs-string">'Fred'</span>, id: <span class="hljs-number">1</span> }) <span class="hljs-comment">// equals used to match</span>
-    .wasCalledOnce();</code></pre>
+expect(
+    sampleMock
+        .withFunction(<span class="hljs-string">'functionOne'</span>)
+        .withParametersEqualTo(<span class="hljs-string">'one'</span>, <span class="hljs-number">2</span>, { name: <span class="hljs-string">'Fred'</span>, id: <span class="hljs-number">1</span> }) <span class="hljs-comment">// equals used to match</span>
+    ).wasCalledOnce();</code></pre>
 				<h3 id="use-alternate-matchers">Use alternate matchers</h3>
 				<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { toBeDefined, <span class="hljs-built_in">any</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">"@morgan-stanley/ts-mocking-bird"</span>
 
@@ -196,33 +213,36 @@ sampleMock
 
 sampleMock.mock.functionOne(<span class="hljs-string">'one'</span>, <span class="hljs-number">2</span>, { name: <span class="hljs-string">'Fred'</span>, id: <span class="hljs-number">1</span> });
 
-sampleMock
-    .withFunction(<span class="hljs-string">'functionOne'</span>)
-    .withParameters(<span class="hljs-string">'one'</span>, toBeDefined(), <span class="hljs-built_in">any</span>())
-    .wasCalledOnce();</code></pre>
+expect(
+    sampleMock
+        .withFunction(<span class="hljs-string">'functionOne'</span>)
+        .withParameters(<span class="hljs-string">'one'</span>, toBeDefined(), <span class="hljs-built_in">any</span>())
+    ).wasCalledOnce();</code></pre>
 				<h3 id="match-values-with-a-function">Match values with a function</h3>
 				<p>A function with a signature of <code>(value: T) =&gt; boolean</code> can be used to match a parameter value but this will not provide information about what the expected parameter value is in the test failure message.</p>
 				<pre><code class="language-typescript"><span class="hljs-keyword">const</span> sampleMock = Mock.create&lt;ISampleMocked&gt;().setup(setupFunction(<span class="hljs-string">'functionOne'</span>));
 
 sampleMock.mock.functionOne(<span class="hljs-string">'one'</span>, <span class="hljs-number">2</span>, { name: <span class="hljs-string">'Fred'</span>, id: <span class="hljs-number">1</span> });
 
-sampleMock
-    .withFunction(<span class="hljs-string">'functionOne'</span>)
-    .withParameters(<span class="hljs-string">'one'</span>, <span class="hljs-number">2</span>, <span class="hljs-function"><span class="hljs-params">person</span> =&gt;</span> person.id === <span class="hljs-number">1</span>)
-    .wasCalledOnce();</code></pre>
+expect(
+    sampleMock
+        .withFunction(<span class="hljs-string">'functionOne'</span>)
+        .withParameters(<span class="hljs-string">'one'</span>, <span class="hljs-number">2</span>, <span class="hljs-function"><span class="hljs-params">person</span> =&gt;</span> person.id === <span class="hljs-number">1</span>)
+    ).wasCalledOnce();</code></pre>
 				<h3 id="create-a-custom-iparametermatcher-to-create-more-informative-failure-messages">Create a custom <code>IParameterMatcher</code> to create more informative failure messages</h3>
 				<pre><code class="language-typescript"><span class="hljs-keyword">const</span> sampleMock = Mock.create&lt;ISampleMocked&gt;().setup(setupFunction(<span class="hljs-string">'functionOne'</span>));
 
 sampleMock.mock.functionOne(<span class="hljs-string">'one'</span>, <span class="hljs-number">2</span>, { name: <span class="hljs-string">'Fred'</span>, id: <span class="hljs-number">1</span> });
 
-sampleMock
-    .withFunction(<span class="hljs-string">'functionOne'</span>)
-    .withParameters(toBe(<span class="hljs-string">'one'</span>), toBe(<span class="hljs-number">2</span>), {
-        isExpectedValue: <span class="hljs-function"><span class="hljs-params">person</span> =&gt;</span> person.id === <span class="hljs-number">1</span>,
-        expectedDisplayValue: <span class="hljs-string">'Person with id 1'</span>, <span class="hljs-comment">// Used to display expected parameter value in failure message</span>
-        parameterToString: <span class="hljs-function"><span class="hljs-params">person</span> =&gt;</span> <span class="hljs-string">`Person with id <span class="hljs-subst">${person.id}</span>`</span>, <span class="hljs-comment">// Used to display value of actual parameters passed in failure message</span>
-    })
-    .wasCalledOnce();</code></pre>
+expect(
+    sampleMock
+        .withFunction(<span class="hljs-string">'functionOne'</span>)
+        .withParameters(toBe(<span class="hljs-string">'one'</span>), toBe(<span class="hljs-number">2</span>), {
+            isExpectedValue: <span class="hljs-function"><span class="hljs-params">person</span> =&gt;</span> person.id === <span class="hljs-number">1</span>,
+            expectedDisplayValue: <span class="hljs-string">'Person with id 1'</span>, <span class="hljs-comment">// Used to display expected parameter value in failure message</span>
+            parameterToString: <span class="hljs-function"><span class="hljs-params">person</span> =&gt;</span> <span class="hljs-string">`Person with id <span class="hljs-subst">${person.id}</span>`</span>, <span class="hljs-comment">// Used to display value of actual parameters passed in failure message</span>
+        })
+    ).wasCalledOnce();</code></pre>
 				<h2 id="replace-imports">Replace Imports</h2>
 				<p><a href="https://github.com/Morgan-Stanley/ts-mocking-bird/tree/master/spec/examples/exampleImportReplacementTest.spec.ts">Examples</a></p>
 				<h3 id="jest-modules">Jest Modules</h3>
@@ -310,10 +330,10 @@ describe(<span class="hljs-string">'replace imports'</span>, <span class="hljs-f
             <span class="hljs-keyword">const</span> SUT = <span class="hljs-keyword">new</span> ClassUsingImports(<span class="hljs-string">'one'</span>, <span class="hljs-number">2</span>);
 
             expect(SUT.service).toBe(mockService.mock);
-            mockPackage.withFunction(<span class="hljs-string">'someFunction'</span>).wasNotCalled();
+            expect(mockPackage.withFunction(<span class="hljs-string">'someFunction'</span>)).wasNotCalled();
 
             SUT.someFunctionProxy();
-            mockPackage.withFunction(<span class="hljs-string">'someFunction'</span>).wasCalledOnce();
+            expect(mockPackage.withFunction(<span class="hljs-string">'someFunction'</span>)).wasCalledOnce();
         });
     });
 });</code></pre>
@@ -349,16 +369,37 @@ context.keys().map(context);</code></pre>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
 					<li class=" tsd-kind-class">
+						<a href="classes/classusingimports.html" class="tsd-kind-icon">Class<wbr>Using<wbr>Imports</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/classwithconstructorargument.html" class="tsd-kind-icon">Class<wbr>With<wbr>Constructor<wbr>Argument</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/classwithinstanceargument.html" class="tsd-kind-icon">Class<wbr>With<wbr>Instance<wbr>Argument</a>
+					</li>
+					<li class=" tsd-kind-class">
 						<a href="classes/mock.html" class="tsd-kind-icon">Mock</a>
 					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/myservice.html" class="tsd-kind-icon">My<wbr>Service</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/sampleclass.html" class="tsd-kind-icon">Sample<wbr>Class</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/sampleclassimport.html" class="tsd-kind-icon">Sample<wbr>Class<wbr>Import</a>
+					</li>
 					<li class=" tsd-kind-interface tsd-has-type-parameter">
-						<a href="interfaces/ifunctionverification.html" class="tsd-kind-icon">IFunction<wbr>Verification</a>
+						<a href="interfaces/ifunctionverifier.html" class="tsd-kind-icon">IFunction<wbr>Verifier</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-has-type-parameter">
 						<a href="interfaces/ifunctionwithparametersverification.html" class="tsd-kind-icon">IFunction<wbr>With<wbr>Parameters<wbr>Verification</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-has-type-parameter">
 						<a href="interfaces/imocked.html" class="tsd-kind-icon">IMocked</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/imyservice.html" class="tsd-kind-icon">IMy<wbr>Service</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-has-type-parameter">
 						<a href="interfaces/iparametermatcher.html" class="tsd-kind-icon">IParameter<wbr>Matcher</a>
@@ -415,10 +456,25 @@ context.keys().map(context);</code></pre>
 						<a href="globals.html#wrappedmodule" class="tsd-kind-icon">Wrapped<wbr>Module</a>
 					</li>
 					<li class=" tsd-kind-variable">
+						<a href="globals.html#classreturnvalue" class="tsd-kind-icon">class<wbr>Return<wbr>Value</a>
+					</li>
+					<li class=" tsd-kind-variable">
+						<a href="globals.html#functiononereturnvalue" class="tsd-kind-icon">function<wbr>One<wbr>Return<wbr>Value</a>
+					</li>
+					<li class=" tsd-kind-variable">
+						<a href="globals.html#functionthreereturnvalue" class="tsd-kind-icon">function<wbr>Three<wbr>Return<wbr>Value</a>
+					</li>
+					<li class=" tsd-kind-variable">
+						<a href="globals.html#functiontworeturnvalue" class="tsd-kind-icon">function<wbr>Two<wbr>Return<wbr>Value</a>
+					</li>
+					<li class=" tsd-kind-variable">
 						<a href="globals.html#mockimports" class="tsd-kind-icon">mock<wbr>Imports</a>
 					</li>
 					<li class=" tsd-kind-variable">
 						<a href="globals.html#mockimportsbeforeeach" class="tsd-kind-icon">mock<wbr>Imports<wbr>Before<wbr>Each</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#addmatchers" class="tsd-kind-icon">add<wbr>Matchers</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#any" class="tsd-kind-icon">any</a>
@@ -468,6 +524,15 @@ context.keys().map(context);</code></pre>
 					<li class=" tsd-kind-function tsd-has-type-parameter">
 						<a href="globals.html#reset" class="tsd-kind-icon">reset</a>
 					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#samplefunctionone" class="tsd-kind-icon">sample<wbr>Function<wbr>One</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#samplefunctionthree" class="tsd-kind-icon">sample<wbr>Function<wbr>Three</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#samplefunctiontwo" class="tsd-kind-icon">sample<wbr>Function<wbr>Two</a>
+					</li>
 					<li class=" tsd-kind-function tsd-has-type-parameter">
 						<a href="globals.html#setupfunction" class="tsd-kind-icon">setup<wbr>Function</a>
 					</li>
@@ -481,6 +546,12 @@ context.keys().map(context);</code></pre>
 						<a href="globals.html#setupstaticproperty" class="tsd-kind-icon">setup<wbr>Static<wbr>Property</a>
 					</li>
 					<li class=" tsd-kind-function">
+						<a href="globals.html#somefunction" class="tsd-kind-icon">some<wbr>Function</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#someotherfunction" class="tsd-kind-icon">some<wbr>Other<wbr>Function</a>
+					</li>
+					<li class=" tsd-kind-function">
 						<a href="globals.html#tobe" class="tsd-kind-icon">to<wbr>Be</a>
 					</li>
 					<li class=" tsd-kind-function">
@@ -489,8 +560,17 @@ context.keys().map(context);</code></pre>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#toequal" class="tsd-kind-icon">to<wbr>Equal</a>
 					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#verifyfailure" class="tsd-kind-icon">verify<wbr>Failure</a>
+					</li>
+					<li class=" tsd-kind-function tsd-has-type-parameter">
+						<a href="globals.html#verifyfunctioncalled" class="tsd-kind-icon">verify<wbr>Function<wbr>Called</a>
+					</li>
 					<li class=" tsd-kind-function tsd-has-type-parameter">
 						<a href="globals.html#verifyparameters" class="tsd-kind-icon">verify<wbr>Parameters</a>
+					</li>
+					<li class=" tsd-kind-object-literal">
+						<a href="globals.html#matchers" class="tsd-kind-icon">matchers</a>
 					</li>
 				</ul>
 			</nav>

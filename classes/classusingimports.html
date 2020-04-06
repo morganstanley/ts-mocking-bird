@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>IFunctionVerification | @morgan-stanley/ts-mocking-bird</title>
+	<title>ClassUsingImports | @morgan-stanley/ts-mocking-bird</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -52,40 +52,28 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="ifunctionverification.html">IFunctionVerification</a>
+					<a href="classusingimports.html">ClassUsingImports</a>
 				</li>
 			</ul>
-			<h1>Interface IFunctionVerification&lt;T, C&gt;</h1>
+			<h1>Class ClassUsingImports</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
-			<section class="tsd-panel tsd-type-parameters">
-				<h3>Type parameters</h3>
-				<ul class="tsd-type-parameters">
-					<li>
-						<h4>T</h4>
-					</li>
-					<li>
-						<h4>C<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span></h4>
-					</li>
-				</ul>
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>An example class that we want to test by mocking it&#39;s constructor arguments</p>
+					</div>
+				</div>
 			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">IFunctionVerification</span>
-						<ul class="tsd-hierarchy">
-							<li>
-								<a href="ifunctionwithparametersverification.html" class="tsd-signature-type">IFunctionWithParametersVerification</a>
-							</li>
-							<li>
-								<a href="istrictfunctionverification.html" class="tsd-signature-type">IStrictFunctionVerification</a>
-							</li>
-						</ul>
+						<span class="target">ClassUsingImports</span>
 					</li>
 				</ul>
 			</section>
@@ -94,99 +82,84 @@
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section ">
+							<h3>Constructors</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="classusingimports.html#constructor" class="tsd-kind-icon">constructor</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Properties</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="classusingimports.html#service" class="tsd-kind-icon">service</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="ifunctionverification.html#getmock" class="tsd-kind-icon">get<wbr>Mock</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="ifunctionverification.html#wascalled" class="tsd-kind-icon">was<wbr>Called</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="ifunctionverification.html#wascalledonce" class="tsd-kind-icon">was<wbr>Called<wbr>Once</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="ifunctionverification.html#wasnotcalled" class="tsd-kind-icon">was<wbr>Not<wbr>Called</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="classusingimports.html#somefunctionproxy" class="tsd-kind-icon">some<wbr>Function<wbr>Proxy</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
-				<h2>Methods</h2>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
-					<a name="getmock" class="tsd-anchor"></a>
-					<h3>get<wbr>Mock</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Mock<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="imocked.html" class="tsd-signature-type">IMocked</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span></li>
+				<h2>Constructors</h2>
+				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class">
+					<a name="constructor" class="tsd-anchor"></a>
+					<h3>constructor</h3>
+					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Class<wbr>Using<wbr>Imports<span class="tsd-signature-symbol">(</span>paramOne<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, paramTwo<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="classusingimports.html" class="tsd-signature-type">ClassUsingImports</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Morgan-Stanley/ts-mocking-bird/blob/62e2ea2/main/mock/contracts.ts#L96">mock/contracts.ts:96</a></li>
+									<li>Defined in <a href="https://github.com/Morgan-Stanley/ts-mocking-bird/blob/6e170ed/spec/examples/exampleImplementation.ts#L25">spec/examples/exampleImplementation.ts:25</a></li>
 								</ul>
 							</aside>
-							<h4 class="tsd-returns-title">Returns <a href="imocked.html" class="tsd-signature-type">IMocked</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
-					<a name="wascalled" class="tsd-anchor"></a>
-					<h3>was<wbr>Called</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">was<wbr>Called<span class="tsd-signature-symbol">(</span>times<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/Morgan-Stanley/ts-mocking-bird/blob/62e2ea2/main/mock/contracts.ts#L104">mock/contracts.ts:104</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Verifies that the function was called a given number of times.
-									If times is not specified it is verified that the function was called at least once.</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> times: <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>optional number of times the function is expected to have been called</p>
-									</div>
+									<h5>paramOne: <span class="tsd-signature-type">string</span></h5>
+								</li>
+								<li>
+									<h5>paramTwo: <span class="tsd-signature-type">number</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="classusingimports.html" class="tsd-signature-type">ClassUsingImports</a></h4>
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
-					<a name="wascalledonce" class="tsd-anchor"></a>
-					<h3>was<wbr>Called<wbr>Once</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">was<wbr>Called<wbr>Once<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Properties</h2>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="service" class="tsd-anchor"></a>
+					<h3>service</h3>
+					<div class="tsd-signature tsd-kind-icon">service<span class="tsd-signature-symbol">:</span> <a href="../interfaces/imyservice.html" class="tsd-signature-type">IMyService</a></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/Morgan-Stanley/ts-mocking-bird/blob/6e170ed/spec/examples/exampleImplementation.ts#L25">spec/examples/exampleImplementation.ts:25</a></li>
+						</ul>
+					</aside>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Methods</h2>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="somefunctionproxy" class="tsd-anchor"></a>
+					<h3>some<wbr>Function<wbr>Proxy</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">some<wbr>Function<wbr>Proxy<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Morgan-Stanley/ts-mocking-bird/blob/62e2ea2/main/mock/contracts.ts#L97">mock/contracts.ts:97</a></li>
+									<li>Defined in <a href="https://github.com/Morgan-Stanley/ts-mocking-bird/blob/6e170ed/spec/examples/exampleImplementation.ts#L31">spec/examples/exampleImplementation.ts:31</a></li>
 								</ul>
 							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
-					<a name="wasnotcalled" class="tsd-anchor"></a>
-					<h3>was<wbr>Not<wbr>Called</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">was<wbr>Not<wbr>Called<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/Morgan-Stanley/ts-mocking-bird/blob/62e2ea2/main/mock/contracts.ts#L105">mock/contracts.ts:105</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -204,20 +177,17 @@
 				<ul class="before-current">
 				</ul>
 				<ul class="current">
-					<li class="current tsd-kind-interface tsd-has-type-parameter">
-						<a href="ifunctionverification.html" class="tsd-kind-icon">IFunction<wbr>Verification</a>
+					<li class="current tsd-kind-class">
+						<a href="classusingimports.html" class="tsd-kind-icon">Class<wbr>Using<wbr>Imports</a>
 						<ul>
-							<li class=" tsd-kind-method tsd-parent-kind-interface">
-								<a href="ifunctionverification.html#getmock" class="tsd-kind-icon">get<wbr>Mock</a>
+							<li class=" tsd-kind-constructor tsd-parent-kind-class">
+								<a href="classusingimports.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface">
-								<a href="ifunctionverification.html#wascalled" class="tsd-kind-icon">was<wbr>Called</a>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="classusingimports.html#service" class="tsd-kind-icon">service</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface">
-								<a href="ifunctionverification.html#wascalledonce" class="tsd-kind-icon">was<wbr>Called<wbr>Once</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface">
-								<a href="ifunctionverification.html#wasnotcalled" class="tsd-kind-icon">was<wbr>Not<wbr>Called</a>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="classusingimports.html#somefunctionproxy" class="tsd-kind-icon">some<wbr>Function<wbr>Proxy</a>
 							</li>
 						</ul>
 					</li>

@@ -55,7 +55,7 @@
 					<a href="ifunctionwithparametersverification.html">IFunctionWithParametersVerification</a>
 				</li>
 			</ul>
-			<h1>Interface IFunctionWithParametersVerification&lt;P, T, C&gt;</h1>
+			<h1>Interface IFunctionWithParametersVerification&lt;P, T, U, C&gt;</h1>
 		</div>
 	</div>
 </header>
@@ -72,6 +72,9 @@
 						<h4>T</h4>
 					</li>
 					<li>
+						<h4>U<span class="tsd-signature-symbol">: </span><a href="../globals.html#functiontype" class="tsd-signature-type">FunctionType</a></h4>
+					</li>
+					<li>
 						<h4>C<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span></h4>
 					</li>
 				</ul>
@@ -80,7 +83,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<a href="ifunctionverification.html" class="tsd-signature-type">IFunctionVerification</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span>
+						<a href="ifunctionverifier.html" class="tsd-signature-type">IFunctionVerifier</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">U</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span>
 						<ul class="tsd-hierarchy">
 							<li>
 								<span class="target">IFunctionWithParametersVerification</span>
@@ -93,18 +96,71 @@
 				<h2>Index</h2>
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
+						<section class="tsd-index-section tsd-is-inherited">
+							<h3>Properties</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="ifunctionwithparametersverification.html#functionname" class="tsd-kind-icon">function<wbr>Name</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="ifunctionwithparametersverification.html#parametermatchers" class="tsd-kind-icon">parameter<wbr>Matchers</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="ifunctionwithparametersverification.html#strictcallcount" class="tsd-kind-icon">strict<wbr>Call<wbr>Count</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="ifunctionwithparametersverification.html#type" class="tsd-kind-icon">type</a></li>
+							</ul>
+						</section>
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="ifunctionwithparametersverification.html#getmock" class="tsd-kind-icon">get<wbr>Mock</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="ifunctionwithparametersverification.html#wascalled" class="tsd-kind-icon">was<wbr>Called</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="ifunctionwithparametersverification.html#wascalledonce" class="tsd-kind-icon">was<wbr>Called<wbr>Once</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="ifunctionwithparametersverification.html#wasnotcalled" class="tsd-kind-icon">was<wbr>Not<wbr>Called</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="ifunctionwithparametersverification.html#withparameters" class="tsd-kind-icon">with<wbr>Parameters</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="ifunctionwithparametersverification.html#withparametersequalto" class="tsd-kind-icon">with<wbr>Parameters<wbr>Equal<wbr>To</a></li>
 							</ul>
 						</section>
 					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group tsd-is-inherited">
+				<h2>Properties</h2>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+					<a name="functionname" class="tsd-anchor"></a>
+					<h3>function<wbr>Name</h3>
+					<div class="tsd-signature tsd-kind-icon">function<wbr>Name<span class="tsd-signature-symbol">:</span> <a href="../globals.html#functionname" class="tsd-signature-type">FunctionName</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">U</span><span class="tsd-signature-symbol">&gt;</span></div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="ifunctionverifier.html">IFunctionVerifier</a>.<a href="ifunctionverifier.html#functionname">functionName</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/Morgan-Stanley/ts-mocking-bird/blob/6e170ed/main/mock/contracts.ts#L102">main/mock/contracts.ts:102</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+					<a name="parametermatchers" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> parameter<wbr>Matchers</h3>
+					<div class="tsd-signature tsd-kind-icon">parameter<wbr>Matchers<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol"> | </span><a href="iparametermatcher.html" class="tsd-signature-type">IParameterMatcher</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">[]</span></div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="ifunctionverifier.html">IFunctionVerifier</a>.<a href="ifunctionverifier.html#parametermatchers">parameterMatchers</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/Morgan-Stanley/ts-mocking-bird/blob/6e170ed/main/mock/contracts.ts#L103">main/mock/contracts.ts:103</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+					<a name="strictcallcount" class="tsd-anchor"></a>
+					<h3>strict<wbr>Call<wbr>Count</h3>
+					<div class="tsd-signature tsd-kind-icon">strict<wbr>Call<wbr>Count<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="ifunctionverifier.html">IFunctionVerifier</a>.<a href="ifunctionverifier.html#strictcallcount">strictCallCount</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/Morgan-Stanley/ts-mocking-bird/blob/6e170ed/main/mock/contracts.ts#L104">main/mock/contracts.ts:104</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+					<a name="type" class="tsd-anchor"></a>
+					<h3>type</h3>
+					<div class="tsd-signature tsd-kind-icon">type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">U</span></div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="ifunctionverifier.html">IFunctionVerifier</a>.<a href="ifunctionverifier.html#type">type</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/Morgan-Stanley/ts-mocking-bird/blob/6e170ed/main/mock/contracts.ts#L101">main/mock/contracts.ts:101</a></li>
+						</ul>
+					</aside>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
@@ -118,81 +174,12 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="ifunctionverification.html">IFunctionVerification</a>.<a href="ifunctionverification.html#getmock">getMock</a></p>
+								<p>Inherited from <a href="ifunctionverifier.html">IFunctionVerifier</a>.<a href="ifunctionverifier.html#getmock">getMock</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/Morgan-Stanley/ts-mocking-bird/blob/62e2ea2/main/mock/contracts.ts#L96">mock/contracts.ts:96</a></li>
+									<li>Defined in <a href="https://github.com/Morgan-Stanley/ts-mocking-bird/blob/6e170ed/main/mock/contracts.ts#L105">main/mock/contracts.ts:105</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <a href="imocked.html" class="tsd-signature-type">IMocked</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
-					<a name="wascalled" class="tsd-anchor"></a>
-					<h3>was<wbr>Called</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">was<wbr>Called<span class="tsd-signature-symbol">(</span>times<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Inherited from <a href="ifunctionverification.html">IFunctionVerification</a>.<a href="ifunctionverification.html#wascalled">wasCalled</a></p>
-								<ul>
-									<li>Defined in <a href="https://github.com/Morgan-Stanley/ts-mocking-bird/blob/62e2ea2/main/mock/contracts.ts#L104">mock/contracts.ts:104</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Verifies that the function was called a given number of times.
-									If times is not specified it is verified that the function was called at least once.</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> times: <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>optional number of times the function is expected to have been called</p>
-									</div>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
-					<a name="wascalledonce" class="tsd-anchor"></a>
-					<h3>was<wbr>Called<wbr>Once</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">was<wbr>Called<wbr>Once<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Inherited from <a href="ifunctionverification.html">IFunctionVerification</a>.<a href="ifunctionverification.html#wascalledonce">wasCalledOnce</a></p>
-								<ul>
-									<li>Defined in <a href="https://github.com/Morgan-Stanley/ts-mocking-bird/blob/62e2ea2/main/mock/contracts.ts#L97">mock/contracts.ts:97</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
-					<a name="wasnotcalled" class="tsd-anchor"></a>
-					<h3>was<wbr>Not<wbr>Called</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">was<wbr>Not<wbr>Called<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Inherited from <a href="ifunctionverification.html">IFunctionVerification</a>.<a href="ifunctionverification.html#wasnotcalled">wasNotCalled</a></p>
-								<ul>
-									<li>Defined in <a href="https://github.com/Morgan-Stanley/ts-mocking-bird/blob/62e2ea2/main/mock/contracts.ts#L105">mock/contracts.ts:105</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -200,13 +187,13 @@
 					<a name="withparameters" class="tsd-anchor"></a>
 					<h3>with<wbr>Parameters</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">with<wbr>Parameters<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">...</span>args<span class="tsd-signature-symbol">: </span><a href="../globals.html#functionparametermatchers" class="tsd-signature-type">FunctionParameterMatchers</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">P</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="istrictfunctionverification.html" class="tsd-signature-type">IStrictFunctionVerification</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">with<wbr>Parameters<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">...</span>args<span class="tsd-signature-symbol">: </span><a href="../globals.html#functionparametermatchers" class="tsd-signature-type">FunctionParameterMatchers</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">P</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="istrictfunctionverification.html" class="tsd-signature-type">IStrictFunctionVerification</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">U</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Morgan-Stanley/ts-mocking-bird/blob/62e2ea2/main/mock/contracts.ts#L67">mock/contracts.ts:67</a></li>
+									<li>Defined in <a href="https://github.com/Morgan-Stanley/ts-mocking-bird/blob/6e170ed/main/mock/contracts.ts#L72">main/mock/contracts.ts:72</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -231,7 +218,7 @@
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="istrictfunctionverification.html" class="tsd-signature-type">IStrictFunctionVerification</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="istrictfunctionverification.html" class="tsd-signature-type">IStrictFunctionVerification</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">U</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -239,13 +226,13 @@
 					<a name="withparametersequalto" class="tsd-anchor"></a>
 					<h3>with<wbr>Parameters<wbr>Equal<wbr>To</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">with<wbr>Parameters<wbr>Equal<wbr>To<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">...</span>args<span class="tsd-signature-symbol">: </span><a href="../globals.html#functionparametermatchers" class="tsd-signature-type">FunctionParameterMatchers</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">P</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="istrictfunctionverification.html" class="tsd-signature-type">IStrictFunctionVerification</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">with<wbr>Parameters<wbr>Equal<wbr>To<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">...</span>args<span class="tsd-signature-symbol">: </span><a href="../globals.html#functionparametermatchers" class="tsd-signature-type">FunctionParameterMatchers</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">P</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="istrictfunctionverification.html" class="tsd-signature-type">IStrictFunctionVerification</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">U</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Morgan-Stanley/ts-mocking-bird/blob/62e2ea2/main/mock/contracts.ts#L84">mock/contracts.ts:84</a></li>
+									<li>Defined in <a href="https://github.com/Morgan-Stanley/ts-mocking-bird/blob/6e170ed/main/mock/contracts.ts#L89">main/mock/contracts.ts:89</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -270,7 +257,7 @@
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="istrictfunctionverification.html" class="tsd-signature-type">IStrictFunctionVerification</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="istrictfunctionverification.html" class="tsd-signature-type">IStrictFunctionVerification</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">U</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -291,17 +278,20 @@
 					<li class="current tsd-kind-interface tsd-has-type-parameter">
 						<a href="ifunctionwithparametersverification.html" class="tsd-kind-icon">IFunction<wbr>With<wbr>Parameters<wbr>Verification</a>
 						<ul>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+								<a href="ifunctionwithparametersverification.html#functionname" class="tsd-kind-icon">function<wbr>Name</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+								<a href="ifunctionwithparametersverification.html#parametermatchers" class="tsd-kind-icon">parameter<wbr>Matchers</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+								<a href="ifunctionwithparametersverification.html#strictcallcount" class="tsd-kind-icon">strict<wbr>Call<wbr>Count</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+								<a href="ifunctionwithparametersverification.html#type" class="tsd-kind-icon">type</a>
+							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
 								<a href="ifunctionwithparametersverification.html#getmock" class="tsd-kind-icon">get<wbr>Mock</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
-								<a href="ifunctionwithparametersverification.html#wascalled" class="tsd-kind-icon">was<wbr>Called</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
-								<a href="ifunctionwithparametersverification.html#wascalledonce" class="tsd-kind-icon">was<wbr>Called<wbr>Once</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
-								<a href="ifunctionwithparametersverification.html#wasnotcalled" class="tsd-kind-icon">was<wbr>Not<wbr>Called</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface">
 								<a href="ifunctionwithparametersverification.html#withparameters" class="tsd-kind-icon">with<wbr>Parameters</a>
