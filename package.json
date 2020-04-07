@@ -1,7 +1,9 @@
 {
     "name": "@morgan-stanley/ts-mocking-bird",
-    "version": "1.0.0",
+    "version": "0.1.0",
     "description": "A fully type safe mocking, call verification and import replacement library for jasmine and jest",
+    "license": "Apache-2.0",
+    "author": "Morgan Stanley",
     "main": "./dist/main/index.js",
     "types": "./dist/main/index.d.ts",
     "scripts": {
@@ -61,7 +63,6 @@
     "peerDependencies": {
         "typescript": ">=3.1"
     },
-    "license": "ISC",
     "repository": {
         "type": "git",
         "url": "https://github.com/Morgan-Stanley/ts-mocking-bird.git"
