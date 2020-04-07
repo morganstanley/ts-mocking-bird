@@ -19,7 +19,7 @@ deploy:
     on:
       tags: true
       branch: master
-    edge: truedeploy
+    edge: true
   - provider: releases
     token: $GITHUB_TOKEN
     on:
