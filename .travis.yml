@@ -9,7 +9,7 @@ after_success:
 deploy:
   - provider: pages:git
     local_dir: docs/
-    github_token: $GITHUB_TOKEN  # Set in the settings page of your repository, as a secure variable
+    token: $GITHUB_TOKEN  # Set in the settings page of your repository, as a secure variable
     on:
       branch: master
     edge: true
@@ -19,4 +19,9 @@ deploy:
     on:
       tags: true
       branch: master
-    edge: true
+    edge: truedeploy:
+  - provider: releases
+    token: $GITHUB_TOKEN
+    on:
+      tags: true
+      branch: master
