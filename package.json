@@ -4,11 +4,10 @@
     "description": "A fully type safe mocking, call verification and import replacement library for jasmine and jest",
     "license": "Apache-2.0",
     "author": "Morgan Stanley",
-    "private": true,
     "main": "./dist/main/index.js",
     "types": "./dist/main/index.d.ts",
     "scripts": {
-        "clean": "rimraf dist reports ../build ../install ../packages",
+        "clean": "rimraf dist reports ../build ../install ../packages docs",
         "build": "tsc -p main/tsconfig.json",
         "postbuild": "npm run copy",
         "copy": "copyfiles main/**/*.html main/**/*.css main/**/*.jpg dist",
