@@ -14,7 +14,8 @@ deploy:
       branch: master
     edge: true
   - provider: npm
-    api_token: $NPM_TOKEN
-    edge: true
+    api_key: $NPM_TOKEN
+    email: giles@roadnight.name
     on:
       tags: true
+      branch: master
