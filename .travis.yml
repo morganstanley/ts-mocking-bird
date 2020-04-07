@@ -7,9 +7,14 @@ after_success:
   - "./node_modules/.bin/codecov -f ./reports/coverage/lcov.info"
 
 deploy:
-  provider: pages:git
-  local_dir: docs/
-  github_token: $GITHUB_TOKEN  # Set in the settings page of your repository, as a secure variable
-  on:
-    branch: master
-  edge: true
+  - provider: pages:git
+    local_dir: docs/
+    github_token: $GITHUB_TOKEN  # Set in the settings page of your repository, as a secure variable
+    on:
+      branch: master
+    edge: true
+  - provider: npm
+    api_token: $NPM_TOKEN
+    edge: true
+    on:
+      tags: true
