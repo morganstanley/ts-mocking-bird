@@ -17,7 +17,7 @@ export function proxyJestModule(absolutePath: string): WrappedModule {
     }
     const realModule = jest.requireActual(absolutePath);
     const wrappedModule = proxyModule(realModule);
-    const brImport = jest.genMockFromModule(absolutePath);
+    const brImport = jest.genMockFromModule<object>(absolutePath);
 
     return { ...brImport, ...wrappedModule };
 }
