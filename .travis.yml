@@ -18,10 +18,4 @@ deploy:
     email: giles@roadnight.name
     on:
       tags: true
-      branch: master
     edge: true
-  - provider: releases
-    token: $GITHUB_TOKEN
-    on:
-      tags: true
-      branch: master
