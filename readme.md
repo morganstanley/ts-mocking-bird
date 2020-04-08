@@ -8,6 +8,7 @@
 ![David](https://img.shields.io/david/Morgan-Stanley/ts-mocking-bird)
 ![David](https://img.shields.io/david/dev/Morgan-Stanley/ts-mocking-bird)
 ![David](https://img.shields.io/david/peer/Morgan-Stanley/ts-mocking-bird)
+[![Known Vulnerabilities](https://snyk.io/test/github/Morgan-Stanley/ts-mocking-bird/badge.svg)](https://snyk.io/test/github/Morgan-Stanley/ts-mocking-bird})
 
 
 > A fully type safe mocking, call verification and import replacement library that works with jasmine and jest
