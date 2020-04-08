@@ -1,6 +1,7 @@
 language: node_js
 node_js: 12
-script: npm run verify-release
+script: npm run build-release
+install: skip
 
 after_success:
   - "./node_modules/.bin/codecov -f ./reports/coverage/lcov.info"
