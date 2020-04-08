@@ -68,7 +68,6 @@
         "url": "https://github.com/Morgan-Stanley/ts-mocking-bird.git"
     },
     "dependencies": {
-        "chalk": "^2.4.2",
         "lodash": "^4.17.15",
         "uuid": "^7.0.3"
     },
