@@ -2,13 +2,10 @@
 ![npm](https://img.shields.io/npm/v/@morgan-stanley/ts-mocking-bird)
 [![Build Status](https://travis-ci.com/Morgan-Stanley/ts-mocking-bird.svg?branch=master)](https://travis-ci.com/Morgan-Stanley/ts-mocking-bird)
 [![codecov](https://codecov.io/gh/Morgan-Stanley/ts-mocking-bird/branch/master/graph/badge.svg)](https://codecov.io/gh/Morgan-Stanley/ts-mocking-bird)
+[![Known Vulnerabilities](https://snyk.io/test/github/Morgan-Stanley/ts-mocking-bird/badge.svg)](https://snyk.io/test/github/Morgan-Stanley/ts-mocking-bird})
 ![NPM](https://img.shields.io/npm/l/@morgan-stanley/ts-mocking-bird)
 ![NPM](https://img.shields.io/badge/types-TypeScript-blue)
 
-![David](https://img.shields.io/david/Morgan-Stanley/ts-mocking-bird)
-![David](https://img.shields.io/david/dev/Morgan-Stanley/ts-mocking-bird)
-![David](https://img.shields.io/david/peer/Morgan-Stanley/ts-mocking-bird)
-[![Known Vulnerabilities](https://snyk.io/test/github/Morgan-Stanley/ts-mocking-bird/badge.svg)](https://snyk.io/test/github/Morgan-Stanley/ts-mocking-bird})
 
 
 > A fully type safe mocking, call verification and import replacement library that works with jasmine and jest
@@ -16,6 +13,8 @@
 Documentation: https://morgan-stanley.github.io/ts-mocking-bird/
 
 # Why use this?
+
+![Intellisense Demo](readmeAssets/intelliSenseDemo.gif)
 
 * All operations fully type safe
 * Mocks interfaces, existing objects and classes
