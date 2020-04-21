@@ -16,8 +16,11 @@
         "build-release": "npm run copy-dist && typedoc",
         "watch-build": "tsc --watch",
         "test": "karma start --singleRun --browsers ChromeHeadlessNoSandbox",
+        "test:karma": "karma start --singleRun --browsers ChromeHeadlessNoSandbox",
+        "test:jest": "jest",
         "lint": "tslint -c tslint.conf.js -p tsconfig.json",
         "watch-test": "karma start --no-coverage",
+        "watch-test:jest": "jest --watch",
         "copy-dist": "concurrently --kill-others-on-fail npm:copy-dist-*",
         "copy-dist-lint": "copyfiles tslint/**/* dist",
         "watch-test-coverage": "karma start",
@@ -51,6 +54,7 @@
         "puppeteer": "^2.1.1",
         "rimraf": "^2.6.3",
         "source-map": "0.5.7",
+        "ts-jest": "^25.4.0",
         "ts-loader": "^5.4.5",
         "tsconfig-paths-webpack-plugin": "^3.2.0",
         "tslint": "^5.20.1",
@@ -73,5 +77,12 @@
     },
     "publishConfig": {
         "access": "public"
+    },
+    "jest-comments": "to run jest tests you will have to install jest first. This conflicts with karma so not installed by default",
+    "jest": {
+        "preset": "ts-jest",
+        "testMatch": [
+            "**/spec/examples/*.spec.ts"
+        ]
     }
 }

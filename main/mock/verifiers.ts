@@ -1,3 +1,4 @@
+import { runningInJest } from '../helper';
 import {
     ConstructorFunction,
     FunctionName,
@@ -128,7 +129,7 @@ function mapParameterToMatcher(
 export function verifyFunctionCalled<T, C extends ConstructorFunction<T>, U extends FunctionType>(
     times: number | undefined,
     verifier: IFunctionVerifier<T, U, C>,
-): jasmine.CustomMatcherResult {
+): jasmine.CustomMatcherResult | jest.CustomMatcherResult {
     const mock = verifier.getMock();
     const type = verifier.type;
     const functionName = verifier.functionName;
@@ -184,10 +185,9 @@ export function verifyFunctionCalled<T, C extends ConstructorFunction<T>, U exte
     }
 
     if (functionCalls === undefined) {
-        return {
-            pass: false,
-            message: `${errorMessageDescription} "${functionName}" has not been setup. Please setup using ${errorMessageSetupFunction} before verifying calls.`,
-        };
+        return createCustomMatcherFailResult(
+            `${errorMessageDescription} "${functionName}" has not been setup. Please setup using ${errorMessageSetupFunction} before verifying calls.`,
+        );
     }
 
     const parameterMatchResults = functionCalls.map(params => matchParameters(params, parameterMatchers));
@@ -201,15 +201,14 @@ export function verifyFunctionCalled<T, C extends ConstructorFunction<T>, U exte
 
     if (times !== undefined) {
         if (times !== matchingCalls.length || (strict && times !== functionCalls.length)) {
-            return {
-                pass: false,
-                message: `${expectationMessage} ${times} times ${buildWithParamsString(
+            return createCustomMatcherFailResult(
+                `${expectationMessage} ${times} times ${buildWithParamsString(
                     parameterMatchers,
                     strict,
                 )}but it was called ${matchingCalls.length} times with matching parameters and ${
                     functionCalls.length
                 } times in total.${buildAllCallsString(functionCalls, parameterMatchers)}`,
-            };
+            );
         }
     } else {
         if (matchingCalls.length === 0) {
@@ -223,17 +222,26 @@ export function verifyFunctionCalled<T, C extends ConstructorFunction<T>, U exte
                 calledWithMessage = `it was not.`;
             }
 
-            return {
-                pass: false,
-                message: `${expectationMessage} ${buildWithParamsString(
-                    parameterMatchers,
-                    strict,
-                )}but ${calledWithMessage}`,
-            };
+            return createCustomMatcherFailResult(
+                `${expectationMessage} ${buildWithParamsString(parameterMatchers, strict)}but ${calledWithMessage}`,
+            );
         }
     }
 
     return { pass: true };
+}
+
+function createCustomMatcherFailResult(message: string) {
+    if (runningInJest()) {
+        return {
+            pass: false,
+            message: () => message,
+        };
+    }
+    return {
+        pass: false,
+        message,
+    };
 }
 
 function buildWithParamsString(
@@ -289,8 +297,8 @@ function functionCallToString(call: any[], parameterMatchers?: ParameterMatcher<
 }
 
 function isMatcherResultArray(
-    paramResult: boolean | jasmine.CustomMatcherResult[],
-): paramResult is jasmine.CustomMatcherResult[] {
+    paramResult: boolean | (jasmine.CustomMatcherResult | jest.CustomMatcherResult)[],
+): paramResult is (jasmine.CustomMatcherResult | jest.CustomMatcherResult)[] {
     if (Array.isArray(paramResult)) {
         return paramResult.every(isMatcherResult);
     }
@@ -298,8 +306,12 @@ function isMatcherResultArray(
 }
 
 function isMatcherResult(
-    paramResult: boolean | jasmine.CustomMatcherResult | jasmine.CustomMatcherResult[],
-): paramResult is jasmine.CustomMatcherResult {
+    paramResult:
+        | boolean
+        | jasmine.CustomMatcherResult
+        | jest.CustomMatcherResult
+        | (jasmine.CustomMatcherResult | jest.CustomMatcherResult)[],
+): paramResult is jasmine.CustomMatcherResult | jest.CustomMatcherResult {
     if (Array.isArray(paramResult)) {
         return paramResult.every(isMatcherResult);
     }
@@ -309,7 +321,7 @@ function isMatcherResult(
 function matchParameters(
     actualParameters: any[],
     parameterMatchers?: (IParameterMatcher<any> | MatchFunction<any>)[],
-): boolean | jasmine.CustomMatcherResult[] {
+): boolean | (jasmine.CustomMatcherResult | jest.CustomMatcherResult)[] {
     if (parameterMatchers == null) {
         return true;
     }
@@ -329,24 +341,22 @@ function matchParameters(
 function evaluateParameterMatcher(
     actualParam: any,
     matcher: IParameterMatcher<any> | MatchFunction<any>,
-): boolean | jasmine.CustomMatcherResult {
+): boolean | jasmine.CustomMatcherResult | jest.CustomMatcherResult {
     if (typeof matcher === 'function') {
         let matcherReturnValue: boolean;
 
         try {
             matcherReturnValue = matcher(actualParam);
         } catch (e) {
-            return {
-                pass: false,
-                message: `Error: calling custom parameter match function threw an error (${e}) rather returning a boolean. You must use an existing IParameterMatcher (such as toBe(value)) or implement your own if you want to verify functions passed as mocked function arguments.`,
-            };
+            return createCustomMatcherFailResult(
+                `Error: calling custom parameter match function threw an error (${e}) rather returning a boolean. You must use an existing IParameterMatcher (such as toBe(value)) or implement your own if you want to verify functions passed as mocked function arguments.`,
+            );
         }
 
         if (typeof matcherReturnValue !== 'boolean') {
-            return {
-                pass: false,
-                message: `Error calling custom parameter match function. Function returned "${matcherReturnValue}" (typeof: ${typeof matcherReturnValue}) rather than a boolean. You must use an existing IParameterMatcher (such as toBe(value)) or implement your own if you want to verify functions passed as mocked function arguments.`,
-            };
+            return createCustomMatcherFailResult(
+                `Error calling custom parameter match function. Function returned "${matcherReturnValue}" (typeof: ${typeof matcherReturnValue}) rather than a boolean. You must use an existing IParameterMatcher (such as toBe(value)) or implement your own if you want to verify functions passed as mocked function arguments.`,
+            );
         }
 
         return matcherReturnValue;
