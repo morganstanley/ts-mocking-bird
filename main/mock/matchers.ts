@@ -47,7 +47,7 @@ function wasCalled(): jasmine.CustomMatcher {
                 );
             }
 
-            return verifyFunctionCalled(times, actual);
+            return verifyFunctionCalled(times, actual) as any;
         },
     };
 }
@@ -55,7 +55,7 @@ function wasCalled(): jasmine.CustomMatcher {
 function wasCalledOnce(): jasmine.CustomMatcher {
     return {
         compare: (actual: IFunctionVerifier<any, any>) => {
-            return verifyFunctionCalled(1, actual);
+            return verifyFunctionCalled(1, actual) as any;
         },
     };
 }
@@ -63,7 +63,7 @@ function wasCalledOnce(): jasmine.CustomMatcher {
 function wasNotCalled(): jasmine.CustomMatcher {
     return {
         compare: (actual: IFunctionVerifier<any, any>) => {
-            return verifyFunctionCalled(0, actual);
+            return verifyFunctionCalled(0, actual) as any;
         },
     };
 }
@@ -71,7 +71,7 @@ function wasNotCalled(): jasmine.CustomMatcher {
 function wasCalledAtLeastOnce(): jasmine.CustomMatcher {
     return {
         compare: (actual: IFunctionVerifier<any, any>) => {
-            return verifyFunctionCalled(undefined, actual);
+            return verifyFunctionCalled(undefined, actual) as any;
         },
     };
 }

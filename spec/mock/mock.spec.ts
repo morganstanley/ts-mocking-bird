@@ -11,7 +11,7 @@ import {
     toEqual,
 } from '../../main';
 import { defineProperty, setupFunction, setupProperty } from '../../main/mock/operators';
-import { verifyFailure } from './failure-verifier';
+import { verifyFailure, verifyJestFailure } from './failure-verifier';
 
 // tslint:disable:no-empty
 describe('mock', () => {
@@ -75,6 +75,9 @@ describe('mock', () => {
             beforeEach(() => {
                 mocked.setup(setupFunction('functionWithNoParamsAndNoReturn'));
             });
+            afterEach(() => {
+                delete (expect as any).extend;
+            });
 
             describe('wasCalledAtLeastOnce()', () => {
                 it('should not fail when function has been called once', () => {
@@ -93,6 +96,16 @@ describe('mock', () => {
 
                 it('should fail when function has not been called', () => {
                     verifyFailure(
+                        mocked.withFunction('functionWithNoParamsAndNoReturn'),
+                        matchers.wasCalledAtLeastOnce(),
+                        `Expected "functionWithNoParamsAndNoReturn" to be called but it was not.`,
+                    );
+                });
+
+                it('when running in jest it should return a CustomMatcherResult with a function for message', () => {
+                    (expect as any).extend = () => console.log(`Temp function to fool we're using jest`);
+
+                    verifyJestFailure(
                         mocked.withFunction('functionWithNoParamsAndNoReturn'),
                         matchers.wasCalledAtLeastOnce(),
                         `Expected "functionWithNoParamsAndNoReturn" to be called but it was not.`,
