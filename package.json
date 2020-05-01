@@ -1,88 +1,92 @@
 {
-    "name": "@morgan-stanley/ts-mocking-bird",
-    "version": "0.1.16",
-    "description": "A fully type safe mocking, call verification and import replacement library for jasmine and jest",
-    "license": "Apache-2.0",
-    "author": "Morgan Stanley",
-    "main": "./dist/main/index.js",
-    "types": "./dist/main/index.d.ts",
-    "scripts": {
-        "clean": "rimraf dist reports ../build ../install ../packages docs",
-        "build": "tsc -p main/tsconfig.json",
-        "postbuild": "npm run copy",
-        "copy": "copyfiles main/**/*.html main/**/*.css main/**/*.jpg dist",
-        "prebuild-release": "npm ci && npm run clean && npm run verify-release",
-        "verify-release": "concurrently --kill-others-on-fail npm:lint npm:test npm:build",
-        "build-release": "npm run copy-dist && typedoc",
-        "watch-build": "tsc --watch",
-        "test": "karma start --singleRun --browsers ChromeHeadlessNoSandbox",
-        "test:karma": "karma start --singleRun --browsers ChromeHeadlessNoSandbox",
-        "test:jest": "jest",
-        "lint": "tslint -c tslint.conf.js -p tsconfig.json",
-        "watch-test": "karma start --no-coverage",
-        "watch-test:jest": "jest --watch",
-        "copy-dist": "concurrently --kill-others-on-fail npm:copy-dist-*",
-        "copy-dist-lint": "copyfiles tslint/**/* dist",
-        "watch-test-coverage": "karma start",
-        "prepublishOnly": "npm run build-release"
-    },
-    "devDependencies": {
-        "@types/jasmine": "^3.5.10",
-        "@types/jest": "^24.9.1",
-        "@types/lodash": "^4.14.149",
-        "@types/node": "^10.17.18",
-        "@types/uuid": "^7.0.2",
-        "ajv": "^6.12.0",
-        "chromedriver": "^79.0.3",
-        "circular-dependency-plugin": "^5.2.0",
-        "codecov": "^3.6.5",
-        "concurrently": "^4.1.2",
-        "copyfiles": "^1.2.0",
-        "istanbul-instrumenter-loader": "^3.0.1",
-        "jasmine": "^3.5.0",
-        "jasmine-core": "^3.5.0",
-        "karma": "^3.1.4",
-        "karma-chrome-launcher": "^2.2.0",
-        "karma-coverage": "^1.1.2",
-        "karma-coverage-istanbul-reporter": "^1.4.3",
-        "karma-jasmine": "^2.0.1",
-        "karma-jasmine-html-reporter": "^1.5.3",
-        "karma-junit-reporter": "^1.2.0",
-        "karma-sourcemap-loader": "^0.3.7",
-        "karma-webpack": "^4.0.2",
-        "prettier": "^1.19.1",
-        "puppeteer": "^2.1.1",
-        "rimraf": "^2.6.3",
-        "source-map": "0.5.7",
-        "ts-jest": "^25.4.0",
-        "ts-loader": "^5.4.5",
-        "tsconfig-paths-webpack-plugin": "^3.2.0",
-        "tslint": "^5.20.1",
-        "tslint-config-prettier": "^1.18.0",
-        "tslint-plugin-prettier": "^2.3.0",
-        "typedoc": "~0.14.2",
-        "typescript": "~3.1.6",
-        "webpack": "^4.42.1"
-    },
-    "peerDependencies": {
-        "typescript": ">=3.1"
-    },
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/Morgan-Stanley/ts-mocking-bird.git"
-    },
-    "dependencies": {
-        "lodash": "^4.17.15",
-        "uuid": "^7.0.3"
-    },
-    "publishConfig": {
-        "access": "public"
-    },
-    "jest-comments": "to run jest tests you will have to install jest first. This conflicts with karma so not installed by default",
-    "jest": {
-        "preset": "ts-jest",
-        "testMatch": [
-            "**/spec/examples/*.spec.ts"
-        ]
-    }
+  "name": "@morgan-stanley/ts-mocking-bird",
+  "version": "0.1.16",
+  "description": "A fully type safe mocking, call verification and import replacement library for jasmine and jest",
+  "license": "Apache-2.0",
+  "author": "Morgan Stanley",
+  "main": "./dist/main/index.js",
+  "types": "./dist/main/index.d.ts",
+  "scripts": {
+    "clean": "rimraf dist reports ../build ../install ../packages docs",
+    "build": "tsc -p main/tsconfig.json",
+    "postbuild": "npm run copy",
+    "copy": "copyfiles main/**/*.html main/**/*.css main/**/*.jpg dist",
+    "prebuild-release": "npm ci && npm run clean && npm run verify-release",
+    "verify-release": "concurrently --kill-others-on-fail npm:lint npm:test npm:build",
+    "build-release": "npm run copy-dist && typedoc",
+    "watch-build": "tsc --watch",
+    "test": "karma start --singleRun --browsers ChromeHeadlessNoSandbox",
+    "test:karma": "karma start --singleRun --browsers ChromeHeadlessNoSandbox",
+    "test:jest": "jest",
+    "lint": "tslint -c tslint.conf.js -p tsconfig.json",
+    "watch-test": "karma start --no-coverage",
+    "watch-test:jest": "jest --watch",
+    "copy-dist": "concurrently --kill-others-on-fail npm:copy-dist-*",
+    "copy-dist-lint": "copyfiles tslint/**/* dist",
+    "watch-test-coverage": "karma start",
+    "prepublishOnly": "npm run build-release",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
+  },
+  "devDependencies": {
+    "@types/jasmine": "^3.5.10",
+    "@types/jest": "^24.9.1",
+    "@types/lodash": "^4.14.149",
+    "@types/node": "^10.17.18",
+    "@types/uuid": "^7.0.2",
+    "ajv": "^6.12.0",
+    "chromedriver": "^79.0.3",
+    "circular-dependency-plugin": "^5.2.0",
+    "codecov": "^3.6.5",
+    "concurrently": "^4.1.2",
+    "copyfiles": "^1.2.0",
+    "istanbul-instrumenter-loader": "^3.0.1",
+    "jasmine": "^3.5.0",
+    "jasmine-core": "^3.5.0",
+    "karma": "^3.1.4",
+    "karma-chrome-launcher": "^2.2.0",
+    "karma-coverage": "^1.1.2",
+    "karma-coverage-istanbul-reporter": "^1.4.3",
+    "karma-jasmine": "^2.0.1",
+    "karma-jasmine-html-reporter": "^1.5.3",
+    "karma-junit-reporter": "^1.2.0",
+    "karma-sourcemap-loader": "^0.3.7",
+    "karma-webpack": "^4.0.2",
+    "prettier": "^1.19.1",
+    "puppeteer": "^2.1.1",
+    "rimraf": "^2.6.3",
+    "source-map": "0.5.7",
+    "ts-jest": "^25.4.0",
+    "ts-loader": "^5.4.5",
+    "tsconfig-paths-webpack-plugin": "^3.2.0",
+    "tslint": "^5.20.1",
+    "tslint-config-prettier": "^1.18.0",
+    "tslint-plugin-prettier": "^2.3.0",
+    "typedoc": "~0.14.2",
+    "typescript": "~3.1.6",
+    "webpack": "^4.42.1"
+  },
+  "peerDependencies": {
+    "typescript": ">=3.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Morgan-Stanley/ts-mocking-bird.git"
+  },
+  "dependencies": {
+    "lodash": "^4.17.15",
+    "uuid": "^7.0.3",
+    "snyk": "^1.316.1"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "jest-comments": "to run jest tests you will have to install jest first. This conflicts with karma so not installed by default",
+  "jest": {
+    "preset": "ts-jest",
+    "testMatch": [
+      "**/spec/examples/*.spec.ts"
+    ]
+  },
+  "snyk": true
 }
