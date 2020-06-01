@@ -81,7 +81,10 @@
 					<li>Replaces imports (again, fully type safe)</li>
 				</ul>
 				<h1 id="typescript-version">Typescript Version</h1>
-				<p>Requires a minimum Typescript version of 3.1</p>
+				<p>Requires a minimum Typescript version of 3.1. You must also enable <code>skipLibCheck</code> in your tsconfig.json file as the library makes use of optional type definitions for jasmine and jest internally.  </p>
+				<pre><code class="language-json">{
+    <span class="hljs-attr">"skipLibCheck"</span>: <span class="hljs-literal">true</span>,
+}</code></pre>
 				<h1 id="framework-support">Framework support</h1>
 				<p>This library has been extensively used with jasmine and has been tested without issue with jest. The mocking functionality should work in any environment as it has no dependencies on any particular framework. The import replacement functionality uses the jasmine <code>beforeAll</code> / <code>afterAll</code> and <code>beforeEach</code> / <code>afterEach</code> so will not work in other environments.</p>
 				<h1 id="usage">Usage</h1>
