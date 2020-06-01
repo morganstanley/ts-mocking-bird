@@ -15,7 +15,7 @@ Documentation: https://morgan-stanley.github.io/ts-mocking-bird/
 
 # Typescript Version
 
-Requires a minimum Typescript version of 3.1. You must also enable `skipLibCheck` in your tsconfig.json file as the library makes use of optional type definitions for jamsime and jest internally.  
+Requires a minimum Typescript version of 3.1. You must also enable `skipLibCheck` in your tsconfig.json file as the library makes use of optional type definitions for jasmine and jest internally.  
 
 ```json
 {
