@@ -1,4 +1,4 @@
-import { Mock, replaceProperties, replacePropertiesBeforeEach } from '../../main';
+import { addMatchers, Mock, replaceProperties, replacePropertiesBeforeEach } from '../../main';
 import {
     classReturnValue,
     functionOneReturnValue,
@@ -42,6 +42,7 @@ describe('property replacement helper', () => {
     });
 
     beforeEach(() => {
+        addMatchers();
         setterValues = [];
         mockedSetterValues = [];
     });
