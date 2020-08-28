@@ -1,4 +1,4 @@
-import { IFunctionVerifier } from './contracts';
+import { ICustomMatcher, IFunctionVerifier } from './contracts';
 import { verifyFunctionCalled } from './verifiers';
 
 declare global {
@@ -38,7 +38,7 @@ export function addMatchers() {
     }
 }
 
-function wasCalled(): jasmine.CustomMatcher {
+function wasCalled(): ICustomMatcher {
     return {
         compare: (actual: IFunctionVerifier<any, any>, times: number) => {
             if (typeof times !== 'number') {
@@ -52,7 +52,7 @@ function wasCalled(): jasmine.CustomMatcher {
     };
 }
 
-function wasCalledOnce(): jasmine.CustomMatcher {
+function wasCalledOnce(): ICustomMatcher {
     return {
         compare: (actual: IFunctionVerifier<any, any>) => {
             return verifyFunctionCalled(1, actual) as any;
@@ -60,7 +60,7 @@ function wasCalledOnce(): jasmine.CustomMatcher {
     };
 }
 
-function wasNotCalled(): jasmine.CustomMatcher {
+function wasNotCalled(): ICustomMatcher {
     return {
         compare: (actual: IFunctionVerifier<any, any>) => {
             return verifyFunctionCalled(0, actual) as any;
@@ -68,7 +68,7 @@ function wasNotCalled(): jasmine.CustomMatcher {
     };
 }
 
-function wasCalledAtLeastOnce(): jasmine.CustomMatcher {
+function wasCalledAtLeastOnce(): ICustomMatcher {
     return {
         compare: (actual: IFunctionVerifier<any, any>) => {
             return verifyFunctionCalled(undefined, actual) as any;

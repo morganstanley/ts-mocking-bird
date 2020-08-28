@@ -24,13 +24,7 @@ Documentation: https://morgan-stanley.github.io/ts-mocking-bird/
 
 # Typescript Version
 
-Requires a minimum Typescript version of 3.1. You must also enable `skipLibCheck` in your tsconfig.json file as the library makes use of optional type definitions for jasmine and jest internally.  
-
-```json
-{
-    "skipLibCheck": true,
-}
-```
+Requires a minimum Typescript version of 3.1. 
 
 # Framework support
 
@@ -87,7 +81,7 @@ const systemUnderTest = new ClassWithConstructorArgument(mockedService.mockConst
 
 ### Jasmine / Jest Matchers
 
-When a mocked function is setup the custom matchers that are used by `ts-mocking-bird` are automatically setup. However this can only be done if this setup occurs within a `before` function. If you need to manually setup the custom matchers please call `addMatchers()`:
+When a mock is created using `Mock.create()` the custom matchers that are used by `ts-mocking-bird` are automatically setup. However this can only be done if the creation occurs within a `before` function. If you need to manually setup the custom matchers please call `addMatchers()`:
 
 ```typescript
 import { addMatchers } from '@morgan-stanley/ts-mocking-bird'

@@ -1,4 +1,5 @@
 import { FunctionsOnly, IMocked, OperatorFunction } from './contracts';
+import { addMatchers } from './matchers';
 import {
     defineProperty,
     defineStaticProperty,
@@ -11,6 +12,7 @@ import { createFunctionParameterVerifier, createFunctionVerifier } from './verif
 
 export class Mock {
     public static create<T, C extends new (...args: any[]) => T = never>(): IMocked<T, C> {
+        addMatchers();
         const mocked: IMocked<T, C> = {
             functionCallLookup: {},
             setterCallLookup: {},

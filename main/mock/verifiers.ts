@@ -6,6 +6,8 @@ import {
     FunctionType,
     IFunctionVerifier,
     IFunctionWithParametersVerification,
+    IJasmineCustomMatcherResult,
+    IJestCustomMatcherResult,
     IMocked,
     IParameterMatcher,
     IStrictFunctionVerification,
@@ -129,7 +131,7 @@ function mapParameterToMatcher(
 export function verifyFunctionCalled<T, C extends ConstructorFunction<T>, U extends FunctionType>(
     times: number | undefined,
     verifier: IFunctionVerifier<T, U, C>,
-): jasmine.CustomMatcherResult | jest.CustomMatcherResult {
+): IJasmineCustomMatcherResult | IJestCustomMatcherResult {
     const mock = verifier.getMock();
     const type = verifier.type;
     const functionName = verifier.functionName;
@@ -297,8 +299,8 @@ function functionCallToString(call: any[], parameterMatchers?: ParameterMatcher<
 }
 
 function isMatcherResultArray(
-    paramResult: boolean | (jasmine.CustomMatcherResult | jest.CustomMatcherResult)[],
-): paramResult is (jasmine.CustomMatcherResult | jest.CustomMatcherResult)[] {
+    paramResult: boolean | (IJasmineCustomMatcherResult | IJestCustomMatcherResult)[],
+): paramResult is (IJasmineCustomMatcherResult | IJestCustomMatcherResult)[] {
     if (Array.isArray(paramResult)) {
         return paramResult.every(isMatcherResult);
     }
@@ -308,10 +310,10 @@ function isMatcherResultArray(
 function isMatcherResult(
     paramResult:
         | boolean
-        | jasmine.CustomMatcherResult
-        | jest.CustomMatcherResult
-        | (jasmine.CustomMatcherResult | jest.CustomMatcherResult)[],
-): paramResult is jasmine.CustomMatcherResult | jest.CustomMatcherResult {
+        | IJasmineCustomMatcherResult
+        | IJestCustomMatcherResult
+        | (IJasmineCustomMatcherResult | IJestCustomMatcherResult)[],
+): paramResult is IJasmineCustomMatcherResult | IJestCustomMatcherResult {
     if (Array.isArray(paramResult)) {
         return paramResult.every(isMatcherResult);
     }
@@ -321,7 +323,7 @@ function isMatcherResult(
 function matchParameters(
     actualParameters: any[],
     parameterMatchers?: (IParameterMatcher<any> | MatchFunction<any>)[],
-): boolean | (jasmine.CustomMatcherResult | jest.CustomMatcherResult)[] {
+): boolean | (IJasmineCustomMatcherResult | IJestCustomMatcherResult)[] {
     if (parameterMatchers == null) {
         return true;
     }
@@ -341,7 +343,7 @@ function matchParameters(
 function evaluateParameterMatcher(
     actualParam: any,
     matcher: IParameterMatcher<any> | MatchFunction<any>,
-): boolean | jasmine.CustomMatcherResult | jest.CustomMatcherResult {
+): boolean | IJasmineCustomMatcherResult | IJestCustomMatcherResult {
     if (typeof matcher === 'function') {
         let matcherReturnValue: boolean;
 
