@@ -81,10 +81,7 @@
 					<li>Replaces imports (again, fully type safe)</li>
 				</ul>
 				<h1 id="typescript-version">Typescript Version</h1>
-				<p>Requires a minimum Typescript version of 3.1. You must also enable <code>skipLibCheck</code> in your tsconfig.json file as the library makes use of optional type definitions for jasmine and jest internally.  </p>
-				<pre><code class="language-json">{
-    <span class="hljs-attr">"skipLibCheck"</span>: <span class="hljs-literal">true</span>,
-}</code></pre>
+				<p>Requires a minimum Typescript version of 3.1. </p>
 				<h1 id="framework-support">Framework support</h1>
 				<p>This library has been extensively used with jasmine and has been tested without issue with jest. The mocking functionality should work in any environment as it has no dependencies on any particular framework. The import replacement functionality uses the jasmine <code>beforeAll</code> / <code>afterAll</code> and <code>beforeEach</code> / <code>afterEach</code> so will not work in other environments.</p>
 				<h1 id="usage">Usage</h1>
@@ -121,7 +118,7 @@
 				<h2 id="verify-calls">Verify Calls</h2>
 				<p><a href="https://github.com/Morgan-Stanley/ts-mocking-bird/tree/master/spec/examples/exampleTests.spec.ts">Examples</a></p>
 				<h3 id="jasmine-jest-matchers">Jasmine / Jest Matchers</h3>
-				<p>When a mocked function is setup the custom matchers that are used by <code>ts-mocking-bird</code> are automatically setup. However this can only be done if this setup occurs within a <code>before</code> function. If you need to manually setup the custom matchers please call <code>addMatchers()</code>:</p>
+				<p>When a mock is created using <code>Mock.create()</code> the custom matchers that are used by <code>ts-mocking-bird</code> are automatically setup. However this can only be done if the creation occurs within a <code>before</code> function. If you need to manually setup the custom matchers please call <code>addMatchers()</code>:</p>
 				<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { addMatchers } <span class="hljs-keyword">from</span> <span class="hljs-string">'@morgan-stanley/ts-mocking-bird'</span>
 
 describe(<span class="hljs-string">"my test"</span>, <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
@@ -397,11 +394,20 @@ context.keys().map(context);</code></pre>
 					<li class=" tsd-kind-class">
 						<a href="classes/sampleclassimport.html" class="tsd-kind-icon">Sample<wbr>Class<wbr>Import</a>
 					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/icustommatcher.html" class="tsd-kind-icon">ICustom<wbr>Matcher</a>
+					</li>
 					<li class=" tsd-kind-interface tsd-has-type-parameter">
 						<a href="interfaces/ifunctionverifier.html" class="tsd-kind-icon">IFunction<wbr>Verifier</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-has-type-parameter">
 						<a href="interfaces/ifunctionwithparametersverification.html" class="tsd-kind-icon">IFunction<wbr>With<wbr>Parameters<wbr>Verification</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/ijasminecustommatcherresult.html" class="tsd-kind-icon">IJasmine<wbr>Custom<wbr>Matcher<wbr>Result</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/ijestcustommatcherresult.html" class="tsd-kind-icon">IJest<wbr>Custom<wbr>Matcher<wbr>Result</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-has-type-parameter">
 						<a href="interfaces/imocked.html" class="tsd-kind-icon">IMocked</a>
