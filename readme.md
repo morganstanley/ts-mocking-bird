@@ -359,10 +359,3 @@ const context = (require as any).context('./', true, /.spec.ts$/);
 // And load the modules.
 context.keys().map(context);
 ```
-
-# Tasks
- * Add github to package json
- * Setup document generation / hosting
- * Setup travis CI build
- * Setup npm publishing
-
