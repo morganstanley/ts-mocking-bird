@@ -282,7 +282,7 @@ describe('mock', () => {
 
         describe('assertion with parameters', () => {
             beforeEach(() => {
-                mocked.setup(setupFunction('functionWithParamsAndReturn'));
+                mocked.setup(setupFunction('functionWithParamsAndReturn'), setupFunction('functionWithComplexParam'));
             });
 
             describe('wasCalledAtLeastOnce()', () => {
@@ -294,7 +294,7 @@ describe('mock', () => {
                     ).wasCalledAtLeastOnce();
                 });
 
-                it(`should fail when function has been called once with "two" instaed of "one"`, () => {
+                it(`should fail when function has been called once with "two" instead of "one"`, () => {
                     mock.functionWithParamsAndReturn('two', 123, true);
 
                     verifyFailure(
@@ -304,7 +304,7 @@ describe('mock', () => {
                     );
                 });
 
-                it(`should fail when function has been called once with "456" instaed of "123"`, () => {
+                it(`should fail when function has been called once with "456" instead of "123"`, () => {
                     mock.functionWithParamsAndReturn('one', 456, true);
 
                     verifyFailure(
@@ -314,7 +314,29 @@ describe('mock', () => {
                     );
                 });
 
-                it(`should fail when function has been called once with "false" instaed of "true"`, () => {
+                it(`should fail when function has been called with object with undefined value`, () => {
+                    mock.functionWithComplexParam({ one: 'one', two: 2, three: undefined });
+
+                    verifyFailure(
+                        mocked.withFunction('functionWithComplexParam').withParametersEqualTo({ one: 'one', two: 2 }),
+                        matchers.wasCalledOnce(),
+                        `Expected "functionWithComplexParam" to be called 1 times with params [{"one":"one","two":2}] but it was called 0 times with matching parameters and 1 times in total.\n[\n[{"one":"one","two":2,"three":undefined}]\n]`,
+                    );
+                });
+
+                it(`should fail when function expects object with undefined value`, () => {
+                    mock.functionWithComplexParam({ one: 'one', two: 2 });
+
+                    verifyFailure(
+                        mocked
+                            .withFunction('functionWithComplexParam')
+                            .withParametersEqualTo({ one: 'one', two: 2, three: undefined }),
+                        matchers.wasCalledOnce(),
+                        `Expected "functionWithComplexParam" to be called 1 times with params [{"one":"one","two":2,"three":undefined}] but it was called 0 times with matching parameters and 1 times in total.\n[\n[{"one":"one","two":2}]\n]`,
+                    );
+                });
+
+                it(`should fail when function has been called once with "false" instead of "true"`, () => {
                     mock.functionWithParamsAndReturn('one', 123, false);
 
                     verifyFailure(
@@ -1918,7 +1940,11 @@ class SampleMockedClass {
     }
 
     // tslint:disable-next-line:no-empty
-    public functionWithComplexParam(_param: { one: string; two: number }, _two?: string, _three?: number): void {}
+    public functionWithComplexParam(
+        _param: { one: string; two: number; three?: Date },
+        _two?: string,
+        _three?: number,
+    ): void {}
 
     // tslint:disable-next-line:no-empty
     public functionWithCallback(_callback: () => boolean): void {}
