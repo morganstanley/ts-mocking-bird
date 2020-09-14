@@ -83,27 +83,20 @@ export function mapItemToString(item: any): string {
         return 'undefined';
     }
 
-    return JSON.stringify(replaceValue(item));
-}
-
-function replaceObjectFunctions(item: any): any {
-    if (item == null) {
-        return item;
-    }
-
-    if (Array.isArray(item)) {
-        return item.map(replaceValue);
-    } else {
-        const clonedItem = { ...item };
-        Object.keys(item).forEach(key => (clonedItem[key] = replaceValue(item[key])));
-        return clonedItem;
-    }
+    return JSON.stringify(item, replaceValue).replace(ReplaceUndefinedRegExp, 'undefined');
 }
 
 // https://regex101.com/r/BIvQJG/2
 const functionStringRegExp = /function\s*\([^)]*\)/;
 
-function replaceValue(value: any) {
+/**
+ * string value that is VERY unlikely to be a genuine value
+ */
+const UndefinedReplacementString = `___@morgan-stanley/ts-mocking-bird_undefined_@morgan-stanley/ts-mocking-bird___`;
+
+const ReplaceUndefinedRegExp = new RegExp(`"${UndefinedReplacementString}"`, 'g');
+
+function replaceValue(_key: any, value: any) {
     switch (typeof value) {
         case 'function':
             const functionString = String(value);
@@ -111,8 +104,8 @@ function replaceValue(value: any) {
 
             return regexpResult != null ? regexpResult[0] : 'FUNCTION_BODY_REMOVED';
 
-        case 'object':
-            return replaceObjectFunctions(value);
+        case 'undefined':
+            return UndefinedReplacementString;
     }
 
     return value;
