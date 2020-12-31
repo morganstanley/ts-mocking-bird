@@ -43,8 +43,7 @@ describe('mock', () => {
 
                 const firstParam: string = firstCall[0];
                 const secondParam: number = firstCall[1];
-                // @ts-expect-error type is actually boolean | undefined;
-                const thirdParam: boolean = firstCall[2];
+                const thirdParam: boolean | undefined = firstCall[2];
 
                 expect(firstParam).toBe('one');
                 expect(secondParam).toBe(2);
@@ -124,7 +123,7 @@ describe('mock', () => {
                 const firstParam: string = firstCall[0];
                 const secondParam: number = firstCall[1];
                 // @ts-expect-error type is actually boolean | undefined;
-                const thirdParam: boolean = firstCall[2];
+                const thirdParam: boolean | undefined = firstCall[2];
 
                 expect(firstParam).toBe('one');
                 expect(secondParam).toBe(2);

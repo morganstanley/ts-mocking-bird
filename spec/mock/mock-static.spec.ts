@@ -265,7 +265,7 @@ describe('mock with statics', () => {
                     ).wasCalledAtLeastOnce();
                 });
 
-                it(`should fail when function has been called once with "two" instaed of "one"`, () => {
+                it(`should fail when function has been called once with "two" instead of "one"`, () => {
                     mocked.mockConstructor.functionWithParamsAndReturn('two', 123, true);
 
                     verifyFailure(
@@ -275,7 +275,7 @@ describe('mock with statics', () => {
                     );
                 });
 
-                it(`should fail when function has been called once with "456" instaed of "123"`, () => {
+                it(`should fail when function has been called once with "456" instead of "123"`, () => {
                     mocked.mockConstructor.functionWithParamsAndReturn('one', 456, true);
 
                     verifyFailure(
@@ -285,7 +285,7 @@ describe('mock with statics', () => {
                     );
                 });
 
-                it(`should fail when function has been called once with "false" instaed of "true"`, () => {
+                it(`should fail when function has been called once with "false" instead of "true"`, () => {
                     mocked.mockConstructor.functionWithParamsAndReturn('one', 123, false);
 
                     verifyFailure(

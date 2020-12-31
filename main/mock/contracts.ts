@@ -34,35 +34,44 @@ export type FunctionParameterMatchers<T extends any[]> = {
     [P in keyof T]: T[P] extends FunctionOrConstructor ? IParameterMatcher<T[P]> : ParameterMatcher<T[P]>;
 };
 
-export type FunctionCallLookup<T, C extends ConstructorFunction<T>, U extends FunctionType> = U extends FunctionTypes
-    ? { [P in keyof VerifierTarget<T, C, U>]?: FunctionParams<VerifierTarget<T, C, U>[P]>[] }
-    : U extends SetterTypes
-    ? { [P in keyof VerifierTarget<T, C, U>]?: [VerifierTarget<T, C, U>[P]][] }
-    : { [P in keyof VerifierTarget<T, C, U>]?: [][] };
+export type FunctionCallLookup<T, C extends ConstructorFunction<T>, U extends LookupType> = {
+    [P in FunctionName<T, C, U>]?: LookupParams<T, C, U, P>[];
+};
 
+export type LookupParams<
+    T,
+    C extends ConstructorFunction<T>,
+    U extends LookupType,
+    K extends FunctionName<T, C, U>
+> = U extends FunctionTypes
+    ? FunctionParams<VerifierTarget<T, C, U>[K]>
+    : U extends SetterTypes
+    ? [VerifierTarget<T, C, U>[K]]
+    : [];
 export type FunctionParams<T> = T extends (...args: infer P) => any ? P : never;
 
 export type ConstructorFunction<T> = new (...args: any[]) => T;
 
 export type StaticLookupTypes = 'staticFunction' | 'staticGetter' | 'staticSetter';
-export type InstanceFunctionTypes = 'function' | 'getter' | 'setter';
+export type InstanceLookupTypes = 'function' | 'getter' | 'setter';
 export type SetterTypes = 'staticSetter' | 'setter';
+export type GetterTypes = 'staticGetter' | 'getter';
 export type FunctionTypes = 'staticFunction' | 'function';
+export type LookupType = StaticLookupTypes | InstanceLookupTypes;
 
-export type VerifierTarget<T, C extends ConstructorFunction<T>, U extends FunctionType> = U extends StaticLookupTypes
+export type VerifierTarget<T, C extends ConstructorFunction<T>, U extends LookupType> = U extends StaticLookupTypes
     ? U extends FunctionTypes
         ? FunctionsOnly<C>
         : PropertiesOnly<C>
     : U extends FunctionTypes
     ? FunctionsOnly<T>
     : PropertiesOnly<T>;
-export type FunctionType = StaticLookupTypes | InstanceFunctionTypes;
-export type FunctionName<T, C extends ConstructorFunction<T>, U extends FunctionType> = keyof VerifierTarget<T, C, U>;
+export type FunctionName<T, C extends ConstructorFunction<T>, U extends LookupType> = keyof VerifierTarget<T, C, U>;
 
 export interface IFunctionWithParametersVerification<
     P extends Array<any>,
     T,
-    U extends FunctionType,
+    U extends LookupType,
     C extends new (...args: any[]) => T = never
 > extends IFunctionVerifier<T, U, C> {
     /**
@@ -101,7 +110,7 @@ export interface IFunctionWithParametersVerification<
     withParametersEqualTo(...args: FunctionParameterMatchers<P>): IStrictFunctionVerification<T, U, C>;
 }
 
-export interface IStrictFunctionVerification<T, U extends FunctionType, C extends new (...args: any[]) => T = never>
+export interface IStrictFunctionVerification<T, U extends LookupType, C extends new (...args: any[]) => T = never>
     extends IFunctionVerifier<T, U, C> {
     /**
      * verify that the function has been called ONLY with the specified parameters and never without
@@ -109,7 +118,7 @@ export interface IStrictFunctionVerification<T, U extends FunctionType, C extend
     strict(): IFunctionVerifier<T, U, C>;
 }
 
-export interface IFunctionVerifier<T, U extends FunctionType, C extends new (...args: any[]) => T = never> {
+export interface IFunctionVerifier<T, U extends LookupType, C extends new (...args: any[]) => T = never> {
     type: U;
     functionName: FunctionName<T, C, U>;
     parameterMatchers?: (MatchFunction<any> | IParameterMatcher<any>)[];
@@ -165,7 +174,7 @@ export interface IMocked<T, C extends new (...args: any[]) => T = never> {
      * @param propertyname
      * @param value
      */
-    setupProperty<K extends keyof T>(propertyname: K, value?: T[K]): IFunctionVerifier<T, 'getter', C>;
+    setupProperty<K extends keyof PropertiesOnly<T>>(propertyname: K, value?: T[K]): IFunctionVerifier<T, 'getter', C>;
     /**
      * Defines a single property and allows getters and setters to be defined.
      * Returns a function verifier to verify get and set operations
@@ -174,7 +183,7 @@ export interface IMocked<T, C extends new (...args: any[]) => T = never> {
      * @param getter
      * @param setter
      */
-    defineProperty<K extends keyof T>(
+    defineProperty<K extends keyof PropertiesOnly<T>>(
         propertyname: K,
         getter?: () => T[K],
         setter?: (value: T[K]) => void,
@@ -196,7 +205,10 @@ export interface IMocked<T, C extends new (...args: any[]) => T = never> {
      * @param propertyname
      * @param value
      */
-    setupStaticProperty<K extends keyof C>(propertyname: K, value?: C[K]): IFunctionVerifier<T, 'staticGetter', C>;
+    setupStaticProperty<K extends keyof PropertiesOnly<C>>(
+        propertyname: K,
+        value?: C[K],
+    ): IFunctionVerifier<T, 'staticGetter', C>;
     /**
      * Defines a single static property and allows getters and setters to be defined.
      * Returns a function verifier to verify get and set operations
@@ -205,7 +217,7 @@ export interface IMocked<T, C extends new (...args: any[]) => T = never> {
      * @param getter
      * @param setter
      */
-    defineStaticProperty<K extends keyof C>(
+    defineStaticProperty<K extends keyof PropertiesOnly<C>>(
         propertyname: K,
         getter?: () => C[K],
         setter?: (value: C[K]) => void,
@@ -229,7 +241,7 @@ export interface IMocked<T, C extends new (...args: any[]) => T = never> {
      *
      * @param functionName
      */
-    withGetter<K extends keyof T>(propertyname: K): IFunctionVerifier<T, 'getter', C>;
+    withGetter<K extends keyof PropertiesOnly<T>>(propertyname: K): IFunctionVerifier<T, 'getter', C>;
     /**
      * Verifies calls to a previously setup setter.
      * expect(myMock.withSetter("propertyName")).wasNotCalled():
@@ -238,7 +250,9 @@ export interface IMocked<T, C extends new (...args: any[]) => T = never> {
      *
      * @param functionName
      */
-    withSetter<K extends keyof T>(propertyname: K): IFunctionWithParametersVerification<[T[K]], T, 'setter', C>;
+    withSetter<K extends keyof PropertiesOnly<T>>(
+        propertyname: K,
+    ): IFunctionWithParametersVerification<[T[K]], T, 'setter', C>;
 
     /**
      * Verifies calls to a previously setup static function.
@@ -258,7 +272,7 @@ export interface IMocked<T, C extends new (...args: any[]) => T = never> {
      *
      * @param functionName
      */
-    withStaticGetter<K extends keyof C>(propertyname: K): IFunctionVerifier<T, 'staticGetter', C>;
+    withStaticGetter<K extends keyof PropertiesOnly<C>>(propertyname: K): IFunctionVerifier<T, 'staticGetter', C>;
     /**
      * Verifies calls to a previously setup static setter.
      * expect(myMock.withStaticSetter("functionName")).wasNotCalled():
@@ -267,7 +281,7 @@ export interface IMocked<T, C extends new (...args: any[]) => T = never> {
      *
      * @param functionName
      */
-    withStaticSetter<K extends keyof C>(
+    withStaticSetter<K extends keyof PropertiesOnly<C>>(
         propertyname: K,
     ): IFunctionWithParametersVerification<[C[K]], T, 'staticSetter', C>;
 }
