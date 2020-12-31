@@ -145,14 +145,14 @@ export function verifyFunctionCalled<T, C extends ConstructorFunction<T>, U exte
 
     switch (type) {
         case 'staticGetter':
-            functionCalls = mock.staticGetterCallLookup[functionName as any];
+            functionCalls = mock.staticGetterCallLookup[functionName];
             expectationMessage = `Expected static property "${functionName}" getter to be called`;
             errorMessageSetupFunction = `Mock.setupStaticProperty()`;
             errorMessageDescription = `Static property`;
             break;
 
         case 'staticSetter':
-            functionCalls = mock.staticSetterCallLookup[functionName as any];
+            functionCalls = mock.staticSetterCallLookup[functionName];
             expectationMessage = `Expected static property "${functionName}" to be set`;
             errorMessageSetupFunction = `Mock.setupStaticProperty()`;
             errorMessageDescription = `Static property`;
@@ -166,21 +166,21 @@ export function verifyFunctionCalled<T, C extends ConstructorFunction<T>, U exte
             break;
 
         case 'getter':
-            functionCalls = mock.getterCallLookup[functionName as any];
+            functionCalls = mock.getterCallLookup[functionName];
             expectationMessage = `Expected property "${functionName}" getter to be called`;
             errorMessageSetupFunction = `Mock.setupProperty()`;
             errorMessageDescription = `Property`;
             break;
 
         case 'setter':
-            functionCalls = mock.setterCallLookup[functionName as any];
+            functionCalls = mock.setterCallLookup[functionName];
             expectationMessage = `Expected property "${functionName}" to be set`;
             errorMessageSetupFunction = `Mock.setupProperty()`;
             errorMessageDescription = `Property`;
             break;
 
         default:
-            functionCalls = mock.functionCallLookup[functionName as any];
+            functionCalls = mock.functionCallLookup[functionName];
             expectationMessage = `Expected "${functionName}" to be called`;
             errorMessageSetupFunction = `Mock.setupFunction()`;
             errorMessageDescription = `Function`;
