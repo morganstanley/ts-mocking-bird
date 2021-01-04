@@ -52,7 +52,7 @@
 					<a href="globals.html">Globals</a>
 				</li>
 			</ul>
-			<h1> @morgan-stanley/ts-mocking-bird</h1>
+			<h1>@morgan-stanley/ts-mocking-bird</h1>
 		</div>
 	</div>
 </header>
@@ -60,7 +60,9 @@
 	<div class="row">
 		<div class="col-8 col-content">
 			<div class="tsd-panel tsd-typography">
-				<h1 id="-morgan-stanley-ts-mocking-bird">@morgan-stanley/ts-mocking-bird</h1>
+				<a href="#morgan-stanleyts-mocking-bird" id="morgan-stanleyts-mocking-bird" style="color: inherit; text-decoration: none;">
+					<h1>@morgan-stanley/ts-mocking-bird</h1>
+				</a>
 				<p><img src="https://img.shields.io/npm/v/@morgan-stanley/ts-mocking-bird" alt="npm">
 					<a href="https://travis-ci.com/Morgan-Stanley/ts-mocking-bird"><img src="https://travis-ci.com/Morgan-Stanley/ts-mocking-bird.svg?branch=master" alt="Build Status"></a>
 					<a href="https://codecov.io/gh/Morgan-Stanley/ts-mocking-bird"><img src="https://codecov.io/gh/Morgan-Stanley/ts-mocking-bird/branch/master/graph/badge.svg" alt="codecov"></a>
@@ -71,7 +73,9 @@
 					<p>A fully type safe mocking, call verification and import replacement library that works with jasmine and jest</p>
 				</blockquote>
 				<p>Documentation: <a href="https://morgan-stanley.github.io/ts-mocking-bird/">https://morgan-stanley.github.io/ts-mocking-bird/</a></p>
-				<h1 id="why-use-this-">Why use this?</h1>
+				<a href="#why-use-this" id="why-use-this" style="color: inherit; text-decoration: none;">
+					<h1>Why use this?</h1>
+				</a>
 				<p><img src="readmeAssets/intellisenseDemo.gif" alt="Intellisense Demo"></p>
 				<ul>
 					<li>All operations fully type safe</li>
@@ -80,13 +84,21 @@
 					<li>Verifies function calls (with type safe parameter verification), as well as getter and setter calls</li>
 					<li>Replaces imports (again, fully type safe)</li>
 				</ul>
-				<h1 id="typescript-version">Typescript Version</h1>
+				<a href="#typescript-version" id="typescript-version" style="color: inherit; text-decoration: none;">
+					<h1>Typescript Version</h1>
+				</a>
 				<p>Requires a minimum Typescript version of 3.1. </p>
-				<h1 id="framework-support">Framework support</h1>
+				<a href="#framework-support" id="framework-support" style="color: inherit; text-decoration: none;">
+					<h1>Framework support</h1>
+				</a>
 				<p>This library has been extensively used with jasmine and has been tested without issue with jest. The mocking functionality should work in any environment as it has no dependencies on any particular framework. The import replacement functionality uses the jasmine <code>beforeAll</code> / <code>afterAll</code> and <code>beforeEach</code> / <code>afterEach</code> so will not work in other environments.</p>
-				<h1 id="usage">Usage</h1>
+				<a href="#usage" id="usage" style="color: inherit; text-decoration: none;">
+					<h1>Usage</h1>
+				</a>
 				<pre><code class="language-typescript">npm install <span class="hljs-meta">@morgan</span>-stanley/ts-mocking-bird</code></pre>
-				<h2 id="create-a-mock">Create a Mock</h2>
+				<a href="#create-a-mock" id="create-a-mock" style="color: inherit; text-decoration: none;">
+					<h2>Create a Mock</h2>
+				</a>
 				<p><a href="https://github.com/Morgan-Stanley/ts-mocking-bird/tree/master/spec/examples/exampleTests.spec.ts">Examples</a></p>
 				<p>Creates a mock that is typed as <code>IMyService</code>. Properties and functions can be setup using <code>mockedService</code>. The actual mocked service is accessible at <code>mockedService.mock</code>.</p>
 				<pre><code class="language-typescript"><span class="hljs-keyword">import</span> {
@@ -107,7 +119,9 @@
 );
 
 <span class="hljs-keyword">const</span> systemUnderTest = <span class="hljs-keyword">new</span> SUT(mockedService.mock); <span class="hljs-comment">// pass mock instance to system under test</span></code></pre>
-				<h2 id="mocking-a-class-with-constructor-and-statics">Mocking a Class with Constructor and Statics</h2>
+				<a href="#mocking-a-class-with-constructor-and-statics" id="mocking-a-class-with-constructor-and-statics" style="color: inherit; text-decoration: none;">
+					<h2>Mocking a Class with Constructor and Statics</h2>
+				</a>
 				<p>Creates a mock that has statics and can be instantiated using <code>new mockedService.mock()</code>.</p>
 				<pre><code class="language-typescript"><span class="hljs-keyword">const</span> mockedService = Mock.create&lt;MyService, <span class="hljs-keyword">typeof</span> MyService&gt;().setup(
     setupStaticFunction(<span class="hljs-string">'staticFunctionOne'</span>, <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> <span class="hljs-string">'mockedReturnValue'</span>),
@@ -115,9 +129,13 @@
 );
 
 <span class="hljs-keyword">const</span> systemUnderTest = <span class="hljs-keyword">new</span> ClassWithConstructorArgument(mockedService.mockConstructor); <span class="hljs-comment">// pass mock constructor to system under test</span></code></pre>
-				<h2 id="verify-calls">Verify Calls</h2>
+				<a href="#verify-calls" id="verify-calls" style="color: inherit; text-decoration: none;">
+					<h2>Verify Calls</h2>
+				</a>
 				<p><a href="https://github.com/Morgan-Stanley/ts-mocking-bird/tree/master/spec/examples/exampleTests.spec.ts">Examples</a></p>
-				<h3 id="jasmine-jest-matchers">Jasmine / Jest Matchers</h3>
+				<a href="#jasmine--jest-matchers" id="jasmine--jest-matchers" style="color: inherit; text-decoration: none;">
+					<h3>Jasmine / Jest Matchers</h3>
+				</a>
 				<p>When a mock is created using <code>Mock.create()</code> the custom matchers that are used by <code>ts-mocking-bird</code> are automatically setup. However this can only be done if the creation occurs within a <code>before</code> function. If you need to manually setup the custom matchers please call <code>addMatchers()</code>:</p>
 				<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { addMatchers } <span class="hljs-keyword">from</span> <span class="hljs-string">'@morgan-stanley/ts-mocking-bird'</span>
 
@@ -126,13 +144,17 @@ describe(<span class="hljs-string">"my test"</span>, <span class="hljs-function"
         addMatchers();
     })
 })</code></pre>
-				<h3 id="verify-that-a-function-was-called-a-number-of-times-without-checking-parameters">Verify that a function was called a number of times without checking parameters</h3>
+				<a href="#verify-that-a-function-was-called-a-number-of-times-without-checking-parameters" id="verify-that-a-function-was-called-a-number-of-times-without-checking-parameters" style="color: inherit; text-decoration: none;">
+					<h3>Verify that a function was called a number of times without checking parameters</h3>
+				</a>
 				<pre><code class="language-typescript"><span class="hljs-keyword">const</span> mockedService: IMocked&lt;IMyService&gt; = Mock.create&lt;IMyService&gt;().setup(setupFunction(<span class="hljs-string">'functionOne'</span>));
 
 <span class="hljs-keyword">const</span> systemUnderTest = <span class="hljs-keyword">new</span> ClassWithInstanceArgument(mockedService.mock);
 
 expect(mockedService.withFunction(<span class="hljs-string">'functionOne'</span>)).wasCalled(<span class="hljs-number">5</span>);</code></pre>
-				<h3 id="verify-that-a-function-was-called-once-with-specific-parameters-">Verify that a function was called once with specific parameters:</h3>
+				<a href="#verify-that-a-function-was-called-once-with-specific-parameters" id="verify-that-a-function-was-called-once-with-specific-parameters" style="color: inherit; text-decoration: none;">
+					<h3>Verify that a function was called once with specific parameters:</h3>
+				</a>
 				<pre><code class="language-typescript"><span class="hljs-keyword">const</span> mockedService: IMocked&lt;IMyService&gt; = Mock.create&lt;IMyService&gt;().setup(setupFunction(<span class="hljs-string">'functionOne'</span>));
 
 <span class="hljs-keyword">const</span> systemUnderTest = <span class="hljs-keyword">new</span> ClassWithInstanceArgument(mockedService.mock);
@@ -143,13 +165,17 @@ expect(
         .withParameters(<span class="hljs-string">'someValue'</span>)
         .strict(),
 ).wasCalledOnce();</code></pre>
-				<h3 id="verify-getter-">Verify Getter:</h3>
+				<a href="#verify-getter" id="verify-getter" style="color: inherit; text-decoration: none;">
+					<h3>Verify Getter:</h3>
+				</a>
 				<pre><code class="language-typescript"><span class="hljs-keyword">const</span> mockedService: IMocked&lt;IMyService&gt; = Mock.create&lt;IMyService&gt;().setup(setupProperty(<span class="hljs-string">'propOne'</span>));
 
 <span class="hljs-keyword">const</span> systemUnderTest = <span class="hljs-keyword">new</span> ClassWithInstanceArgument(mockedService.mock);
 
 expect(mockedService.withGetter(<span class="hljs-string">'propOne'</span>)).wasCalledOnce();</code></pre>
-				<h3 id="verify-setter-">Verify Setter:</h3>
+				<a href="#verify-setter" id="verify-setter" style="color: inherit; text-decoration: none;">
+					<h3>Verify Setter:</h3>
+				</a>
 				<pre><code class="language-typescript"><span class="hljs-keyword">const</span> mockedService: IMocked&lt;IMyService&gt; = Mock.create&lt;IMyService&gt;().setup(setupProperty(<span class="hljs-string">'propOne'</span>));
 
 <span class="hljs-keyword">const</span> systemUnderTest = <span class="hljs-keyword">new</span> ClassWithInstanceArgument(mockedService.mock);
@@ -160,7 +186,9 @@ expect(
         .withParameters(<span class="hljs-string">'someValue'</span>)
         .strict(),
 ).wasCalledOnce();</code></pre>
-				<h3 id="verify-that-a-function-was-called-once-and-was-not-called-any-other-times-using-strict-">Verify that a function was called once and was not called any other times using strict:</h3>
+				<a href="#verify-that-a-function-was-called-once-and-was-not-called-any-other-times-using-strict" id="verify-that-a-function-was-called-once-and-was-not-called-any-other-times-using-strict" style="color: inherit; text-decoration: none;">
+					<h3>Verify that a function was called once and was not called any other times using strict:</h3>
+				</a>
 				<p>If we use <code>strict()</code> we ensure that the function is ONLY called with the specified parameters</p>
 				<pre><code class="language-typescript"><span class="hljs-keyword">const</span> mockedService: IMocked&lt;IMyService&gt; = Mock.create&lt;IMyService&gt;().setup(setupFunction(<span class="hljs-string">'functionTwo'</span>));
 
@@ -181,16 +209,22 @@ expect(
         .withFunction(<span class="hljs-string">'functionTwo'</span>)
         .withParameters(<span class="hljs-string">'someValue'</span>)
     ).wasCalledOnce(); <span class="hljs-comment">// this will pass as only called once with params 'someValue'</span></code></pre>
-				<h3 id="verify-function-calls-using-a-function-verifier-returned-from-mymock-setupfunction-">Verify function calls using a function verifier returned from <code>myMock.setupFunction()</code>:</h3>
+				<a href="#verify-function-calls-using-a-function-verifier-returned-from-mymocksetupfunction" id="verify-function-calls-using-a-function-verifier-returned-from-mymocksetupfunction" style="color: inherit; text-decoration: none;">
+					<h3>Verify function calls using a function verifier returned from <code>myMock.setupFunction()</code>:</h3>
+				</a>
 				<pre><code class="language-typescript"><span class="hljs-keyword">const</span> mockedService: IMocked&lt;IMyService&gt; = Mock.create&lt;IMyService&gt;();
 <span class="hljs-keyword">const</span> functionVerifier = mockedService.setupFunction(<span class="hljs-string">'functionTwo'</span>);
 
 <span class="hljs-keyword">const</span> systemUnderTest = <span class="hljs-keyword">new</span> ClassWithInstanceArgument(mockedService.mock);
 
 expect(functionVerifier.withParameters(<span class="hljs-string">'someValue'</span>)).wasCalledOnce();</code></pre>
-				<h2 id="verify-function-parameters">Verify Function Parameters</h2>
+				<a href="#verify-function-parameters" id="verify-function-parameters" style="color: inherit; text-decoration: none;">
+					<h2>Verify Function Parameters</h2>
+				</a>
 				<p><a href="https://github.com/Morgan-Stanley/ts-mocking-bird/tree/master/spec/examples/exampleParameterMatcherTest.spec.ts">Examples</a></p>
-				<h3 id="verify-that-function-parameters-match-using-strict-equality">Verify that function parameters match using strict equality</h3>
+				<a href="#verify-that-function-parameters-match-using-strict-equality" id="verify-that-function-parameters-match-using-strict-equality" style="color: inherit; text-decoration: none;">
+					<h3>Verify that function parameters match using strict equality</h3>
+				</a>
 				<pre><code class="language-typescript"><span class="hljs-keyword">const</span> sampleMock = Mock.create&lt;ISampleMocked&gt;().setup(setupFunction(<span class="hljs-string">'functionOne'</span>));
 
 <span class="hljs-keyword">const</span> sampleObject: IPerson = { name: <span class="hljs-string">'Fred'</span>, id: <span class="hljs-number">1</span> };
@@ -201,7 +235,9 @@ expect(
         .withFunction(<span class="hljs-string">'functionOne'</span>)
         .withParameters(<span class="hljs-string">'one'</span>, <span class="hljs-number">2</span>, sampleObject) <span class="hljs-comment">// strict equality</span>
     ).wasCalledOnce();</code></pre>
-				<h3 id="verify-that-function-parameter-values-are-equal">Verify that function parameter values are equal</h3>
+				<a href="#verify-that-function-parameter-values-are-equal" id="verify-that-function-parameter-values-are-equal" style="color: inherit; text-decoration: none;">
+					<h3>Verify that function parameter values are equal</h3>
+				</a>
 				<pre><code class="language-typescript"><span class="hljs-keyword">const</span> sampleMock = Mock.create&lt;ISampleMocked&gt;().setup(setupFunction(<span class="hljs-string">'functionOne'</span>));
 
 sampleMock.mock.functionOne(<span class="hljs-string">'one'</span>, <span class="hljs-number">2</span>, { name: <span class="hljs-string">'Fred'</span>, id: <span class="hljs-number">1</span> });
@@ -211,7 +247,9 @@ expect(
         .withFunction(<span class="hljs-string">'functionOne'</span>)
         .withParametersEqualTo(<span class="hljs-string">'one'</span>, <span class="hljs-number">2</span>, { name: <span class="hljs-string">'Fred'</span>, id: <span class="hljs-number">1</span> }) <span class="hljs-comment">// equals used to match</span>
     ).wasCalledOnce();</code></pre>
-				<h3 id="use-alternate-matchers">Use alternate matchers</h3>
+				<a href="#use-alternate-matchers" id="use-alternate-matchers" style="color: inherit; text-decoration: none;">
+					<h3>Use alternate matchers</h3>
+				</a>
 				<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { toBeDefined, <span class="hljs-built_in">any</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">"@morgan-stanley/ts-mocking-bird"</span>
 
 <span class="hljs-keyword">const</span> sampleMock = Mock.create&lt;ISampleMocked&gt;().setup(setupFunction(<span class="hljs-string">'functionOne'</span>));
@@ -223,7 +261,9 @@ expect(
         .withFunction(<span class="hljs-string">'functionOne'</span>)
         .withParameters(<span class="hljs-string">'one'</span>, toBeDefined(), <span class="hljs-built_in">any</span>())
     ).wasCalledOnce();</code></pre>
-				<h3 id="match-values-with-a-function">Match values with a function</h3>
+				<a href="#match-values-with-a-function" id="match-values-with-a-function" style="color: inherit; text-decoration: none;">
+					<h3>Match values with a function</h3>
+				</a>
 				<p>A function with a signature of <code>(value: T) =&gt; boolean</code> can be used to match a parameter value but this will not provide information about what the expected parameter value is in the test failure message.</p>
 				<pre><code class="language-typescript"><span class="hljs-keyword">const</span> sampleMock = Mock.create&lt;ISampleMocked&gt;().setup(setupFunction(<span class="hljs-string">'functionOne'</span>));
 
@@ -234,7 +274,9 @@ expect(
         .withFunction(<span class="hljs-string">'functionOne'</span>)
         .withParameters(<span class="hljs-string">'one'</span>, <span class="hljs-number">2</span>, <span class="hljs-function"><span class="hljs-params">person</span> =&gt;</span> person.id === <span class="hljs-number">1</span>)
     ).wasCalledOnce();</code></pre>
-				<h3 id="create-a-custom-iparametermatcher-to-create-more-informative-failure-messages">Create a custom <code>IParameterMatcher</code> to create more informative failure messages</h3>
+				<a href="#create-a-custom-iparametermatcher-to-create-more-informative-failure-messages" id="create-a-custom-iparametermatcher-to-create-more-informative-failure-messages" style="color: inherit; text-decoration: none;">
+					<h3>Create a custom <code>IParameterMatcher</code> to create more informative failure messages</h3>
+				</a>
 				<pre><code class="language-typescript"><span class="hljs-keyword">const</span> sampleMock = Mock.create&lt;ISampleMocked&gt;().setup(setupFunction(<span class="hljs-string">'functionOne'</span>));
 
 sampleMock.mock.functionOne(<span class="hljs-string">'one'</span>, <span class="hljs-number">2</span>, { name: <span class="hljs-string">'Fred'</span>, id: <span class="hljs-number">1</span> });
@@ -248,9 +290,13 @@ expect(
             parameterToString: <span class="hljs-function"><span class="hljs-params">person</span> =&gt;</span> <span class="hljs-string">`Person with id <span class="hljs-subst">${person.id}</span>`</span>, <span class="hljs-comment">// Used to display value of actual parameters passed in failure message</span>
         })
     ).wasCalledOnce();</code></pre>
-				<h2 id="replace-imports">Replace Imports</h2>
+				<a href="#replace-imports" id="replace-imports" style="color: inherit; text-decoration: none;">
+					<h2>Replace Imports</h2>
+				</a>
 				<p><a href="https://github.com/Morgan-Stanley/ts-mocking-bird/tree/master/spec/examples/exampleImportReplacementTest.spec.ts">Examples</a></p>
-				<h3 id="jest-modules">Jest Modules</h3>
+				<a href="#jest-modules" id="jest-modules" style="color: inherit; text-decoration: none;">
+					<h3>Jest Modules</h3>
+				</a>
 				<p>Using <code>proxyModule</code> we proxy all functions and constructors in a module so that they can be replaced at a later point. This allows us to create a new mock implementation of a class or function for each test run and means that concurrent tests are not polluted by the state of previous tests.</p>
 				<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { proxyModule, registerMock, reset } <span class="hljs-keyword">from</span> <span class="hljs-string">'@morgan-stanley/ts-mocking-bird'</span>;
 
@@ -301,7 +347,9 @@ describe(<span class="hljs-string">"my-system-under-test"</span>, <span class="h
 					<li>The path passed to <code>jest.mock</code>, passed to <code>proxyJestModule</code> and used to import the <code>moduleProxy</code> must all point to same location. For example if a barrel is being imported then all 3 paths must point to same barrel.</li>
 					<li>the path passed to <code>proxyJestModule</code> must either be an ambient import such as <code>fs</code> or <code>path</code>, a non relative import such as <code>@morgan-stanley/my-dependency-name</code> or it must be an absolute path. If a relative path such as <code>../../main/myImport</code> is used this path will not be resolvable from the <code>proxyJestModule</code> function. To get the absolute path use <code>require.resolve(&#39;../../relative-import-path&#39;)</code></li>
 				</ul>
-				<h3 id="replace-an-imported-function-with-a-mocked-function-once-at-the-start-of-your-test">Replace an imported function with a mocked function once at the start of your test</h3>
+				<a href="#replace-an-imported-function-with-a-mocked-function-once-at-the-start-of-your-test" id="replace-an-imported-function-with-a-mocked-function-once-at-the-start-of-your-test" style="color: inherit; text-decoration: none;">
+					<h3>Replace an imported function with a mocked function once at the start of your test</h3>
+				</a>
 				<pre><code class="language-typescript"><span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> myImport <span class="hljs-keyword">from</span> <span class="hljs-string">'./exampleImports'</span>;
 
 describe(<span class="hljs-string">'replace imports'</span>, <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
@@ -315,7 +363,9 @@ describe(<span class="hljs-string">'replace imports'</span>, <span class="hljs-f
         expect(SUT.someFunctionCallingMockedImport()).toEqual(<span class="hljs-string">'mockedReturnValue'</span>); <span class="hljs-comment">// value comes from mock above, not original import</span>
     });
 });</code></pre>
-				<h3 id="replace-an-imported-function-and-a-class-and-generate-a-new-mock-before-each-test-run">Replace an imported function and a class and generate a new mock before each test run</h3>
+				<a href="#replace-an-imported-function-and-a-class-and-generate-a-new-mock-before-each-test-run" id="replace-an-imported-function-and-a-class-and-generate-a-new-mock-before-each-test-run" style="color: inherit; text-decoration: none;">
+					<h3>Replace an imported function and a class and generate a new mock before each test run</h3>
+				</a>
 				<pre><code class="language-typescript"><span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> myImport <span class="hljs-keyword">from</span> <span class="hljs-string">'./exampleImports'</span>;
 
 describe(<span class="hljs-string">'replace imports'</span>, <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
@@ -342,7 +392,9 @@ describe(<span class="hljs-string">'replace imports'</span>, <span class="hljs-f
         });
     });
 });</code></pre>
-				<h1 id="webpack-4-issues">Webpack 4 issues</h1>
+				<a href="#webpack-4-issues" id="webpack-4-issues" style="color: inherit; text-decoration: none;">
+					<h1>Webpack 4 issues</h1>
+				</a>
 				<p>If you get an error such as</p>
 				<pre><code>TypeError: Cannot redefine <span class="hljs-keyword">property</span><span class="hljs-title"></span>: BUILD_ID</code></pre><p>This is most likely because webpack 4 uses <code>configurable:false</code> when defining properties on import objects. This means that we are unable to replace them when we want to mock them.</p>
 				<p>This situation is handled by this mocking library but for it to be fully effective the mocking library needs to be imported before any other code - in other words before webpack has a chance to create any import objects.</p>
@@ -361,6 +413,15 @@ context.keys().map(context);</code></pre>
 				<ul>
 					<li class="globals  ">
 						<a href="globals.html"><em>Globals</em></a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/__global.html">__global</a>
+					</li>
+					<li class=" tsd-kind-module tsd-parent-kind-module">
+						<a href="modules/__global.jasmine.html">__global.jasmine</a>
+					</li>
+					<li class=" tsd-kind-module tsd-parent-kind-module">
+						<a href="modules/__global.jest.html">__global.jest</a>
 					</li>
 				</ul>
 			</nav>
@@ -387,6 +448,9 @@ context.keys().map(context);</code></pre>
 					<li class=" tsd-kind-class">
 						<a href="classes/sampleclassimport.html" class="tsd-kind-icon">Sample<wbr>Class<wbr>Import</a>
 					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/samplemockedclass.html" class="tsd-kind-icon">Sample<wbr>Mocked<wbr>Class</a>
+					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/icustommatcher.html" class="tsd-kind-icon">ICustom<wbr>Matcher</a>
 					</li>
@@ -395,6 +459,12 @@ context.keys().map(context);</code></pre>
 					</li>
 					<li class=" tsd-kind-interface tsd-has-type-parameter">
 						<a href="interfaces/ifunctionwithparametersverification.html" class="tsd-kind-icon">IFunction<wbr>With<wbr>Parameters<wbr>Verification</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-has-type-parameter">
+						<a href="interfaces/iimportcopy.html" class="tsd-kind-icon">IImport<wbr>Copy</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-has-type-parameter">
+						<a href="interfaces/iimportreplacement.html" class="tsd-kind-icon">IImport<wbr>Replacement</a>
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/ijasminecustommatcherresult.html" class="tsd-kind-icon">IJasmine<wbr>Custom<wbr>Matcher<wbr>Result</a>
@@ -417,11 +487,14 @@ context.keys().map(context);</code></pre>
 					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
 						<a href="globals.html#constructorfunction" class="tsd-kind-icon">Constructor<wbr>Function</a>
 					</li>
-					<li class=" tsd-kind-type-alias">
+					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
 						<a href="globals.html#functioncalllookup" class="tsd-kind-icon">Function<wbr>Call<wbr>Lookup</a>
 					</li>
 					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
 						<a href="globals.html#functionname" class="tsd-kind-icon">Function<wbr>Name</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="globals.html#functionorconstructor" class="tsd-kind-icon">Function<wbr>OrConstructor</a>
 					</li>
 					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
 						<a href="globals.html#functionparametermatchers" class="tsd-kind-icon">Function<wbr>Parameter<wbr>Matchers</a>
@@ -430,13 +503,22 @@ context.keys().map(context);</code></pre>
 						<a href="globals.html#functionparams" class="tsd-kind-icon">Function<wbr>Params</a>
 					</li>
 					<li class=" tsd-kind-type-alias">
-						<a href="globals.html#functiontype" class="tsd-kind-icon">Function<wbr>Type</a>
+						<a href="globals.html#functiontypes" class="tsd-kind-icon">Function<wbr>Types</a>
 					</li>
 					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
 						<a href="globals.html#functionsonly" class="tsd-kind-icon">Functions<wbr>Only</a>
 					</li>
 					<li class=" tsd-kind-type-alias">
-						<a href="globals.html#instancefunctiontypes" class="tsd-kind-icon">Instance<wbr>Function<wbr>Types</a>
+						<a href="globals.html#gettertypes" class="tsd-kind-icon">Getter<wbr>Types</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="globals.html#instancelookuptypes" class="tsd-kind-icon">Instance<wbr>Lookup<wbr>Types</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
+						<a href="globals.html#lookupparams" class="tsd-kind-icon">Lookup<wbr>Params</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="globals.html#lookuptype" class="tsd-kind-icon">Lookup<wbr>Type</a>
 					</li>
 					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
 						<a href="globals.html#matchfunction" class="tsd-kind-icon">Match<wbr>Function</a>
@@ -447,11 +529,17 @@ context.keys().map(context);</code></pre>
 					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
 						<a href="globals.html#parametermatcher" class="tsd-kind-icon">Parameter<wbr>Matcher</a>
 					</li>
+					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
+						<a href="globals.html#propertiesonly" class="tsd-kind-icon">Properties<wbr>Only</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
+						<a href="globals.html#propertydescriptors" class="tsd-kind-icon">Property<wbr>Descriptors</a>
+					</li>
 					<li class=" tsd-kind-type-alias">
 						<a href="globals.html#settertypes" class="tsd-kind-icon">Setter<wbr>Types</a>
 					</li>
 					<li class=" tsd-kind-type-alias">
-						<a href="globals.html#staticfunctiontypes" class="tsd-kind-icon">Static<wbr>Function<wbr>Types</a>
+						<a href="globals.html#staticlookuptypes" class="tsd-kind-icon">Static<wbr>Lookup<wbr>Types</a>
 					</li>
 					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
 						<a href="globals.html#verifierparams" class="tsd-kind-icon">Verifier<wbr>Params</a>
@@ -463,10 +551,25 @@ context.keys().map(context);</code></pre>
 						<a href="globals.html#wrappedmodule" class="tsd-kind-icon">Wrapped<wbr>Module</a>
 					</li>
 					<li class=" tsd-kind-variable">
+						<a href="globals.html#mockmap" class="tsd-kind-icon">Mock<wbr>Map</a>
+					</li>
+					<li class=" tsd-kind-variable">
+						<a href="globals.html#replaceundefinedregexp" class="tsd-kind-icon">Replace<wbr>Undefined<wbr>Reg<wbr>Exp</a>
+					</li>
+					<li class=" tsd-kind-variable">
+						<a href="globals.html#undefinedreplacementstring" class="tsd-kind-icon">Undefined<wbr>Replacement<wbr>String</a>
+					</li>
+					<li class=" tsd-kind-variable">
 						<a href="globals.html#classreturnvalue" class="tsd-kind-icon">class<wbr>Return<wbr>Value</a>
 					</li>
 					<li class=" tsd-kind-variable">
+						<a href="globals.html#context" class="tsd-kind-icon">context</a>
+					</li>
+					<li class=" tsd-kind-variable">
 						<a href="globals.html#functiononereturnvalue" class="tsd-kind-icon">function<wbr>One<wbr>Return<wbr>Value</a>
+					</li>
+					<li class=" tsd-kind-variable">
+						<a href="globals.html#functionstringregexp" class="tsd-kind-icon">function<wbr>String<wbr>Reg<wbr>Exp</a>
 					</li>
 					<li class=" tsd-kind-variable">
 						<a href="globals.html#functionthreereturnvalue" class="tsd-kind-icon">function<wbr>Three<wbr>Return<wbr>Value</a>
@@ -486,6 +589,15 @@ context.keys().map(context);</code></pre>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#any" class="tsd-kind-icon">any</a>
 					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#buildallcallsstring" class="tsd-kind-icon">build<wbr>All<wbr>Calls<wbr>String</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#buildwithparamsstring" class="tsd-kind-icon">build<wbr>With<wbr>Params<wbr>String</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#createcustommatcherfailresult" class="tsd-kind-icon">create<wbr>Custom<wbr>Matcher<wbr>Fail<wbr>Result</a>
+					</li>
 					<li class=" tsd-kind-function tsd-has-type-parameter">
 						<a href="globals.html#createfunctionparameterverifier" class="tsd-kind-icon">create<wbr>Function<wbr>Parameter<wbr>Verifier</a>
 					</li>
@@ -499,10 +611,40 @@ context.keys().map(context);</code></pre>
 						<a href="globals.html#defineproperty" class="tsd-kind-icon">define<wbr>Property</a>
 					</li>
 					<li class=" tsd-kind-function tsd-has-type-parameter">
+						<a href="globals.html#definepropertyimpl" class="tsd-kind-icon">define<wbr>Property<wbr>Impl</a>
+					</li>
+					<li class=" tsd-kind-function tsd-has-type-parameter">
 						<a href="globals.html#definestaticproperty" class="tsd-kind-icon">define<wbr>Static<wbr>Property</a>
 					</li>
 					<li class=" tsd-kind-function">
+						<a href="globals.html#evaluateparametermatcher" class="tsd-kind-icon">evaluate<wbr>Parameter<wbr>Matcher</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#expectedparameterstostring" class="tsd-kind-icon">expected<wbr>Parameters<wbr>ToString</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#functioncalltostring" class="tsd-kind-icon">function<wbr>Call<wbr>ToString</a>
+					</li>
+					<li class=" tsd-kind-function tsd-has-type-parameter">
+						<a href="globals.html#getdescriptor" class="tsd-kind-icon">get<wbr>Descriptor</a>
+					</li>
+					<li class=" tsd-kind-function tsd-has-type-parameter">
+						<a href="globals.html#getdescriptors" class="tsd-kind-icon">get<wbr>Descriptors</a>
+					</li>
+					<li class=" tsd-kind-function tsd-has-type-parameter">
+						<a href="globals.html#getlookup" class="tsd-kind-icon">get<wbr>Lookup</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#getmocked" class="tsd-kind-icon">get<wbr>Mocked</a>
+					</li>
+					<li class=" tsd-kind-function">
 						<a href="globals.html#hasvalue" class="tsd-kind-icon">has<wbr>Value</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#ismatcherresult" class="tsd-kind-icon">is<wbr>Matcher<wbr>Result</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#ismatcherresultarray" class="tsd-kind-icon">is<wbr>Matcher<wbr>Result<wbr>Array</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#isparametermatcher" class="tsd-kind-icon">is<wbr>Parameter<wbr>Matcher</a>
@@ -511,7 +653,16 @@ context.keys().map(context);</code></pre>
 						<a href="globals.html#iswrappedmodule" class="tsd-kind-icon">is<wbr>Wrapped<wbr>Module</a>
 					</li>
 					<li class=" tsd-kind-function">
+						<a href="globals.html#lookupmocksformodule" class="tsd-kind-icon">lookup<wbr>Mocks<wbr>For<wbr>Module</a>
+					</li>
+					<li class=" tsd-kind-function">
 						<a href="globals.html#mapitemtostring" class="tsd-kind-icon">map<wbr>Item<wbr>ToString</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#mapparametertomatcher" class="tsd-kind-icon">map<wbr>Parameter<wbr>ToMatcher</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#matchparameters" class="tsd-kind-icon">match<wbr>Parameters</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#proxyjestmodule" class="tsd-kind-icon">proxy<wbr>Jest<wbr>Module</a>
@@ -523,13 +674,22 @@ context.keys().map(context);</code></pre>
 						<a href="globals.html#registermock" class="tsd-kind-icon">register<wbr>Mock</a>
 					</li>
 					<li class=" tsd-kind-function tsd-has-type-parameter">
+						<a href="globals.html#replaceimports" class="tsd-kind-icon">replace<wbr>Imports</a>
+					</li>
+					<li class=" tsd-kind-function tsd-has-type-parameter">
 						<a href="globals.html#replaceproperties" class="tsd-kind-icon">replace<wbr>Properties</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#replacepropertiesbeforeeach" class="tsd-kind-icon">replace<wbr>Properties<wbr>Before<wbr>Each</a>
 					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#replacevalue" class="tsd-kind-icon">replace<wbr>Value</a>
+					</li>
 					<li class=" tsd-kind-function tsd-has-type-parameter">
 						<a href="globals.html#reset" class="tsd-kind-icon">reset</a>
+					</li>
+					<li class=" tsd-kind-function tsd-has-type-parameter">
+						<a href="globals.html#revertimports" class="tsd-kind-icon">revert<wbr>Imports</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#runninginjest" class="tsd-kind-icon">running<wbr>InJest</a>
@@ -570,6 +730,18 @@ context.keys().map(context);</code></pre>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#toequal" class="tsd-kind-icon">to<wbr>Equal</a>
 					</li>
+					<li class=" tsd-kind-function tsd-has-type-parameter">
+						<a href="globals.html#trackcall" class="tsd-kind-icon">track<wbr>Call</a>
+					</li>
+					<li class=" tsd-kind-function tsd-has-type-parameter">
+						<a href="globals.html#trackfunctioncall" class="tsd-kind-icon">track<wbr>Function<wbr>Call</a>
+					</li>
+					<li class=" tsd-kind-function tsd-has-type-parameter">
+						<a href="globals.html#trackgettercall" class="tsd-kind-icon">track<wbr>Getter<wbr>Call</a>
+					</li>
+					<li class=" tsd-kind-function tsd-has-type-parameter">
+						<a href="globals.html#tracksettercall" class="tsd-kind-icon">track<wbr>Setter<wbr>Call</a>
+					</li>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#verifyfailure" class="tsd-kind-icon">verify<wbr>Failure</a>
 					</li>
@@ -581,6 +753,21 @@ context.keys().map(context);</code></pre>
 					</li>
 					<li class=" tsd-kind-function tsd-has-type-parameter">
 						<a href="globals.html#verifyparameters" class="tsd-kind-icon">verify<wbr>Parameters</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#wascalled" class="tsd-kind-icon">was<wbr>Called</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#wascalledatleastonce" class="tsd-kind-icon">was<wbr>Called<wbr>AtLeast<wbr>Once</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#wascalledonce" class="tsd-kind-icon">was<wbr>Called<wbr>Once</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#wasnotcalled" class="tsd-kind-icon">was<wbr>Not<wbr>Called</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#wrapfunction" class="tsd-kind-icon">wrap<wbr>Function</a>
 					</li>
 					<li class=" tsd-kind-object-literal">
 						<a href="globals.html#matchers" class="tsd-kind-icon">matchers</a>
@@ -602,6 +789,7 @@ context.keys().map(context);</code></pre>
 				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
 				<li class="tsd-kind-index-signature"><span class="tsd-kind-icon">Index signature</span></li>
 				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
+				<li class="tsd-kind-type-alias tsd-has-type-parameter"><span class="tsd-kind-icon">Type alias with type parameter</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
@@ -650,7 +838,7 @@ context.keys().map(context);</code></pre>
 	</div>
 </footer>
 <div class="container tsd-generator">
-	<p>Generated using <a href="http://typedoc.org/" target="_blank">TypeDoc</a></p>
+	<p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p>
 </div>
 <div class="overlay"></div>
 <script src="assets/js/main.js"></script>

@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Mock | @morgan-stanley/ts-mocking-bird</title>
+	<title>IImportCopy | @morgan-stanley/ts-mocking-bird</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -52,21 +52,29 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="mock.html">Mock</a>
+					<a href="iimportcopy.html">IImportCopy</a>
 				</li>
 			</ul>
-			<h1>Class Mock</h1>
+			<h1>Interface IImportCopy&lt;T&gt;</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-type-parameters">
+				<h3>Type parameters</h3>
+				<ul class="tsd-type-parameters">
+					<li>
+						<h4>T</h4>
+					</li>
+				</ul>
+			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">Mock</span>
+						<span class="target">IImportCopy</span>
 					</li>
 				</ul>
 			</section>
@@ -75,41 +83,36 @@
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section ">
-							<h3>Methods</h3>
+							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-static"><a href="mock.html#create" class="tsd-kind-icon">create</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iimportcopy.html#descriptors" class="tsd-kind-icon">descriptors</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iimportcopy.html#packagewithreplacements" class="tsd-kind-icon">package<wbr>With<wbr>Replacements</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
-				<h2>Methods</h2>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-static">
-					<a name="create" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagStatic">Static</span> create</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-static">
-						<li class="tsd-signature tsd-kind-icon">create&lt;T, C&gt;<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/imocked.html" class="tsd-signature-type">IMocked</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/Morgan-Stanley/ts-mocking-bird/blob/b5d9c1b/main/mock/mock.ts#L14">main/mock/mock.ts:14</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-type-parameters-title">Type parameters</h4>
-							<ul class="tsd-type-parameters">
-								<li>
-									<h4>T</h4>
-								</li>
-								<li>
-									<h4>C<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{}</span></h4>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="../interfaces/imocked.html" class="tsd-signature-type">IMocked</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span></h4>
-						</li>
-					</ul>
+				<h2>Properties</h2>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="descriptors" class="tsd-anchor"></a>
+					<h3>descriptors</h3>
+					<div class="tsd-signature tsd-kind-icon">descriptors<span class="tsd-signature-symbol">:</span> <a href="../globals.html#propertydescriptors" class="tsd-signature-type">PropertyDescriptors</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/Morgan-Stanley/ts-mocking-bird/blob/b5d9c1b/main/helper/property-replacement-helper.ts#L24">main/helper/property-replacement-helper.ts:24</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="packagewithreplacements" class="tsd-anchor"></a>
+					<h3>package<wbr>With<wbr>Replacements</h3>
+					<div class="tsd-signature tsd-kind-icon">package<wbr>With<wbr>Replacements<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">T</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/Morgan-Stanley/ts-mocking-bird/blob/b5d9c1b/main/helper/property-replacement-helper.ts#L23">main/helper/property-replacement-helper.ts:23</a></li>
+						</ul>
+					</aside>
 				</section>
 			</section>
 		</div>
@@ -125,11 +128,14 @@
 				<ul class="before-current">
 				</ul>
 				<ul class="current">
-					<li class="current tsd-kind-class">
-						<a href="mock.html" class="tsd-kind-icon">Mock</a>
+					<li class="current tsd-kind-interface tsd-has-type-parameter">
+						<a href="iimportcopy.html" class="tsd-kind-icon">IImport<wbr>Copy</a>
 						<ul>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-static">
-								<a href="mock.html#create" class="tsd-kind-icon">create</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="iimportcopy.html#descriptors" class="tsd-kind-icon">descriptors</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="iimportcopy.html#packagewithreplacements" class="tsd-kind-icon">package<wbr>With<wbr>Replacements</a>
 							</li>
 						</ul>
 					</li>
