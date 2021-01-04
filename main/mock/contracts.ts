@@ -5,6 +5,9 @@ export type MatchFunction<T> = (passedValue: T) => boolean;
 // tslint:disable-next-line:ban-types
 export type FunctionsOnly<T> = Pick<T, { [K in keyof T]: Required<T>[K] extends Function ? K : never }[keyof T]>;
 
+// tslint:disable-next-line:ban-types
+export type PropertiesOnly<T> = Pick<T, { [K in keyof T]: Required<T>[K] extends Function ? never : K }[keyof T]>;
+
 /**
  * Allows custom logic to verify that a function parameter has the expected value.
  */
@@ -31,26 +34,44 @@ export type FunctionParameterMatchers<T extends any[]> = {
     [P in keyof T]: T[P] extends FunctionOrConstructor ? IParameterMatcher<T[P]> : ParameterMatcher<T[P]>;
 };
 
-export type FunctionCallLookup = { [key: string]: any[][] };
+export type FunctionCallLookup<T, C extends ConstructorFunction<T>, U extends LookupType> = {
+    [P in FunctionName<T, C, U>]?: LookupParams<T, C, U, P>[];
+};
 
+export type LookupParams<
+    T,
+    C extends ConstructorFunction<T>,
+    U extends LookupType,
+    K extends FunctionName<T, C, U>
+> = U extends FunctionTypes
+    ? FunctionParams<VerifierTarget<T, C, U>[K]>
+    : U extends SetterTypes
+    ? [VerifierTarget<T, C, U>[K]]
+    : [];
 export type FunctionParams<T> = T extends (...args: infer P) => any ? P : never;
 
 export type ConstructorFunction<T> = new (...args: any[]) => T;
 
-export type StaticFunctionTypes = 'staticFunction' | 'staticGetter' | 'staticSetter';
-export type InstanceFunctionTypes = 'function' | 'getter' | 'setter';
+export type StaticLookupTypes = 'staticFunction' | 'staticGetter' | 'staticSetter';
+export type InstanceLookupTypes = 'function' | 'getter' | 'setter';
 export type SetterTypes = 'staticSetter' | 'setter';
+export type GetterTypes = 'staticGetter' | 'getter';
+export type FunctionTypes = 'staticFunction' | 'function';
+export type LookupType = StaticLookupTypes | InstanceLookupTypes;
 
-export type VerifierTarget<T, C extends ConstructorFunction<T>, U extends FunctionType> = U extends StaticFunctionTypes
-    ? C
+export type VerifierTarget<T, C extends ConstructorFunction<T>, U extends LookupType> = U extends StaticLookupTypes
+    ? U extends FunctionTypes
+        ? FunctionsOnly<C>
+        : C
+    : U extends FunctionTypes
+    ? FunctionsOnly<T>
     : T;
-export type FunctionType = StaticFunctionTypes | InstanceFunctionTypes;
-export type FunctionName<T, C extends ConstructorFunction<T>, U extends FunctionType> = keyof VerifierTarget<T, C, U>;
+export type FunctionName<T, C extends ConstructorFunction<T>, U extends LookupType> = keyof VerifierTarget<T, C, U>;
 
 export interface IFunctionWithParametersVerification<
     P extends Array<any>,
     T,
-    U extends FunctionType,
+    U extends LookupType,
     C extends new (...args: any[]) => T = never
 > extends IFunctionVerifier<T, U, C> {
     /**
@@ -89,7 +110,7 @@ export interface IFunctionWithParametersVerification<
     withParametersEqualTo(...args: FunctionParameterMatchers<P>): IStrictFunctionVerification<T, U, C>;
 }
 
-export interface IStrictFunctionVerification<T, U extends FunctionType, C extends new (...args: any[]) => T = never>
+export interface IStrictFunctionVerification<T, U extends LookupType, C extends new (...args: any[]) => T = never>
     extends IFunctionVerifier<T, U, C> {
     /**
      * verify that the function has been called ONLY with the specified parameters and never without
@@ -97,7 +118,7 @@ export interface IStrictFunctionVerification<T, U extends FunctionType, C extend
     strict(): IFunctionVerifier<T, U, C>;
 }
 
-export interface IFunctionVerifier<T, U extends FunctionType, C extends new (...args: any[]) => T = never> {
+export interface IFunctionVerifier<T, U extends LookupType, C extends new (...args: any[]) => T = never> {
     type: U;
     functionName: FunctionName<T, C, U>;
     parameterMatchers?: (MatchFunction<any> | IParameterMatcher<any>)[];
@@ -116,13 +137,15 @@ export interface IMocked<T, C extends new (...args: any[]) => T = never> {
      */
     mockConstructor: C;
 
-    functionCallLookup: FunctionCallLookup;
-    setterCallLookup: FunctionCallLookup;
-    getterCallLookup: FunctionCallLookup;
+    functionCallLookup: FunctionCallLookup<T, C, 'function'>;
+    setterCallLookup: FunctionCallLookup<T, C, 'setter'>;
+    getterCallLookup: FunctionCallLookup<T, C, 'getter'>;
 
-    staticFunctionCallLookup: FunctionCallLookup;
-    staticSetterCallLookup: FunctionCallLookup;
-    staticGetterCallLookup: FunctionCallLookup;
+    staticFunctionCallLookup: FunctionCallLookup<T, C, 'staticFunction'>;
+    staticSetterCallLookup: FunctionCallLookup<T, C, 'staticSetter'>;
+    staticGetterCallLookup: FunctionCallLookup<T, C, 'staticGetter'>;
+
+    functionReplacementLookup: Partial<Record<LookupType, Record<string, ((...args: any[]) => any) | undefined>>>;
 
     /**
      * Used to setup the mock with multiple operators.

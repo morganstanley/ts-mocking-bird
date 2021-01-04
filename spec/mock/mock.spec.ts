@@ -28,6 +28,167 @@ describe('mock', () => {
         mock = mocked.mock;
     });
 
+    describe('lookups', () => {
+        it('function lookup should be typed correctly', () => {
+            expect(mocked.functionCallLookup.functionWithParamsAndNoReturn).toBeUndefined();
+
+            mocked.setupFunction('functionWithParamsAndNoReturn');
+
+            expect(mocked.functionCallLookup.functionWithParamsAndNoReturn).toBeDefined();
+
+            mock.functionWithParamsAndNoReturn('one', 2, true);
+
+            if (mocked.functionCallLookup.functionWithParamsAndNoReturn != null) {
+                const firstCall = mocked.functionCallLookup.functionWithParamsAndNoReturn[0];
+
+                const firstParam: string = firstCall[0];
+                const secondParam: number = firstCall[1];
+                const thirdParam: boolean | undefined = firstCall[2];
+
+                expect(firstParam).toBe('one');
+                expect(secondParam).toBe(2);
+                expect(thirdParam).toBe(true);
+            }
+        });
+
+        it('setter lookup should be typed correctly', () => {
+            expect(mocked.setterCallLookup.propertyOne).toBeUndefined();
+            expect(mocked.setterCallLookup.propertyTwo).toBeUndefined();
+
+            mocked.setupProperty('propertyOne');
+            mocked.setupProperty('propertyTwo');
+
+            expect(mocked.setterCallLookup.propertyOne).toBeDefined();
+            expect(mocked.setterCallLookup.propertyTwo).toBeDefined();
+
+            mock.propertyOne = 'valueOne';
+            mock.propertyTwo = 2;
+
+            if (mocked.setterCallLookup.propertyOne != null) {
+                const firstCall = mocked.setterCallLookup.propertyOne[0];
+                const param: string = firstCall[0];
+
+                expect(param).toBe('valueOne');
+            }
+
+            if (mocked.setterCallLookup.propertyTwo != null) {
+                const firstCall = mocked.setterCallLookup.propertyTwo[0];
+                const param: number = firstCall[0];
+
+                expect(param).toBe(2);
+            }
+        });
+
+        it('getter lookup should be typed correctly', () => {
+            expect(mocked.getterCallLookup.propertyOne).toBeUndefined();
+            expect(mocked.getterCallLookup.propertyTwo).toBeUndefined();
+
+            mocked.setupProperty('propertyOne');
+            mocked.setupProperty('propertyTwo');
+
+            expect(mocked.getterCallLookup.propertyOne).toBeDefined();
+            expect(mocked.getterCallLookup.propertyTwo).toBeDefined();
+
+            const propOneValue = mock.propertyOne;
+            const propTwoValue = mock.propertyTwo;
+
+            expect(propOneValue).toBeUndefined();
+            expect(propTwoValue).toBeUndefined();
+
+            if (mocked.getterCallLookup.propertyOne != null) {
+                const firstCall = mocked.getterCallLookup.propertyOne[0];
+
+                expect(firstCall).toBeDefined();
+            }
+
+            if (mocked.getterCallLookup.propertyTwo != null) {
+                const firstCall = mocked.getterCallLookup.propertyTwo[0];
+
+                expect(firstCall).toBeDefined();
+            }
+        });
+
+        it('static function lookup should be typed correctly', () => {
+            expect(mocked.staticFunctionCallLookup.doStuffWithParams).toBeUndefined();
+
+            mocked.setupStaticFunction('doStuffWithParams');
+
+            expect(mocked.staticFunctionCallLookup.doStuffWithParams).toBeDefined();
+
+            mocked.mockConstructor.doStuffWithParams('one', 2, true);
+
+            if (mocked.staticFunctionCallLookup.doStuffWithParams != null) {
+                const firstCall = mocked.staticFunctionCallLookup.doStuffWithParams[0];
+
+                const firstParam: string = firstCall[0];
+                const secondParam: number = firstCall[1];
+                // @ts-expect-error type is actually boolean | undefined;
+                const thirdParam: boolean | undefined = firstCall[2];
+
+                expect(firstParam).toBe('one');
+                expect(secondParam).toBe(2);
+                expect(thirdParam).toBe(true);
+            }
+        });
+
+        it('static setter lookup should be typed correctly', () => {
+            expect(mocked.staticSetterCallLookup.propertyOne).toBeUndefined();
+            expect(mocked.staticSetterCallLookup.propertyTwo).toBeUndefined();
+
+            mocked.setupStaticProperty('propertyOne');
+            mocked.setupStaticProperty('propertyTwo');
+
+            expect(mocked.staticSetterCallLookup.propertyOne).toBeDefined();
+            expect(mocked.staticSetterCallLookup.propertyTwo).toBeDefined();
+
+            mocked.mockConstructor.propertyOne = 'valueOne';
+            mocked.mockConstructor.propertyTwo = 2;
+
+            if (mocked.staticSetterCallLookup.propertyOne != null) {
+                const firstCall = mocked.staticSetterCallLookup.propertyOne[0];
+                const param: string = firstCall[0];
+
+                expect(param).toBe('valueOne');
+            }
+
+            if (mocked.staticSetterCallLookup.propertyTwo != null) {
+                const firstCall = mocked.staticSetterCallLookup.propertyTwo[0];
+                const param: number = firstCall[0];
+
+                expect(param).toBe(2);
+            }
+        });
+
+        it('static getter lookup should be typed correctly', () => {
+            expect(mocked.staticGetterCallLookup.propertyOne).toBeUndefined();
+            expect(mocked.staticGetterCallLookup.propertyTwo).toBeUndefined();
+
+            mocked.setupStaticProperty('propertyOne');
+            mocked.setupStaticProperty('propertyTwo');
+
+            expect(mocked.staticGetterCallLookup.propertyOne).toBeDefined();
+            expect(mocked.staticGetterCallLookup.propertyTwo).toBeDefined();
+
+            const propOneValue = mocked.mockConstructor.propertyOne;
+            const propTwoValue = mocked.mockConstructor.propertyTwo;
+
+            expect(propOneValue).toBeUndefined();
+            expect(propTwoValue).toBeUndefined();
+
+            if (mocked.staticGetterCallLookup.propertyOne != null) {
+                const firstCall = mocked.staticGetterCallLookup.propertyOne[0];
+
+                expect(firstCall).toBeDefined();
+            }
+
+            if (mocked.staticGetterCallLookup.propertyTwo != null) {
+                const firstCall = mocked.staticGetterCallLookup.propertyTwo[0];
+
+                expect(firstCall).toBeDefined();
+            }
+        });
+    });
+
     describe('setup', () => {
         it('withFunction will fail with a meaningful error if we try to assert a function that is not setup', () => {
             verifyFailure(
@@ -1455,6 +1616,52 @@ describe('mock', () => {
             mocked.mock.propertyOne = 'testTwo';
             expect(values).toEqual(['testOne', 'testTwo']);
         });
+
+        it('should not change setter on mock when defineProperty called twice', () => {
+            const values: string[] = [];
+
+            function setterOne(value: string) {
+                values.push(`${value}_setterOne`);
+            }
+
+            function setterTwo(value: string) {
+                values.push(`${value}_setterTwo`);
+            }
+
+            mocked.setup(defineProperty('propertyOne', () => 'mockedValue'));
+            let mockedFunction = Object.getOwnPropertyDescriptor(mock, 'propertyOne')?.set;
+
+            mocked.setup(defineProperty('propertyOne', () => 'mockedValue', setterOne));
+            expect(Object.getOwnPropertyDescriptor(mock, 'propertyOne')?.set).toBe(mockedFunction);
+            mockedFunction = Object.getOwnPropertyDescriptor(mock, 'propertyOne')?.set;
+
+            mocked.setup(defineProperty('propertyOne', () => 'mockedValue', setterTwo));
+            expect(Object.getOwnPropertyDescriptor(mock, 'propertyOne')?.set).toBe(mockedFunction);
+            expect(values).toEqual([]);
+            mocked.mock.propertyOne = 'testOne';
+            expect(values).toEqual(['testOne_setterTwo']);
+        });
+
+        it('should not change getter on mock when defineProperty called twice', () => {
+            function getterOne() {
+                return 'getterOne';
+            }
+
+            function getterTwo() {
+                return 'getterTwo';
+            }
+
+            mocked.setup(defineProperty('propertyOne'));
+            let mockedFunction = Object.getOwnPropertyDescriptor(mock, 'propertyOne')?.get;
+
+            mocked.setup(defineProperty('propertyOne', getterOne));
+            expect(Object.getOwnPropertyDescriptor(mock, 'propertyOne')?.get).toBe(mockedFunction);
+            mockedFunction = Object.getOwnPropertyDescriptor(mock, 'propertyOne')?.get;
+
+            mocked.setup(defineProperty('propertyOne', getterTwo));
+            expect(Object.getOwnPropertyDescriptor(mock, 'propertyOne')?.get).toBe(mockedFunction);
+            expect(mocked.mock.propertyOne).toEqual('getterTwo');
+        });
     });
 
     describe('mockedFunctions', () => {
@@ -1480,17 +1687,41 @@ describe('mock', () => {
 
         it('should changed implementation when setupFunction called a second time', () => {
             function mockFunctionOne() {
-                return `mockFunctionOne`;
+                return `mockFunctionOneReturnValue`;
             }
 
             function mockFunctionTwo() {
-                return `mockFunctionTwo`;
+                return `mockFunctionTwoReturnValue`;
             }
 
             mocked.setup(setupFunction('functionWithParamsAndReturn', mockFunctionOne));
             mocked.setup(setupFunction('functionWithParamsAndReturn', mockFunctionTwo));
 
-            expect(mock.functionWithParamsAndReturn('one', 2, true)).toEqual('mockFunctionTwo');
+            expect(mock.functionWithParamsAndReturn('one', 2, true)).toEqual('mockFunctionTwoReturnValue');
+        });
+
+        it('should not change function object on mock when setupFunction called twice', () => {
+            // underlying function should change but mock function should not
+            // this is to avoid issues when function is imported once and we change implementation after initial setup
+
+            function mockFunctionOne() {
+                return `mockFunctionOneReturnValue`;
+            }
+
+            function mockFunctionTwo() {
+                return `mockFunctionTwoReturnValue`;
+            }
+
+            mocked.setup(setupFunction('functionWithParamsAndReturn'));
+            let mockedFunction = mock.functionWithParamsAndReturn;
+
+            mocked.setup(setupFunction('functionWithParamsAndReturn', mockFunctionOne));
+            expect(mock.functionWithParamsAndReturn).toBe(mockedFunction);
+            mockedFunction = mock.functionWithParamsAndReturn;
+
+            mocked.setup(setupFunction('functionWithParamsAndReturn', mockFunctionTwo));
+            expect(mock.functionWithParamsAndReturn).toBe(mockedFunction);
+            expect(mock.functionWithParamsAndReturn('one', 2, true)).toEqual('mockFunctionTwoReturnValue');
         });
 
         it('chaining setup functions should be supported', () => {
@@ -1914,9 +2145,11 @@ describe('mock', () => {
 
 class SampleMockedClass {
     public static propertyOne = '';
+    public static propertyTwo = 2;
 
     // tslint:disable-next-line:no-empty
     public static doStuff() {}
+    public static doStuffWithParams(_paramOne: string, _paramTwo: number, _paramThree?: boolean) {}
 
     public propertyOne: string = 'mocked';
     public propertyTwo: number = 123;

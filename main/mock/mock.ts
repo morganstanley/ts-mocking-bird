@@ -22,6 +22,8 @@ export class Mock {
             staticSetterCallLookup: {},
             staticGetterCallLookup: {},
 
+            functionReplacementLookup: {},
+
             mock: {} as T,
             // tslint:disable-next-line:no-empty
             mockConstructor: ((..._args: any[]) => {}) as any,
@@ -66,13 +68,13 @@ export class Mock {
                 return mocked.withStaticGetter(propertyName);
             },
 
-            withFunction: <U extends keyof T>(functionName: U) =>
+            withFunction: <U extends keyof FunctionsOnly<T>>(functionName: U) =>
                 createFunctionParameterVerifier(mocked, 'function', functionName),
             withSetter: <U extends keyof T>(functionName: U) =>
                 createFunctionParameterVerifier(mocked, 'setter', functionName),
             withGetter: <U extends keyof T>(functionName: U) => createFunctionVerifier(mocked, 'getter', functionName),
 
-            withStaticFunction: <U extends keyof C>(functionName: U) =>
+            withStaticFunction: <U extends keyof FunctionsOnly<C>>(functionName: U) =>
                 createFunctionParameterVerifier(mocked, 'staticFunction', functionName),
             withStaticSetter: <U extends keyof C>(functionName: U) =>
                 createFunctionParameterVerifier(mocked, 'staticSetter', functionName),

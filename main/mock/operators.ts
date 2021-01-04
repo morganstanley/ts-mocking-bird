@@ -1,11 +1,15 @@
+import { getLookup } from '../helper';
 import {
     ConstructorFunction,
     FunctionCallLookup,
     FunctionName,
-    FunctionsOnly,
-    FunctionType,
+    FunctionTypes,
+    GetterTypes,
     IMocked,
+    LookupParams,
+    LookupType,
     OperatorFunction,
+    SetterTypes,
 } from './contracts';
 
 /**
@@ -16,24 +20,32 @@ import {
  * @param functionName
  * @param mockFunction
  */
-export function setupFunction<T, C extends ConstructorFunction<T>, U extends keyof FunctionsOnly<T>>(
+export function setupFunction<T, C extends ConstructorFunction<T>, U extends FunctionName<T, C, 'function'>>(
     functionName: U,
     mockFunction?: T[U],
 ): OperatorFunction<T, C> {
     return (mocked: IMocked<T, C>) => {
-        const functionReplacement = (...args: any[]) => {
+        const functionReplacement = (...args: LookupParams<T, C, 'function', U>) => {
             let returnValue: any;
 
-            if (mockFunction instanceof Function) {
-                returnValue = mockFunction.apply(mocked.mock, args);
+            const mockedFunction = mocked.functionReplacementLookup['function']?.[functionName as string];
+
+            if (mockedFunction instanceof Function) {
+                returnValue = mockedFunction.apply(mocked.mock, args);
             }
-            trackFunctionCall(mocked, functionName as string, args, false);
+            trackFunctionCall(mocked, 'function', functionName, args);
 
             return returnValue;
         };
 
-        mocked.mock[functionName] = functionReplacement as any;
-        mocked.functionCallLookup[functionName as any] = [];
+        const functionLookup = (mocked.functionReplacementLookup['function'] =
+            mocked.functionReplacementLookup['function'] || {});
+        functionLookup[functionName as string] = mockFunction;
+
+        if (mocked.mock[functionName] == null) {
+            mocked.mock[functionName] = functionReplacement as any;
+        }
+        mocked.functionCallLookup[functionName] = [];
 
         return mocked;
     };
@@ -47,24 +59,33 @@ export function setupFunction<T, C extends ConstructorFunction<T>, U extends key
  * @param functionName
  * @param mockFunction
  */
-export function setupStaticFunction<T, C extends ConstructorFunction<T>, U extends keyof FunctionsOnly<C>>(
-    functionName: U,
-    mockFunction?: C[U],
-): OperatorFunction<T, C> {
+export function setupStaticFunction<
+    T,
+    C extends ConstructorFunction<T>,
+    U extends FunctionName<T, C, 'staticFunction'>
+>(functionName: U, mockFunction?: C[U]): OperatorFunction<T, C> {
     return (mocked: IMocked<T, C>) => {
-        const functionReplacement = (...args: any[]) => {
+        const functionReplacement = (...args: LookupParams<T, C, 'staticFunction', U>) => {
             let returnValue: any;
 
-            if (mockFunction instanceof Function) {
-                returnValue = mockFunction.apply(mocked.mock, args);
+            const mockedFunction = mocked.functionReplacementLookup['staticFunction']?.[functionName as string];
+
+            if (mockedFunction instanceof Function) {
+                returnValue = mockedFunction.apply(mocked.mock, args);
             }
-            trackFunctionCall(mocked, functionName as string, args, true);
+            trackFunctionCall(mocked, 'staticFunction', functionName, args);
 
             return returnValue;
         };
 
-        mocked.mockConstructor[functionName] = functionReplacement as any;
-        mocked.staticFunctionCallLookup[functionName as any] = [];
+        const staticFunctionLookup = (mocked.functionReplacementLookup['staticFunction'] =
+            mocked.functionReplacementLookup['staticFunction'] || {});
+        staticFunctionLookup[functionName as string] = mockFunction;
+
+        if (mocked.mockConstructor[functionName] == null) {
+            mocked.mockConstructor[functionName] = functionReplacement as any;
+        }
+        mocked.staticFunctionCallLookup[functionName] = [];
 
         return mocked;
     };
@@ -78,7 +99,7 @@ export function setupStaticFunction<T, C extends ConstructorFunction<T>, U exten
  * @param propertyName
  * @param value
  */
-export function setupProperty<T, C extends ConstructorFunction<T>, U extends keyof T>(
+export function setupProperty<T, C extends ConstructorFunction<T>, U extends FunctionName<T, C, 'getter'>>(
     propertyName: U,
     value?: T[U],
 ): OperatorFunction<T, C> {
@@ -93,7 +114,7 @@ export function setupProperty<T, C extends ConstructorFunction<T>, U extends key
  * @param propertyName
  * @param value
  */
-export function setupStaticProperty<T, C extends ConstructorFunction<T>, U extends keyof C>(
+export function setupStaticProperty<T, C extends ConstructorFunction<T>, U extends FunctionName<T, C, 'staticGetter'>>(
     propertyName: U,
     value?: C[U],
 ): OperatorFunction<T, C> {
@@ -108,13 +129,13 @@ export function setupStaticProperty<T, C extends ConstructorFunction<T>, U exten
  * @param propertyName
  * @param value
  */
-export function defineProperty<T, C extends ConstructorFunction<T>, U extends keyof T>(
+export function defineProperty<T, C extends ConstructorFunction<T>, U extends FunctionName<T, C, 'getter'>>(
     propertyName: U,
     getter?: () => T[U],
     setter?: (value: T[U]) => void,
 ): OperatorFunction<T, C> {
     return (mocked: IMocked<T, C>) => {
-        return definePropertyImpl(mocked, 'getter', propertyName, false, getter, setter);
+        return definePropertyImpl(mocked, 'getter', propertyName, getter, setter);
     };
 }
 
@@ -126,101 +147,141 @@ export function defineProperty<T, C extends ConstructorFunction<T>, U extends ke
  * @param propertyName
  * @param value
  */
-export function defineStaticProperty<T, C extends ConstructorFunction<T>, U extends keyof C>(
+export function defineStaticProperty<T, C extends ConstructorFunction<T>, U extends FunctionName<T, C, 'staticGetter'>>(
     propertyName: U,
     getter?: () => C[U],
     setter?: (value: C[U]) => void,
 ): OperatorFunction<T, C> {
     return (mocked: IMocked<T, C>) => {
-        return definePropertyImpl(mocked, 'staticGetter', propertyName, true, getter, setter);
+        return definePropertyImpl(mocked, 'staticGetter', propertyName, getter, setter);
     };
 }
 
 function definePropertyImpl<
     T,
     C extends ConstructorFunction<T>,
-    U extends FunctionType,
+    U extends GetterTypes,
     K extends FunctionName<T, C, U>
 >(
     mocked: IMocked<T, C>,
-    _type: U,
+    lookupType: U,
     propertyName: K,
-    isStatic: boolean,
     getter?: () => any,
     setter?: (value: any) => void,
 ): IMocked<T, C> {
     const propertyGetter = () => {
-        trackGetterCall(mocked, propertyName as string, isStatic);
+        trackGetterCall(mocked, lookupType, propertyName);
 
-        return getter ? getter() : undefined;
+        const mockedFunction = mocked.functionReplacementLookup[lookupType]?.[propertyName as string];
+        return mockedFunction ? mockedFunction() : undefined;
     };
 
-    const propertySetter = (value: any) => {
-        trackSetterCall(mocked, propertyName as string, value, isStatic);
+    let setterLookupType: SetterTypes;
 
-        if (setter != null) {
-            setter.apply(mocked.mock, [value]);
+    switch (lookupType) {
+        case 'getter':
+            setterLookupType = 'setter';
+            const getterLookup = (mocked.functionReplacementLookup['getter'] =
+                mocked.functionReplacementLookup['getter'] || {});
+            getterLookup[propertyName as string] = getter;
+            const setterLookup = (mocked.functionReplacementLookup['setter'] =
+                mocked.functionReplacementLookup['setter'] || {});
+            setterLookup[propertyName as string] = setter;
+            break;
+        case 'staticGetter':
+            const staticGetterLookup = (mocked.functionReplacementLookup['staticGetter'] =
+                mocked.functionReplacementLookup['staticGetter'] || {});
+            staticGetterLookup[propertyName as string] = getter;
+            const staticSetterLookup = (mocked.functionReplacementLookup['staticSetter'] =
+                mocked.functionReplacementLookup['staticSetter'] || {});
+            staticSetterLookup[propertyName as string] = setter;
+            setterLookupType = 'staticSetter';
+            break;
+    }
+
+    const setterProperty: FunctionName<T, C, SetterTypes> = propertyName as any;
+
+    const propertySetter = (value: any) => {
+        trackSetterCall(mocked, setterLookupType, setterProperty, [value]);
+
+        const mockedFunction = mocked.functionReplacementLookup[setterLookupType]?.[propertyName as string];
+        if (mockedFunction != null) {
+            mockedFunction.apply(mocked.mock, [value]);
         }
     };
 
-    const object = isStatic ? mocked.mockConstructor : mocked.mock;
+    let target: T | C;
 
-    Object.defineProperty(object, propertyName, {
-        enumerable: true,
-        get: propertyGetter,
-        set: propertySetter,
-        configurable: true,
-    });
+    getLookup(mocked, lookupType)[propertyName] = [];
 
-    if (isStatic) {
-        mocked.staticGetterCallLookup[propertyName as any] = [];
-        mocked.staticSetterCallLookup[propertyName as any] = [];
-    } else {
-        mocked.getterCallLookup[propertyName as any] = [];
-        mocked.setterCallLookup[propertyName as any] = [];
+    switch (lookupType) {
+        case 'staticGetter':
+            target = mocked.mockConstructor;
+            getLookup(mocked, 'staticSetter')[setterProperty] = [];
+            break;
+        default:
+            target = mocked.mock;
+            getLookup(mocked, 'setter')[setterProperty] = [];
+            break;
+    }
+
+    if (Object.getOwnPropertyDescriptor(target, propertyName) == null) {
+        Object.defineProperty(target, propertyName, {
+            enumerable: true,
+            get: propertyGetter,
+            set: propertySetter,
+            configurable: true,
+        });
     }
 
     return mocked;
 }
 
-function trackFunctionCall<T, C extends ConstructorFunction<T>>(
-    mock: IMocked<T, C>,
-    functionName: string,
-    params: any[],
-    isStatic: boolean,
-) {
-    const lookup = isStatic ? mock.staticFunctionCallLookup : mock.functionCallLookup;
+function trackFunctionCall<
+    T,
+    C extends ConstructorFunction<T>,
+    U extends FunctionTypes,
+    K extends FunctionName<T, C, U>
+>(mock: IMocked<T, C>, lookupType: U, functionName: K, params: LookupParams<T, C, U, K>) {
+    const lookup = getLookup(mock, lookupType);
 
     trackCall(lookup, functionName, params);
 }
 
-function trackGetterCall<T, C extends ConstructorFunction<T>>(
+function trackGetterCall<T, C extends ConstructorFunction<T>, U extends GetterTypes, K extends FunctionName<T, C, U>>(
     mock: IMocked<T, C>,
-    propertyName: string,
-    isStatic: boolean,
+    lookupType: U,
+    propertyName: K,
 ) {
-    const lookup = isStatic ? mock.staticGetterCallLookup : mock.getterCallLookup;
+    const lookup = getLookup(mock, lookupType);
 
     //  it's easier to have an array of empty arrays than just keep track of a count
     //  This allows us to use the same verification code as the setter and functions
-    trackCall(lookup, propertyName, []);
+    trackCall(lookup, propertyName, [] as LookupParams<T, C, U, K>);
 }
 
-function trackSetterCall<T, C extends ConstructorFunction<T>>(
+function trackSetterCall<T, C extends ConstructorFunction<T>, U extends SetterTypes, K extends FunctionName<T, C, U>>(
     mock: IMocked<T, C>,
-    propertyName: string,
-    param: any,
-    isStatic: boolean,
+    lookupType: U,
+    propertyName: K,
+    param: LookupParams<T, C, U, K>,
 ) {
-    const lookup = isStatic ? mock.staticSetterCallLookup : mock.setterCallLookup;
+    const lookup = getLookup(mock, lookupType);
 
-    trackCall(lookup, propertyName, [param]);
+    trackCall(lookup, propertyName, param);
 }
 
-function trackCall(lookup: FunctionCallLookup, name: string, params: any[]) {
-    if (lookup[name as any] === undefined) {
-        lookup[name as any] = [];
+function trackCall<T, C extends ConstructorFunction<T>, U extends LookupType, K extends FunctionName<T, C, U>>(
+    lookup: FunctionCallLookup<T, C, U>,
+    name: K,
+    params: LookupParams<T, C, U, K>,
+) {
+    let functionCalls: LookupParams<T, C, U, K>[] | undefined = lookup[name];
+
+    if (functionCalls === undefined) {
+        functionCalls = [] as LookupParams<T, C, U, K>[];
+        lookup[name] = functionCalls;
     }
 
-    lookup[name as any].push(params);
+    functionCalls.push(params);
 }

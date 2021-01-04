@@ -1,9 +1,8 @@
-import { runningInJest } from '../helper';
+import { getLookup, runningInJest } from '../helper';
 import {
     ConstructorFunction,
     FunctionName,
     FunctionParams,
-    FunctionType,
     IFunctionVerifier,
     IFunctionWithParametersVerification,
     IJasmineCustomMatcherResult,
@@ -11,6 +10,8 @@ import {
     IMocked,
     IParameterMatcher,
     IStrictFunctionVerification,
+    LookupParams,
+    LookupType,
     MatchFunction,
     ParameterMatcher,
     SetterTypes,
@@ -21,14 +22,14 @@ import { isParameterMatcher, mapItemToString, toBe, toEqual } from './parameterM
 export type VerifierParams<
     T,
     C extends ConstructorFunction<T>,
-    U extends FunctionType,
+    U extends LookupType,
     K extends FunctionName<T, C, U>
 > = U extends SetterTypes ? [VerifierTarget<T, C, U>[K]] : FunctionParams<VerifierTarget<T, C, U>[K]>;
 
 export function createFunctionParameterVerifier<
     T,
     C extends ConstructorFunction<T>,
-    U extends FunctionType,
+    U extends LookupType,
     K extends FunctionName<T, C, U>
 >(
     mocked: IMocked<T, C>,
@@ -58,7 +59,7 @@ export function createFunctionParameterVerifier<
 export function createFunctionVerifier<
     T,
     C extends ConstructorFunction<T>,
-    U extends FunctionType,
+    U extends LookupType,
     K extends FunctionName<T, C, U>
 >(
     mocked: IMocked<T, C>,
@@ -79,7 +80,7 @@ export function createFunctionVerifier<
 export function createStrictFunctionVerifier<
     T,
     C extends ConstructorFunction<T>,
-    U extends FunctionType,
+    U extends LookupType,
     K extends FunctionName<T, C, U>
 >(
     mocked: IMocked<T, C>,
@@ -96,7 +97,7 @@ export function createStrictFunctionVerifier<
 export function verifyParameters<
     T,
     C extends ConstructorFunction<T>,
-    U extends FunctionType,
+    U extends LookupType,
     K extends FunctionName<T, C, U>
 >(
     parameters: ParameterMatcher<any>[],
@@ -128,7 +129,7 @@ function mapParameterToMatcher(
     return equals ? toEqual(param) : toBe(param);
 }
 
-export function verifyFunctionCalled<T, C extends ConstructorFunction<T>, U extends FunctionType>(
+export function verifyFunctionCalled<T, C extends ConstructorFunction<T>, U extends LookupType>(
     times: number | undefined,
     verifier: IFunctionVerifier<T, U, C>,
 ): IJasmineCustomMatcherResult | IJestCustomMatcherResult {
@@ -138,49 +139,44 @@ export function verifyFunctionCalled<T, C extends ConstructorFunction<T>, U exte
     const parameterMatchers = verifier.parameterMatchers;
     const strict = verifier.strictCallCount;
 
-    let functionCalls: any[][];
     let expectationMessage: string;
     let errorMessageSetupFunction: string;
     let errorMessageDescription: string;
 
+    const functionCalls: LookupParams<T, C, U, any>[] | undefined = getLookup(mock, type)[functionName];
+
     switch (type) {
         case 'staticGetter':
-            functionCalls = mock.staticGetterCallLookup[functionName as any];
             expectationMessage = `Expected static property "${functionName}" getter to be called`;
             errorMessageSetupFunction = `Mock.setupStaticProperty()`;
             errorMessageDescription = `Static property`;
             break;
 
         case 'staticSetter':
-            functionCalls = mock.staticSetterCallLookup[functionName as any];
             expectationMessage = `Expected static property "${functionName}" to be set`;
             errorMessageSetupFunction = `Mock.setupStaticProperty()`;
             errorMessageDescription = `Static property`;
             break;
 
         case 'staticFunction':
-            functionCalls = mock.staticFunctionCallLookup[functionName as any];
             expectationMessage = `Expected static function "${functionName}" to be called`;
             errorMessageSetupFunction = `Mock.setupStaticFunction()`;
             errorMessageDescription = `Static function`;
             break;
 
         case 'getter':
-            functionCalls = mock.getterCallLookup[functionName as any];
             expectationMessage = `Expected property "${functionName}" getter to be called`;
             errorMessageSetupFunction = `Mock.setupProperty()`;
             errorMessageDescription = `Property`;
             break;
 
         case 'setter':
-            functionCalls = mock.setterCallLookup[functionName as any];
             expectationMessage = `Expected property "${functionName}" to be set`;
             errorMessageSetupFunction = `Mock.setupProperty()`;
             errorMessageDescription = `Property`;
             break;
 
         default:
-            functionCalls = mock.functionCallLookup[functionName as any];
             expectationMessage = `Expected "${functionName}" to be called`;
             errorMessageSetupFunction = `Mock.setupFunction()`;
             errorMessageDescription = `Function`;
