@@ -1,4 +1,4 @@
-import { FunctionsOnly, IMocked, OperatorFunction, PropertiesOnly } from './contracts';
+import { FunctionsOnly, IMocked, OperatorFunction } from './contracts';
 import { addMatchers } from './matchers';
 import {
     defineProperty,
@@ -38,11 +38,11 @@ export class Mock {
                 setupFunction<T, C, K>(functionName, mockFunction)(mocked);
                 return mocked.withFunction(functionName);
             },
-            setupProperty: <K extends keyof PropertiesOnly<T>>(propertyName: K, value?: T[K]) => {
+            setupProperty: <K extends keyof T>(propertyName: K, value?: T[K]) => {
                 setupProperty<T, C, K>(propertyName, value)(mocked);
                 return mocked.withGetter(propertyName);
             },
-            defineProperty: <K extends keyof PropertiesOnly<T>>(
+            defineProperty: <K extends keyof T>(
                 propertyName: K,
                 getter?: () => T[K],
                 setter?: (value: T[K]) => void,
@@ -55,11 +55,11 @@ export class Mock {
                 setupStaticFunction<T, C, K>(functionName, mockFunction)(mocked);
                 return mocked.withStaticFunction(functionName);
             },
-            setupStaticProperty: <K extends keyof PropertiesOnly<C>>(propertyName: K, value?: C[K]) => {
+            setupStaticProperty: <K extends keyof C>(propertyName: K, value?: C[K]) => {
                 setupStaticProperty<T, C, K>(propertyName, value)(mocked);
                 return mocked.withStaticGetter(propertyName);
             },
-            defineStaticProperty: <K extends keyof PropertiesOnly<C>>(
+            defineStaticProperty: <K extends keyof C>(
                 propertyName: K,
                 getter?: () => C[K],
                 setter?: (value: C[K]) => void,
@@ -70,16 +70,15 @@ export class Mock {
 
             withFunction: <U extends keyof FunctionsOnly<T>>(functionName: U) =>
                 createFunctionParameterVerifier(mocked, 'function', functionName),
-            withSetter: <U extends keyof PropertiesOnly<T>>(functionName: U) =>
+            withSetter: <U extends keyof T>(functionName: U) =>
                 createFunctionParameterVerifier(mocked, 'setter', functionName),
-            withGetter: <U extends keyof PropertiesOnly<T>>(functionName: U) =>
-                createFunctionVerifier(mocked, 'getter', functionName),
+            withGetter: <U extends keyof T>(functionName: U) => createFunctionVerifier(mocked, 'getter', functionName),
 
             withStaticFunction: <U extends keyof FunctionsOnly<C>>(functionName: U) =>
                 createFunctionParameterVerifier(mocked, 'staticFunction', functionName),
-            withStaticSetter: <U extends keyof PropertiesOnly<C>>(functionName: U) =>
+            withStaticSetter: <U extends keyof C>(functionName: U) =>
                 createFunctionParameterVerifier(mocked, 'staticSetter', functionName),
-            withStaticGetter: <U extends keyof PropertiesOnly<C>>(functionName: U) =>
+            withStaticGetter: <U extends keyof C>(functionName: U) =>
                 createFunctionVerifier(mocked, 'staticGetter', functionName),
         };
 
