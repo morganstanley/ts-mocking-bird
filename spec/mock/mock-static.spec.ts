@@ -1376,6 +1376,52 @@ describe('mock with statics', () => {
             mocked.mockConstructor.propertyOne = 'testTwo';
             expect(values).toEqual(['testOne', 'testTwo']);
         });
+
+        it('should not change setter on mock when defineProperty called twice', () => {
+            const values: string[] = [];
+
+            function setterOne(value: string) {
+                values.push(`${value}_setterOne`);
+            }
+
+            function setterTwo(value: string) {
+                values.push(`${value}_setterTwo`);
+            }
+
+            mocked.setup(defineStaticProperty('propertyOne', () => 'mockedValue'));
+            let mockedFunction = Object.getOwnPropertyDescriptor(mocked.mockConstructor, 'propertyOne')?.set;
+
+            mocked.setup(defineStaticProperty('propertyOne', () => 'mockedValue', setterOne));
+            expect(Object.getOwnPropertyDescriptor(mocked.mockConstructor, 'propertyOne')?.set).toBe(mockedFunction);
+            mockedFunction = Object.getOwnPropertyDescriptor(mocked.mockConstructor, 'propertyOne')?.set;
+
+            mocked.setup(defineStaticProperty('propertyOne', () => 'mockedValue', setterTwo));
+            expect(Object.getOwnPropertyDescriptor(mocked.mockConstructor, 'propertyOne')?.set).toBe(mockedFunction);
+            expect(values).toEqual([]);
+            mocked.mockConstructor.propertyOne = 'testOne';
+            expect(values).toEqual(['testOne_setterTwo']);
+        });
+
+        it('should not change getter on mock when defineProperty called twice', () => {
+            function getterOne() {
+                return 'getterOne';
+            }
+
+            function getterTwo() {
+                return 'getterTwo';
+            }
+
+            mocked.setup(defineStaticProperty('propertyOne'));
+            let mockedFunction = Object.getOwnPropertyDescriptor(mocked.mockConstructor, 'propertyOne')?.get;
+
+            mocked.setup(defineStaticProperty('propertyOne', getterOne));
+            expect(Object.getOwnPropertyDescriptor(mocked.mockConstructor, 'propertyOne')?.get).toBe(mockedFunction);
+            mockedFunction = Object.getOwnPropertyDescriptor(mocked.mockConstructor, 'propertyOne')?.get;
+
+            mocked.setup(defineStaticProperty('propertyOne', getterTwo));
+            expect(Object.getOwnPropertyDescriptor(mocked.mockConstructor, 'propertyOne')?.get).toBe(mockedFunction);
+            expect(mocked.mockConstructor.propertyOne).toEqual('getterTwo');
+        });
     });
 
     describe('mockedStaticFunctions', () => {
@@ -1396,6 +1442,32 @@ describe('mock with statics', () => {
 
             mocked.setup(setupStaticFunction('functionWithParamsAndReturn', mockFunction));
 
+            expect(mocked.mockConstructor.functionWithParamsAndReturn('one', 2, true)).toEqual(
+                'mockedReturnValue_one_2_true',
+            );
+        });
+
+        it('should not change function object on mock when setupFunction called twice', () => {
+            // underlying function should change but mock function should not
+            // this is to avoid issues when function is imported once and we change implementation after initial setup
+
+            function mockFunctionOne(paramOne: string, paramTwo?: number, paramThree?: boolean) {
+                return `mockedReturnValue_${paramOne}_${paramTwo}_${paramThree}`;
+            }
+
+            function mockFunctionTwo(paramOne: string, paramTwo?: number, paramThree?: boolean) {
+                return `mockedReturnValue_${paramOne}_${paramTwo}_${paramThree}`;
+            }
+
+            mocked.setup(setupStaticFunction('functionWithParamsAndReturn'));
+            let mockedFunction = mocked.mockConstructor.functionWithParamsAndReturn;
+
+            mocked.setup(setupStaticFunction('functionWithParamsAndReturn', mockFunctionOne));
+            expect(mocked.mockConstructor.functionWithParamsAndReturn).toBe(mockedFunction);
+            mockedFunction = mocked.mockConstructor.functionWithParamsAndReturn;
+
+            mocked.setup(setupStaticFunction('functionWithParamsAndReturn', mockFunctionTwo));
+            expect(mocked.mockConstructor.functionWithParamsAndReturn).toBe(mockedFunction);
             expect(mocked.mockConstructor.functionWithParamsAndReturn('one', 2, true)).toEqual(
                 'mockedReturnValue_one_2_true',
             );

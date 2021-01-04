@@ -145,6 +145,8 @@ export interface IMocked<T, C extends new (...args: any[]) => T = never> {
     staticSetterCallLookup: FunctionCallLookup<T, C, 'staticSetter'>;
     staticGetterCallLookup: FunctionCallLookup<T, C, 'staticGetter'>;
 
+    functionReplacementLookup: Partial<Record<LookupType, Record<string, ((...args: any[]) => any) | undefined>>>;
+
     /**
      * Used to setup the mock with multiple operators.
      *

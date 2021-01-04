@@ -22,6 +22,8 @@ export class Mock {
             staticSetterCallLookup: {},
             staticGetterCallLookup: {},
 
+            functionReplacementLookup: {},
+
             mock: {} as T,
             // tslint:disable-next-line:no-empty
             mockConstructor: ((..._args: any[]) => {}) as any,
