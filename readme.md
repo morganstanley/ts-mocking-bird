@@ -1,8 +1,8 @@
 # @morgan-stanley/ts-mocking-bird
 ![npm](https://img.shields.io/npm/v/@morgan-stanley/ts-mocking-bird)
-[![Build Status](https://travis-ci.com/Morgan-Stanley/ts-mocking-bird.svg?branch=master)](https://travis-ci.com/Morgan-Stanley/ts-mocking-bird)
-[![codecov](https://codecov.io/gh/Morgan-Stanley/ts-mocking-bird/branch/master/graph/badge.svg)](https://codecov.io/gh/Morgan-Stanley/ts-mocking-bird)
-[![Known Vulnerabilities](https://snyk.io/test/github/Morgan-Stanley/ts-mocking-bird/badge.svg)](https://snyk.io/test/github/Morgan-Stanley/ts-mocking-bird})
+[![Build Status](https://travis-ci.com/morganstanley/ts-mocking-bird.svg?branch=master)](https://travis-ci.com/morganstanley/ts-mocking-bird)
+[![codecov](https://codecov.io/gh/morganstanley/ts-mocking-bird/branch/master/graph/badge.svg)](https://codecov.io/gh/morganstanley/ts-mocking-bird)
+[![Known Vulnerabilities](https://snyk.io/test/github/morganstanley/ts-mocking-bird/badge.svg)](https://snyk.io/test/github/morganstanley/ts-mocking-bird})
 ![NPM](https://img.shields.io/npm/l/@morgan-stanley/ts-mocking-bird)
 ![NPM](https://img.shields.io/badge/types-TypeScript-blue)
 
@@ -10,7 +10,7 @@
 
 > A fully type safe mocking, call verification and import replacement library that works with jasmine and jest
 
-Documentation: https://morgan-stanley.github.io/ts-mocking-bird/
+Documentation: https://morganstanley.github.io/ts-mocking-bird/
 
 # Why use this?
 
@@ -38,7 +38,7 @@ npm install @morgan-stanley/ts-mocking-bird
 
 ## Create a Mock
 
-[Examples](https://github.com/Morgan-Stanley/ts-mocking-bird/tree/master/spec/examples/exampleTests.spec.ts)
+[Examples](https://github.com/morganstanley/ts-mocking-bird/tree/master/spec/examples/exampleTests.spec.ts)
 
 Creates a mock that is typed as `IMyService`. Properties and functions can be setup using `mockedService`. The actual mocked service is accessible at `mockedService.mock`.
 
@@ -77,7 +77,7 @@ const systemUnderTest = new ClassWithConstructorArgument(mockedService.mockConst
 ```
 
 ## Verify Calls
-[Examples](https://github.com/Morgan-Stanley/ts-mocking-bird/tree/master/spec/examples/exampleTests.spec.ts)
+[Examples](https://github.com/morganstanley/ts-mocking-bird/tree/master/spec/examples/exampleTests.spec.ts)
 
 ### Jasmine / Jest Matchers
 
@@ -176,7 +176,7 @@ expect(functionVerifier.withParameters('someValue')).wasCalledOnce();
 ```
 
 ## Verify Function Parameters
-[Examples](https://github.com/Morgan-Stanley/ts-mocking-bird/tree/master/spec/examples/exampleParameterMatcherTest.spec.ts)
+[Examples](https://github.com/morganstanley/ts-mocking-bird/tree/master/spec/examples/exampleParameterMatcherTest.spec.ts)
 
 ### Verify that function parameters match using strict equality
 ```typescript
@@ -252,7 +252,7 @@ expect(
 ```
 
 ## Replace Imports
-[Examples](https://github.com/Morgan-Stanley/ts-mocking-bird/tree/master/spec/examples/exampleImportReplacementTest.spec.ts)
+[Examples](https://github.com/morganstanley/ts-mocking-bird/tree/master/spec/examples/exampleImportReplacementTest.spec.ts)
 
 ### Jest Modules
 
