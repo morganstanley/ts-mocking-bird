@@ -99,7 +99,9 @@ const ReplaceUndefinedRegExp = new RegExp(`"${UndefinedReplacementString}"`, 'g'
 function replaceValue(_key: any, value: any) {
     switch (typeof value) {
         case 'function':
+            // eslint-disable-next-line no-case-declarations
             const functionString = String(value);
+            // eslint-disable-next-line no-case-declarations
             const regexpResult = functionStringRegExp.exec(functionString);
 
             return regexpResult != null ? regexpResult[0] : 'FUNCTION_BODY_REMOVED';

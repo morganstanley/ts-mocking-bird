@@ -1,3 +1,8 @@
+/* eslint-disable @typescript-eslint/ban-types */
+/* eslint-disable @typescript-eslint/no-empty-function */
+/* eslint-disable no-useless-escape */
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+
 import {
     addMatchers,
     any,
@@ -13,13 +18,12 @@ import {
 import { defineProperty, setupFunction, setupProperty } from '../../main/mock/operators';
 import { verifyFailure, verifyJestFailure } from './failure-verifier';
 
-// tslint:disable:no-empty
 describe('mock', () => {
     let mocked: IMocked<SampleMockedClass, typeof SampleMockedClass>;
     let mock: SampleMockedClass;
 
     // just a convenience to get a value and avoid compile / lint errors
-    // tslint:disable-next-line:no-empty
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
     function get(_value: any) {}
 
     beforeEach(() => {
@@ -122,7 +126,7 @@ describe('mock', () => {
 
                 const firstParam: string = firstCall[0];
                 const secondParam: number = firstCall[1];
-                // @ts-expect-error type is actually boolean | undefined;
+
                 const thirdParam: boolean | undefined = firstCall[2];
 
                 expect(firstParam).toBe('one');
@@ -2147,38 +2151,32 @@ class SampleMockedClass {
     public static propertyOne = '';
     public static propertyTwo = 2;
 
-    // tslint:disable-next-line:no-empty
     public static doStuff() {}
     public static doStuffWithParams(_paramOne: string, _paramTwo: number, _paramThree?: boolean) {}
 
-    public propertyOne: string = 'mocked';
-    public propertyTwo: number = 123;
-    public propertyThree: boolean = true;
+    public propertyOne = 'mocked';
+    public propertyTwo = 123;
+    public propertyThree = true;
 
-    // tslint:disable-next-line:no-empty
     constructor(_paramsOne: {}, _paramTwo: Date) {}
 
-    // tslint:disable-next-line:no-empty
     public functionWithNoParamsAndNoReturn(): void {}
 
     public functionWithNoParamsAndReturnType(): string {
         return 'sampleReturnString';
     }
 
-    // tslint:disable-next-line:no-empty
     public functionWithParamsAndNoReturn(_paramOne: string, _paramTwo: number, _paramThree?: boolean) {}
 
     public functionWithParamsAndReturn(paramOne: string, paramTwo?: number, paramThree?: boolean): string {
         return `sampleReturn_${paramOne}_${paramTwo}_${paramThree}`;
     }
 
-    // tslint:disable-next-line:no-empty
     public functionWithComplexParam(
         _param: { one: string; two: number; three?: Date },
         _two?: string,
         _three?: number,
     ): void {}
 
-    // tslint:disable-next-line:no-empty
     public functionWithCallback(_callback: () => boolean): void {}
 }

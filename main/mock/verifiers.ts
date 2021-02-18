@@ -66,7 +66,7 @@ export function createFunctionVerifier<
     type: U,
     functionName: K,
     parameterMatchers?: ParameterMatcher<any>[],
-    strictCallCount: boolean = false,
+    strictCallCount = false,
 ): IFunctionVerifier<T, U, C> {
     return {
         getMock: () => mocked,

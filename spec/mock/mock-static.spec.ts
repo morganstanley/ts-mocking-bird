@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/ban-types */
+/* eslint-disable @typescript-eslint/no-empty-function */
 import { addMatchers, IMocked, matchers, Mock } from '../../main';
 import {
     defineStaticProperty,
@@ -10,7 +12,7 @@ import { verifyFailure } from './failure-verifier';
 
 describe('mock with statics', () => {
     // just a convenience to get a value and avoid compile / lint errors
-    // tslint:disable-next-line:no-empty
+
     function get(_value: any) {}
 
     let mocked: IMocked<SampleMockedClass, typeof SampleMockedClass>;
@@ -1490,25 +1492,21 @@ describe('mock with statics', () => {
 });
 
 class SampleMockedClass {
-    public static propertyOne: string = 'mocked';
-    public static propertyTwo: number = 123;
+    public static propertyOne = 'mocked';
+    public static propertyTwo = 123;
 
-    public propertyOne: string = '';
+    public propertyOne = '';
 
-    // tslint:disable-next-line:no-empty
     constructor(_paramsOne: {}, _paramTwo: Date) {}
 
-    // tslint:disable-next-line:no-empty
     public static functionWithNoParamsAndNoReturn(): void {}
 
-    // tslint:disable-next-line:no-empty
     public functionWithNoParamsAndNoReturn(): void {}
 
     public static functionWithNoParamsAndReturnType(): string {
         return 'sampleReturnString';
     }
 
-    // tslint:disable-next-line:no-empty
     public static functionWithParamsAndNoReturn(_paramOne: string, _paramTwo: number, _paramThree?: boolean) {}
 
     public static functionWithParamsAndReturn(paramOne: string, paramTwo?: number, paramThree?: boolean): string {
@@ -1519,6 +1517,5 @@ class SampleMockedClass {
         _param: { one: string; two: number },
         _two?: string,
         _three?: number,
-        // tslint:disable-next-line:no-empty
     ): void {}
 }

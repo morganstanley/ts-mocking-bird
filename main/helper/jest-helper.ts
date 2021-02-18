@@ -17,6 +17,7 @@ export function proxyJestModule(absolutePath: string): WrappedModule {
     }
     const realModule = jest.requireActual(absolutePath);
     const wrappedModule = proxyModule(realModule);
+    // eslint-disable-next-line @typescript-eslint/ban-types
     const brImport = jest.genMockFromModule<object>(absolutePath);
 
     return { ...brImport, ...wrappedModule };

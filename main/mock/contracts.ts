@@ -2,10 +2,10 @@ export type OperatorFunction<T, C extends ConstructorFunction<T>> = (value: IMoc
 
 export type MatchFunction<T> = (passedValue: T) => boolean;
 
-// tslint:disable-next-line:ban-types
+// eslint-disable-next-line @typescript-eslint/ban-types
 export type FunctionsOnly<T> = Pick<T, { [K in keyof T]: Required<T>[K] extends Function ? K : never }[keyof T]>;
 
-// tslint:disable-next-line:ban-types
+// eslint-disable-next-line @typescript-eslint/ban-types
 export type PropertiesOnly<T> = Pick<T, { [K in keyof T]: Required<T>[K] extends Function ? never : K }[keyof T]>;
 
 /**

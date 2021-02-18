@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-types */
 /**
  * This is hacky and should never be done in non-test code
  * We need to do this as webpack builds immutable export objects that uses Object.defineProperty with configurable set to false
