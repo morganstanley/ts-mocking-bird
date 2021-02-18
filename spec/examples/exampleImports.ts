@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 /**
  * An example interface that we want to mock
  */
@@ -17,21 +18,19 @@ export class MyService implements IMyService {
     public static staticFunctionOne(paramOne: string, paramTwo: number): string {
         return `staticFunctionOne: ${paramOne} ${paramTwo}`;
     }
-    public static staticPropOne: string = 'staticOne';
-    public static staticPropTwo: number = 0;
+    public static staticPropOne = 'staticOne';
+    public static staticPropTwo = 0;
     public propThree?: number | undefined;
 
-    public propOne: string = '';
-    public propTwo: string = '';
+    public propOne = '';
+    public propTwo = '';
 
-    // tslint:disable-next-line:no-empty
     constructor(_constrParamOne: string, _constrParamTwo: number) {}
 
     public functionTwo(_value: string) {
         return true;
     }
 
-    // tslint:disable-next-line:no-empty
     public functionOne() {}
 
     public functionThree() {

@@ -25,7 +25,8 @@ export class Mock {
             functionReplacementLookup: {},
 
             mock: {} as T,
-            // tslint:disable-next-line:no-empty
+
+            // eslint-disable-next-line @typescript-eslint/no-empty-function
             mockConstructor: ((..._args: any[]) => {}) as any,
 
             setup: (...operators: OperatorFunction<T, C>[]) => {

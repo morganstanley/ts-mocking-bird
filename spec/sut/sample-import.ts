@@ -1,7 +1,7 @@
-export let functionOneReturnValue: string = 'sampleFunctionOneImport';
-export let functionTwoReturnValue: string = 'sampleFunctionTwoImport';
-export let functionThreeReturnValue: string = 'sampleFunctionThreeImport';
-export let classReturnValue: string = 'sampleClassImport';
+export const functionOneReturnValue = 'sampleFunctionOneImport';
+export const functionTwoReturnValue = 'sampleFunctionTwoImport';
+export const functionThreeReturnValue = 'sampleFunctionThreeImport';
+export const classReturnValue = 'sampleClassImport';
 
 export function sampleFunctionOne() {
     return functionOneReturnValue;

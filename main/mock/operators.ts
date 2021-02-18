@@ -1,3 +1,4 @@
+/* eslint-disable no-case-declarations */
 import { getLookup } from '../helper';
 import {
     ConstructorFunction,

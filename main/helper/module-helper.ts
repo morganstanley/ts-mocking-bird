@@ -67,7 +67,7 @@ function lookupMocksForModule(originalModule: WrappedModule): any[] {
     return mocks;
 }
 
-// tslint:disable-next-line:ban-types
+// eslint-disable-next-line @typescript-eslint/ban-types
 function wrapFunction(this: any, mockModule: WrappedModule, key: string, func: Function) {
     function wrapped(this: any, ...args: any[]) {
         const returnFunc = getMocked(mockModule, key) || func;

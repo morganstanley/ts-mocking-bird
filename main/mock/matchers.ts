@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-namespace */
 import { ICustomMatcher, IFunctionVerifier } from './contracts';
 import { verifyFunctionCalled } from './verifiers';
 
