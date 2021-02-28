@@ -14,7 +14,7 @@ Documentation: https://morganstanley.github.io/ts-mocking-bird/
 
 # Why use this?
 
-![Intellisense Demo](readmeAssets/intellisenseDemo.gif)
+![Intellisense Demo](https://github.com/morganstanley/ts-mocking-bird/blob/master/readmeAssets/intellisenseDemo.gif?raw=true)
 
 * All operations fully type safe
 * Mocks interfaces, existing objects and classes
