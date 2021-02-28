@@ -4,16 +4,27 @@ spec/
 reports/
 dist/spec/
 .vscode/
+readmeAssets/**/*
+docs/**/*
 
 karma.conf.js
 train-build.js
 train.yaml
+karma.base.conf.js
+prettier.config.js
+.eslintrc.js
+.travis.yml
+codecov.yml
+CONTRIBUTING.md
+tsconfig.json
+typedoc.json
 
 *.tgz
 
 # ignore main
 
 main/**/*
+
 
 # except for ts files (required for source maps)
 
