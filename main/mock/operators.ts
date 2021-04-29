@@ -104,7 +104,7 @@ export function setupProperty<T, C extends ConstructorFunction<T>, U extends Fun
     propertyName: U,
     value?: T[U],
 ): OperatorFunction<T, C> {
-    return defineProperty(propertyName, value != null ? () => value : undefined);
+    return defineProperty(propertyName, value !== undefined ? () => value : undefined);
 }
 
 /**
@@ -119,7 +119,7 @@ export function setupStaticProperty<T, C extends ConstructorFunction<T>, U exten
     propertyName: U,
     value?: C[U],
 ): OperatorFunction<T, C> {
-    return defineStaticProperty(propertyName, value ? () => value : undefined);
+    return defineStaticProperty(propertyName, value !== undefined ? () => value : undefined);
 }
 
 /**
