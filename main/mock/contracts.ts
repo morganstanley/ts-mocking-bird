@@ -50,7 +50,7 @@ export type LookupParams<
     : [];
 export type FunctionParams<T> = T extends (...args: infer P) => any ? P : never;
 
-export type ConstructorFunction<T> = new (...args: any[]) => T;
+export type ConstructorFunction<T> = (abstract new (...args: any[]) => T) | (new (...args: any[]) => T);
 
 export type StaticLookupTypes = 'staticFunction' | 'staticGetter' | 'staticSetter';
 export type InstanceLookupTypes = 'function' | 'getter' | 'setter';
@@ -72,7 +72,7 @@ export interface IFunctionWithParametersVerification<
     P extends Array<any>,
     T,
     U extends LookupType,
-    C extends new (...args: any[]) => T = never,
+    C extends ConstructorFunction<T> = never,
 > extends IFunctionVerifier<T, U, C> {
     /**
      * Checks the parameters in a non-strict equality way.
@@ -110,7 +110,7 @@ export interface IFunctionWithParametersVerification<
     withParametersEqualTo(...args: FunctionParameterMatchers<P>): IStrictFunctionVerification<T, U, C>;
 }
 
-export interface IStrictFunctionVerification<T, U extends LookupType, C extends new (...args: any[]) => T = never>
+export interface IStrictFunctionVerification<T, U extends LookupType, C extends ConstructorFunction<T> = never>
     extends IFunctionVerifier<T, U, C> {
     /**
      * verify that the function has been called ONLY with the specified parameters and never without
@@ -118,7 +118,7 @@ export interface IStrictFunctionVerification<T, U extends LookupType, C extends 
     strict(): IFunctionVerifier<T, U, C>;
 }
 
-export interface IFunctionVerifier<T, U extends LookupType, C extends new (...args: any[]) => T = never> {
+export interface IFunctionVerifier<T, U extends LookupType, C extends ConstructorFunction<T> = never> {
     type: U;
     functionName: FunctionName<T, C, U>;
     parameterMatchers?: (MatchFunction<any> | IParameterMatcher<any>)[];
@@ -126,7 +126,7 @@ export interface IFunctionVerifier<T, U extends LookupType, C extends new (...ar
     getMock(): IMocked<T, C>;
 }
 
-export interface IMocked<T, C extends new (...args: any[]) => T = never> {
+export interface IMocked<T, C extends ConstructorFunction<T> = never> {
     /**
      * The mocked object. This should be passed to your SUT.
      */
