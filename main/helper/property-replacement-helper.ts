@@ -4,7 +4,7 @@
  * We need to do this as webpack builds immutable export objects that uses Object.defineProperty with configurable set to false
  * This means we are unable to replace the imports at runtime and mock them.
  */
-(defineProperty => {
+((defineProperty) => {
     Object.defineProperty = (obj, prop, desc) => {
         desc.configurable = true;
         return defineProperty(obj, prop, desc);
@@ -89,7 +89,7 @@ export function replacePropertiesBeforeEach(callback: () => IImportReplacement<a
     beforeEach(() => {
         const mockedImports = callback();
 
-        mockedImports.forEach(importReplacement => {
+        mockedImports.forEach((importReplacement) => {
             importCopies.push({
                 packageWithReplacements: importReplacement.package,
                 descriptors: getDescriptors(importReplacement.package, importReplacement.mocks),
@@ -100,7 +100,7 @@ export function replacePropertiesBeforeEach(callback: () => IImportReplacement<a
     });
 
     afterEach(() => {
-        importCopies.forEach(copy => revertImports(copy.packageWithReplacements, copy.descriptors));
+        importCopies.forEach((copy) => revertImports(copy.packageWithReplacements, copy.descriptors));
     });
 }
 

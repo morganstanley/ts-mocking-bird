@@ -18,7 +18,7 @@ export function isParameterMatcher(matcher: unknown): matcher is IParameterMatch
  */
 export function toBeDefined(): IParameterMatcher<any> {
     return {
-        isExpectedValue: actualValue => actualValue !== undefined,
+        isExpectedValue: (actualValue) => actualValue !== undefined,
         expectedDisplayValue: '<mustBeDefined>',
     };
 }
@@ -29,7 +29,7 @@ export function toBeDefined(): IParameterMatcher<any> {
  */
 export function hasValue(): IParameterMatcher<any> {
     return {
-        isExpectedValue: actualValue => actualValue != null,
+        isExpectedValue: (actualValue) => actualValue != null,
         expectedDisplayValue: '<hasValue>',
     };
 }
@@ -43,7 +43,7 @@ export function hasValue(): IParameterMatcher<any> {
 export function toBe(expectedValue: any): IParameterMatcher<any> {
     return {
         expectedDisplayValue: mapItemToString(expectedValue),
-        isExpectedValue: actualValue => actualValue === expectedValue,
+        isExpectedValue: (actualValue) => actualValue === expectedValue,
     };
 }
 
@@ -56,7 +56,7 @@ export function toBe(expectedValue: any): IParameterMatcher<any> {
 export function toEqual(expectedValue: any): IParameterMatcher<any> {
     return {
         expectedDisplayValue: mapItemToString(expectedValue),
-        isExpectedValue: actualValue => isEqual(actualValue, expectedValue),
+        isExpectedValue: (actualValue) => isEqual(actualValue, expectedValue),
     };
 }
 

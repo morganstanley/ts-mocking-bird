@@ -703,10 +703,7 @@ describe('mock', () => {
                     mock.functionWithParamsAndReturn('one', 123, true);
 
                     verifyFailure(
-                        mocked
-                            .withFunction('functionWithParamsAndReturn')
-                            .withParameters('one', 123, true)
-                            .strict(),
+                        mocked.withFunction('functionWithParamsAndReturn').withParameters('one', 123, true).strict(),
                         matchers.wasNotCalled(),
                         `Expected "functionWithParamsAndReturn" to be called 0 times with params ["one", 123, true] and 0 times with any other parameters but it was called 1 times with matching parameters and 1 times in total.\n[\n["one",123,true]\n]`,
                     );
@@ -716,10 +713,7 @@ describe('mock', () => {
                     mock.functionWithParamsAndReturn('two', 123, true);
 
                     verifyFailure(
-                        mocked
-                            .withFunction('functionWithParamsAndReturn')
-                            .withParameters('one', 123, true)
-                            .strict(),
+                        mocked.withFunction('functionWithParamsAndReturn').withParameters('one', 123, true).strict(),
                         matchers.wasNotCalled(),
                         `Expected "functionWithParamsAndReturn" to be called 0 times with params ["one", 123, true] and 0 times with any other parameters but it was called 0 times with matching parameters and 1 times in total.\n[\n["two",123,true]\n]`,
                     );
@@ -731,10 +725,7 @@ describe('mock', () => {
                     mock.functionWithParamsAndReturn('one', 123, true);
 
                     verifyFailure(
-                        mocked
-                            .withFunction('functionWithParamsAndReturn')
-                            .withParameters('one', 123, true)
-                            .strict(),
+                        mocked.withFunction('functionWithParamsAndReturn').withParameters('one', 123, true).strict(),
                         matchers.wasNotCalled(),
                         `Expected "functionWithParamsAndReturn" to be called 0 times with params ["one", 123, true] and 0 times with any other parameters but it was called 3 times with matching parameters and 3 times in total.\n[\n[\"one\",123,true]\n[\"one\",123,true]\n[\"one\",123,true]\n]`,
                     );
@@ -742,10 +733,7 @@ describe('mock', () => {
 
                 it('should not fail when function has not been called', () => {
                     expect(
-                        mocked
-                            .withFunction('functionWithParamsAndReturn')
-                            .withParameters('one', 123, true)
-                            .strict(),
+                        mocked.withFunction('functionWithParamsAndReturn').withParameters('one', 123, true).strict(),
                     ).wasNotCalled();
                 });
             });
@@ -755,10 +743,7 @@ describe('mock', () => {
                     mock.functionWithParamsAndReturn('one', 123, true);
 
                     expect(
-                        mocked
-                            .withFunction('functionWithParamsAndReturn')
-                            .withParameters('one', 123, true)
-                            .strict(),
+                        mocked.withFunction('functionWithParamsAndReturn').withParameters('one', 123, true).strict(),
                     ).wasCalledOnce();
                 });
 
@@ -770,10 +755,7 @@ describe('mock', () => {
                     mock.functionWithParamsAndReturn('one', 456, false);
 
                     verifyFailure(
-                        mocked
-                            .withFunction('functionWithParamsAndReturn')
-                            .withParameters('one', 123, true)
-                            .strict(),
+                        mocked.withFunction('functionWithParamsAndReturn').withParameters('one', 123, true).strict(),
                         matchers.wasCalledOnce(),
                         `Expected "functionWithParamsAndReturn" to be called 1 times with params ["one", 123, true] and 0 times with any other parameters but it was called 1 times with matching parameters and 4 times in total.\n[\n[\"one\",123,true]\n[\"two\",123,true]\n[\"one\",456,true]\n[\"one\",456,false]\n]`,
                     );
@@ -785,10 +767,7 @@ describe('mock', () => {
                     mock.functionWithParamsAndReturn('one', 123, true);
 
                     verifyFailure(
-                        mocked
-                            .withFunction('functionWithParamsAndReturn')
-                            .withParameters('one', 123, true)
-                            .strict(),
+                        mocked.withFunction('functionWithParamsAndReturn').withParameters('one', 123, true).strict(),
                         matchers.wasCalledOnce(),
                         `Expected "functionWithParamsAndReturn" to be called 1 times with params ["one", 123, true] and 0 times with any other parameters but it was called 3 times with matching parameters and 3 times in total.\n[\n[\"one\",123,true]\n[\"one\",123,true]\n[\"one\",123,true]\n]`,
                     );
@@ -800,10 +779,7 @@ describe('mock', () => {
                     mock.functionWithParamsAndReturn('one', 456, false);
 
                     verifyFailure(
-                        mocked
-                            .withFunction('functionWithParamsAndReturn')
-                            .withParameters('one', 123, true)
-                            .strict(),
+                        mocked.withFunction('functionWithParamsAndReturn').withParameters('one', 123, true).strict(),
                         matchers.wasCalledOnce(),
                         `Expected "functionWithParamsAndReturn" to be called 1 times with params ["one", 123, true] and 0 times with any other parameters but it was called 0 times with matching parameters and 3 times in total.\n[\n[\"two\",123,true]\n[\"one\",456,true]\n[\"one\",456,false]\n]`,
                     );
@@ -819,10 +795,7 @@ describe('mock', () => {
                     mock.functionWithParamsAndReturn('one', 456, false);
 
                     verifyFailure(
-                        mocked
-                            .withFunction('functionWithParamsAndReturn')
-                            .withParameters('one', 123, true)
-                            .strict(),
+                        mocked.withFunction('functionWithParamsAndReturn').withParameters('one', 123, true).strict(),
                         matchers.wasCalled(),
                         `Expected "functionWithParamsAndReturn" to be called 2 times with params ["one", 123, true] and 0 times with any other parameters but it was called 1 times with matching parameters and 4 times in total.\n[\n[\"one\",123,true]\n[\"two\",123,true]\n[\"one\",456,true]\n[\"one\",456,false]\n]`,
                         2,
@@ -834,10 +807,7 @@ describe('mock', () => {
                     mock.functionWithParamsAndReturn('one', 456, true);
 
                     verifyFailure(
-                        mocked
-                            .withFunction('functionWithParamsAndReturn')
-                            .withParameters('one', 123, true)
-                            .strict(),
+                        mocked.withFunction('functionWithParamsAndReturn').withParameters('one', 123, true).strict(),
                         matchers.wasCalled(),
                         `Expected "functionWithParamsAndReturn" to be called 2 times with params ["one", 123, true] and 0 times with any other parameters but it was called 0 times with matching parameters and 2 times in total.\n[\n[\"two\",123,true]\n[\"one\",456,true]\n]`,
                         2,
@@ -853,10 +823,7 @@ describe('mock', () => {
                     mock.functionWithParamsAndReturn('one', 456, false);
 
                     verifyFailure(
-                        mocked
-                            .withFunction('functionWithParamsAndReturn')
-                            .withParameters('one', 123, true)
-                            .strict(),
+                        mocked.withFunction('functionWithParamsAndReturn').withParameters('one', 123, true).strict(),
                         matchers.wasCalled(),
                         `Expected "functionWithParamsAndReturn" to be called 2 times with params ["one", 123, true] and 0 times with any other parameters but it was called 2 times with matching parameters and 5 times in total.\n[\n[\"one\",123,true]\n[\"one\",123,true]\n[\"two\",123,true]\n[\"one\",456,true]\n[\"one\",456,false]\n]`,
                         2,
@@ -869,10 +836,7 @@ describe('mock', () => {
                     mock.functionWithParamsAndReturn('one', 123, true);
 
                     verifyFailure(
-                        mocked
-                            .withFunction('functionWithParamsAndReturn')
-                            .withParameters('one', 123, true)
-                            .strict(),
+                        mocked.withFunction('functionWithParamsAndReturn').withParameters('one', 123, true).strict(),
                         matchers.wasCalled(),
                         `Expected "functionWithParamsAndReturn" to be called 2 times with params ["one", 123, true] and 0 times with any other parameters but it was called 3 times with matching parameters and 3 times in total.\n[\n[\"one\",123,true]\n[\"one\",123,true]\n[\"one\",123,true]\n]`,
                         2,
@@ -885,10 +849,7 @@ describe('mock', () => {
                     mock.functionWithParamsAndReturn('one', 456, false);
 
                     verifyFailure(
-                        mocked
-                            .withFunction('functionWithParamsAndReturn')
-                            .withParameters('one', 123, true)
-                            .strict(),
+                        mocked.withFunction('functionWithParamsAndReturn').withParameters('one', 123, true).strict(),
                         matchers.wasCalled(),
                         `Expected "functionWithParamsAndReturn" to be called 2 times with params ["one", 123, true] and 0 times with any other parameters but it was called 0 times with matching parameters and 3 times in total.\n[\n[\"two\",123,true]\n[\"one\",456,true]\n[\"one\",456,false]\n]`,
                         2,
@@ -905,10 +866,7 @@ describe('mock', () => {
                     mock.functionWithParamsAndReturn('one', 456, false);
 
                     verifyFailure(
-                        mocked
-                            .withFunction('functionWithParamsAndReturn')
-                            .withParameters('one', 123, true)
-                            .strict(),
+                        mocked.withFunction('functionWithParamsAndReturn').withParameters('one', 123, true).strict(),
                         matchers.wasCalled(),
                         `Expected "functionWithParamsAndReturn" to be called 2 times with params ["one", 123, true] and 0 times with any other parameters but it was called 1 times with matching parameters and 4 times in total.\n[\n[\"one\",123,true]\n[\"two\",123,true]\n[\"one\",456,true]\n[\"one\",456,false]\n]`,
                         2,
@@ -1350,10 +1308,7 @@ describe('mock', () => {
                     mock.propertyOne = 'one';
 
                     verifyFailure(
-                        mocked
-                            .withSetter('propertyOne')
-                            .withParameters('one')
-                            .strict(),
+                        mocked.withSetter('propertyOne').withParameters('one').strict(),
                         matchers.wasNotCalled(),
                         `Expected property "propertyOne" to be set 0 times with params ["one"] and 0 times with any other parameters but it was called 1 times with matching parameters and 1 times in total.\n[\n["one"]\n]`,
                     );
@@ -1363,10 +1318,7 @@ describe('mock', () => {
                     mock.propertyOne = 'two';
 
                     verifyFailure(
-                        mocked
-                            .withSetter('propertyOne')
-                            .withParameters('one')
-                            .strict(),
+                        mocked.withSetter('propertyOne').withParameters('one').strict(),
                         matchers.wasNotCalled(),
                         `Expected property "propertyOne" to be set 0 times with params ["one"] and 0 times with any other parameters but it was called 0 times with matching parameters and 1 times in total.\n[\n["two"]\n]`,
                     );
@@ -1378,10 +1330,7 @@ describe('mock', () => {
                     mock.propertyOne = 'one';
 
                     verifyFailure(
-                        mocked
-                            .withSetter('propertyOne')
-                            .withParameters('one')
-                            .strict(),
+                        mocked.withSetter('propertyOne').withParameters('one').strict(),
                         matchers.wasNotCalled(),
                         `Expected property "propertyOne" to be set 0 times with params ["one"] and 0 times with any other parameters but it was called 3 times with matching parameters and 3 times in total.\n[\n[\"one\"]\n[\"one\"]\n[\"one\"]\n]`,
                     );
@@ -1395,22 +1344,14 @@ describe('mock', () => {
                     mock.propertyOne = 'one';
 
                     verifyFailure(
-                        mocked
-                            .withSetter('propertyOne')
-                            .withParameters('one')
-                            .strict(),
+                        mocked.withSetter('propertyOne').withParameters('one').strict(),
                         matchers.wasNotCalled(),
                         `Expected property "propertyOne" to be set 0 times with params ["one"] and 0 times with any other parameters but it was called 3 times with matching parameters and 3 times in total.\n[\n[\"one\"]\n[\"one\"]\n[\"one\"]\n]`,
                     );
                 });
 
                 it('should not fail when function has not been called', () => {
-                    expect(
-                        mocked
-                            .withSetter('propertyOne')
-                            .withParameters('one')
-                            .strict(),
-                    ).wasNotCalled();
+                    expect(mocked.withSetter('propertyOne').withParameters('one').strict()).wasNotCalled();
                 });
             });
 
@@ -1418,12 +1359,7 @@ describe('mock', () => {
                 it('should not fail when function has been called once with matching parameters', () => {
                     mock.propertyOne = 'one';
 
-                    expect(
-                        mocked
-                            .withSetter('propertyOne')
-                            .withParameters('one')
-                            .strict(),
-                    ).wasCalledOnce();
+                    expect(mocked.withSetter('propertyOne').withParameters('one').strict()).wasCalledOnce();
                 });
 
                 it('should fail when function has been called once with matching parameters and many times with other params', () => {
@@ -1434,10 +1370,7 @@ describe('mock', () => {
                     mock.propertyOne = 'four';
 
                     verifyFailure(
-                        mocked
-                            .withSetter('propertyOne')
-                            .withParameters('one')
-                            .strict(),
+                        mocked.withSetter('propertyOne').withParameters('one').strict(),
                         matchers.wasCalledOnce(),
                         `Expected property "propertyOne" to be set 1 times with params ["one"] and 0 times with any other parameters but it was called 1 times with matching parameters and 4 times in total.\n[\n[\"one\"]\n[\"two\"]\n[\"three\"]\n[\"four\"]\n]`,
                     );
@@ -1449,10 +1382,7 @@ describe('mock', () => {
                     mock.propertyOne = 'one';
 
                     verifyFailure(
-                        mocked
-                            .withSetter('propertyOne')
-                            .withParameters('one')
-                            .strict(),
+                        mocked.withSetter('propertyOne').withParameters('one').strict(),
                         matchers.wasCalledOnce(),
                         `Expected property "propertyOne" to be set 1 times with params ["one"] and 0 times with any other parameters but it was called 3 times with matching parameters and 3 times in total.\n[\n[\"one\"]\n[\"one\"]\n[\"one\"]\n]`,
                     );
@@ -1464,10 +1394,7 @@ describe('mock', () => {
                     mock.propertyOne = 'four';
 
                     verifyFailure(
-                        mocked
-                            .withSetter('propertyOne')
-                            .withParameters('one')
-                            .strict(),
+                        mocked.withSetter('propertyOne').withParameters('one').strict(),
                         matchers.wasCalledOnce(),
                         `Expected property "propertyOne" to be set 1 times with params ["one"] and 0 times with any other parameters but it was called 0 times with matching parameters and 3 times in total.\n[\n[\"two\"]\n[\"three\"]\n[\"four\"]\n]`,
                     );
@@ -1483,10 +1410,7 @@ describe('mock', () => {
                     mock.propertyOne = 'four';
 
                     verifyFailure(
-                        mocked
-                            .withSetter('propertyOne')
-                            .withParameters('one')
-                            .strict(),
+                        mocked.withSetter('propertyOne').withParameters('one').strict(),
                         matchers.wasCalled(),
                         `Expected property "propertyOne" to be set 2 times with params ["one"] and 0 times with any other parameters but it was called 1 times with matching parameters and 4 times in total.\n[\n[\"one\"]\n[\"two\"]\n[\"three\"]\n[\"four\"]\n]`,
                         2,
@@ -1498,10 +1422,7 @@ describe('mock', () => {
                     mock.propertyOne = 'three';
 
                     verifyFailure(
-                        mocked
-                            .withSetter('propertyOne')
-                            .withParameters('one')
-                            .strict(),
+                        mocked.withSetter('propertyOne').withParameters('one').strict(),
                         matchers.wasCalled(),
                         `Expected property "propertyOne" to be set 2 times with params ["one"] and 0 times with any other parameters but it was called 0 times with matching parameters and 2 times in total.\n[\n[\"two\"]\n[\"three\"]\n]`,
                         2,
@@ -1516,10 +1437,7 @@ describe('mock', () => {
                     mock.propertyOne = 'four';
 
                     verifyFailure(
-                        mocked
-                            .withSetter('propertyOne')
-                            .withParameters('one')
-                            .strict(),
+                        mocked.withSetter('propertyOne').withParameters('one').strict(),
                         matchers.wasCalled(),
                         `Expected property "propertyOne" to be set 2 times with params ["one"] and 0 times with any other parameters but it was called 2 times with matching parameters and 4 times in total.\n[\n[\"one\"]\n[\"one\"]\n[\"three\"]\n[\"four\"]\n]`,
                         2,
@@ -1532,10 +1450,7 @@ describe('mock', () => {
                     mock.propertyOne = 'one';
 
                     verifyFailure(
-                        mocked
-                            .withSetter('propertyOne')
-                            .withParameters('one')
-                            .strict(),
+                        mocked.withSetter('propertyOne').withParameters('one').strict(),
                         matchers.wasCalled(),
                         `Expected property "propertyOne" to be set 2 times with params ["one"] and 0 times with any other parameters but it was called 3 times with matching parameters and 3 times in total.\n[\n[\"one\"]\n[\"one\"]\n[\"one\"]\n]`,
                         2,
@@ -1548,10 +1463,7 @@ describe('mock', () => {
                     mock.propertyOne = 'four';
 
                     verifyFailure(
-                        mocked
-                            .withSetter('propertyOne')
-                            .withParameters('one')
-                            .strict(),
+                        mocked.withSetter('propertyOne').withParameters('one').strict(),
                         matchers.wasCalled(),
                         `Expected property "propertyOne" to be set 2 times with params ["one"] and 0 times with any other parameters but it was called 0 times with matching parameters and 3 times in total.\n[\n[\"two\"]\n[\"three\"]\n[\"four\"]\n]`,
                         2,
@@ -2032,9 +1944,9 @@ describe('mock', () => {
 
             function createCustomMatcher<T>(expectedValue: T | undefined): IParameterMatcher<T | undefined> {
                 return {
-                    isExpectedValue: actualValue => actualValue === expectedValue,
+                    isExpectedValue: (actualValue) => actualValue === expectedValue,
                     expectedDisplayValue: `customMatcherExpectedValue: ${expectedValue}`,
-                    parameterToString: value => `customMatcherActualValue: ${value}`,
+                    parameterToString: (value) => `customMatcherActualValue: ${value}`,
                 };
             }
 
@@ -2073,7 +1985,7 @@ describe('mock', () => {
 
                 verifyFailure(
                     mocked.withFunction('functionWithComplexParam').withParameters(
-                        value => `incorrect return value: ${value.one}` as any,
+                        (value) => `incorrect return value: ${value.one}` as any,
                         () => false,
                         () => false,
                     ),
@@ -2130,7 +2042,7 @@ describe('mock', () => {
                 },
             ];
 
-            tests.forEach(test => {
+            tests.forEach((test) => {
                 it(`should correctly display ${test.description}`, () => {
                     mock.functionWithParamsAndReturn(test.parameter);
 

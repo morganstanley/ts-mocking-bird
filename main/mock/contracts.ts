@@ -42,7 +42,7 @@ export type LookupParams<
     T,
     C extends ConstructorFunction<T>,
     U extends LookupType,
-    K extends FunctionName<T, C, U>
+    K extends FunctionName<T, C, U>,
 > = U extends FunctionTypes
     ? FunctionParams<VerifierTarget<T, C, U>[K]>
     : U extends SetterTypes
@@ -72,7 +72,7 @@ export interface IFunctionWithParametersVerification<
     P extends Array<any>,
     T,
     U extends LookupType,
-    C extends new (...args: any[]) => T = never
+    C extends new (...args: any[]) => T = never,
 > extends IFunctionVerifier<T, U, C> {
     /**
      * Checks the parameters in a non-strict equality way.

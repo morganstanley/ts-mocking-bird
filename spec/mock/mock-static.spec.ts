@@ -1131,10 +1131,7 @@ describe('mock with statics', () => {
                     mocked.mockConstructor.propertyOne = 'one';
 
                     verifyFailure(
-                        mocked
-                            .withStaticSetter('propertyOne')
-                            .withParameters('one')
-                            .strict(),
+                        mocked.withStaticSetter('propertyOne').withParameters('one').strict(),
                         matchers.wasNotCalled(),
                         `Expected static property "propertyOne" to be set 0 times with params ["one"] and 0 times with any other parameters but it was called 1 times with matching parameters and 1 times in total.\n[\n["one"]\n]`,
                     );
@@ -1144,10 +1141,7 @@ describe('mock with statics', () => {
                     mocked.mockConstructor.propertyOne = 'two';
 
                     verifyFailure(
-                        mocked
-                            .withStaticSetter('propertyOne')
-                            .withParameters('one')
-                            .strict(),
+                        mocked.withStaticSetter('propertyOne').withParameters('one').strict(),
                         matchers.wasNotCalled(),
                         `Expected static property "propertyOne" to be set 0 times with params ["one"] and 0 times with any other parameters but it was called 0 times with matching parameters and 1 times in total.\n[\n["two"]\n]`,
                     );
@@ -1159,22 +1153,14 @@ describe('mock with statics', () => {
                     mocked.mockConstructor.propertyOne = 'one';
 
                     verifyFailure(
-                        mocked
-                            .withStaticSetter('propertyOne')
-                            .withParameters('one')
-                            .strict(),
+                        mocked.withStaticSetter('propertyOne').withParameters('one').strict(),
                         matchers.wasNotCalled(),
                         `Expected static property "propertyOne" to be set 0 times with params ["one"] and 0 times with any other parameters but it was called 3 times with matching parameters and 3 times in total.\n[\n["one"]\n["one"]\n["one"]\n]`,
                     );
                 });
 
                 it('should not fail when function has not been called', () => {
-                    expect(
-                        mocked
-                            .withStaticSetter('propertyOne')
-                            .withParameters('one')
-                            .strict(),
-                    ).wasNotCalled();
+                    expect(mocked.withStaticSetter('propertyOne').withParameters('one').strict()).wasNotCalled();
                 });
             });
 
@@ -1182,12 +1168,7 @@ describe('mock with statics', () => {
                 it('should not fail when function has been called once with matching parameters', () => {
                     mocked.mockConstructor.propertyOne = 'one';
 
-                    expect(
-                        mocked
-                            .withStaticSetter('propertyOne')
-                            .withParameters('one')
-                            .strict(),
-                    ).wasCalledOnce();
+                    expect(mocked.withStaticSetter('propertyOne').withParameters('one').strict()).wasCalledOnce();
                 });
 
                 it('should fail when function has been called once with matching parameters and many times with other params', () => {
@@ -1198,10 +1179,7 @@ describe('mock with statics', () => {
                     mocked.mockConstructor.propertyOne = 'four';
 
                     verifyFailure(
-                        mocked
-                            .withStaticSetter('propertyOne')
-                            .withParameters('one')
-                            .strict(),
+                        mocked.withStaticSetter('propertyOne').withParameters('one').strict(),
                         matchers.wasCalledOnce(),
                         `Expected static property "propertyOne" to be set 1 times with params ["one"] and 0 times with any other parameters but it was called 1 times with matching parameters and 4 times in total.\n[\n["one"]\n["two"]\n["three"]\n["four"]\n]`,
                     );
@@ -1213,10 +1191,7 @@ describe('mock with statics', () => {
                     mocked.mockConstructor.propertyOne = 'one';
 
                     verifyFailure(
-                        mocked
-                            .withStaticSetter('propertyOne')
-                            .withParameters('one')
-                            .strict(),
+                        mocked.withStaticSetter('propertyOne').withParameters('one').strict(),
                         matchers.wasCalledOnce(),
                         `Expected static property "propertyOne" to be set 1 times with params ["one"] and 0 times with any other parameters but it was called 3 times with matching parameters and 3 times in total.\n[\n["one"]\n["one"]\n["one"]\n]`,
                     );
@@ -1228,10 +1203,7 @@ describe('mock with statics', () => {
                     mocked.mockConstructor.propertyOne = 'four';
 
                     verifyFailure(
-                        mocked
-                            .withStaticSetter('propertyOne')
-                            .withParameters('one')
-                            .strict(),
+                        mocked.withStaticSetter('propertyOne').withParameters('one').strict(),
                         matchers.wasCalledOnce(),
                         `Expected static property "propertyOne" to be set 1 times with params ["one"] and 0 times with any other parameters but it was called 0 times with matching parameters and 3 times in total.\n[\n["two"]\n["three"]\n["four"]\n]`,
                     );
@@ -1247,10 +1219,7 @@ describe('mock with statics', () => {
                     mocked.mockConstructor.propertyOne = 'four';
 
                     verifyFailure(
-                        mocked
-                            .withStaticSetter('propertyOne')
-                            .withParameters('one')
-                            .strict(),
+                        mocked.withStaticSetter('propertyOne').withParameters('one').strict(),
                         matchers.wasCalled(),
                         `Expected static property "propertyOne" to be set 2 times with params ["one"] and 0 times with any other parameters but it was called 1 times with matching parameters and 4 times in total.\n[\n["one"]\n["two"]\n["three"]\n["four"]\n]`,
                         2,
@@ -1262,10 +1231,7 @@ describe('mock with statics', () => {
                     mocked.mockConstructor.propertyOne = 'three';
 
                     verifyFailure(
-                        mocked
-                            .withStaticSetter('propertyOne')
-                            .withParameters('one')
-                            .strict(),
+                        mocked.withStaticSetter('propertyOne').withParameters('one').strict(),
                         matchers.wasCalled(),
                         `Expected static property "propertyOne" to be set 2 times with params ["one"] and 0 times with any other parameters but it was called 0 times with matching parameters and 2 times in total.\n[\n["two"]\n["three"]\n]`,
                         2,
@@ -1280,10 +1246,7 @@ describe('mock with statics', () => {
                     mocked.mockConstructor.propertyOne = 'four';
 
                     verifyFailure(
-                        mocked
-                            .withStaticSetter('propertyOne')
-                            .withParameters('one')
-                            .strict(),
+                        mocked.withStaticSetter('propertyOne').withParameters('one').strict(),
                         matchers.wasCalled(),
                         `Expected static property "propertyOne" to be set 2 times with params ["one"] and 0 times with any other parameters but it was called 2 times with matching parameters and 4 times in total.\n[\n["one"]\n["one"]\n["three"]\n["four"]\n]`,
                         2,
@@ -1296,10 +1259,7 @@ describe('mock with statics', () => {
                     mocked.mockConstructor.propertyOne = 'one';
 
                     verifyFailure(
-                        mocked
-                            .withStaticSetter('propertyOne')
-                            .withParameters('one')
-                            .strict(),
+                        mocked.withStaticSetter('propertyOne').withParameters('one').strict(),
                         matchers.wasCalled(),
                         `Expected static property "propertyOne" to be set 2 times with params ["one"] and 0 times with any other parameters but it was called 3 times with matching parameters and 3 times in total.\n[\n["one"]\n["one"]\n["one"]\n]`,
                         2,
@@ -1312,10 +1272,7 @@ describe('mock with statics', () => {
                     mocked.mockConstructor.propertyOne = 'four';
 
                     verifyFailure(
-                        mocked
-                            .withStaticSetter('propertyOne')
-                            .withParameters('one')
-                            .strict(),
+                        mocked.withStaticSetter('propertyOne').withParameters('one').strict(),
                         matchers.wasCalled(),
                         `Expected static property "propertyOne" to be set 2 times with params ["one"] and 0 times with any other parameters but it was called 0 times with matching parameters and 3 times in total.\n[\n["two"]\n["three"]\n["four"]\n]`,
                         2,

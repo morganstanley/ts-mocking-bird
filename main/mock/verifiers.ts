@@ -23,14 +23,14 @@ export type VerifierParams<
     T,
     C extends ConstructorFunction<T>,
     U extends LookupType,
-    K extends FunctionName<T, C, U>
+    K extends FunctionName<T, C, U>,
 > = U extends SetterTypes ? [VerifierTarget<T, C, U>[K]] : FunctionParams<VerifierTarget<T, C, U>[K]>;
 
 export function createFunctionParameterVerifier<
     T,
     C extends ConstructorFunction<T>,
     U extends LookupType,
-    K extends FunctionName<T, C, U>
+    K extends FunctionName<T, C, U>,
 >(
     mocked: IMocked<T, C>,
     type: U,
@@ -60,7 +60,7 @@ export function createFunctionVerifier<
     T,
     C extends ConstructorFunction<T>,
     U extends LookupType,
-    K extends FunctionName<T, C, U>
+    K extends FunctionName<T, C, U>,
 >(
     mocked: IMocked<T, C>,
     type: U,
@@ -81,7 +81,7 @@ export function createStrictFunctionVerifier<
     T,
     C extends ConstructorFunction<T>,
     U extends LookupType,
-    K extends FunctionName<T, C, U>
+    K extends FunctionName<T, C, U>,
 >(
     mocked: IMocked<T, C>,
     type: U,
@@ -98,7 +98,7 @@ export function verifyParameters<
     T,
     C extends ConstructorFunction<T>,
     U extends LookupType,
-    K extends FunctionName<T, C, U>
+    K extends FunctionName<T, C, U>,
 >(
     parameters: ParameterMatcher<any>[],
     mocked: IMocked<T, C>,
@@ -188,14 +188,14 @@ export function verifyFunctionCalled<T, C extends ConstructorFunction<T>, U exte
         );
     }
 
-    const parameterMatchResults = functionCalls.map(params => matchParameters(params, parameterMatchers));
+    const parameterMatchResults = functionCalls.map((params) => matchParameters(params, parameterMatchers));
     const customMatcherResults = parameterMatchResults.filter(isMatcherResultArray);
 
     if (customMatcherResults.length > 0) {
         return customMatcherResults[0][0];
     }
 
-    const matchingCalls = parameterMatchResults.filter(paramMatch => paramMatch === true);
+    const matchingCalls = parameterMatchResults.filter((paramMatch) => paramMatch === true);
 
     if (times !== undefined) {
         if (times !== matchingCalls.length || (strict && times !== functionCalls.length)) {
@@ -263,8 +263,8 @@ function buildAllCallsString(
     parameterMatchers: (IParameterMatcher<any> | MatchFunction<any>)[] | undefined,
 ) {
     let allCalls: string;
-    if (functionCalls.some(call => call.length > 0)) {
-        allCalls = `\n[\n${functionCalls.map(call => functionCallToString(call, parameterMatchers)).join('\n')}\n]`;
+    if (functionCalls.some((call) => call.length > 0)) {
+        allCalls = `\n[\n${functionCalls.map((call) => functionCallToString(call, parameterMatchers)).join('\n')}\n]`;
     } else {
         allCalls = '';
     }
@@ -273,7 +273,7 @@ function buildAllCallsString(
 
 function expectedParametersToString(parameterMatchers: ParameterMatcher<any>[]): string {
     return parameterMatchers
-        .map(matcher => {
+        .map((matcher) => {
             return isParameterMatcher(matcher) ? matcher.expectedDisplayValue : '<customParameterMatchFunction>';
         })
         .join(', ');
@@ -333,7 +333,7 @@ function matchParameters(
     );
     const matcherResults = evaluatedParams.filter(isMatcherResult);
 
-    return matcherResults.length > 0 ? matcherResults : (evaluatedParams as boolean[]).every(param => param === true);
+    return matcherResults.length > 0 ? matcherResults : (evaluatedParams as boolean[]).every((param) => param === true);
 }
 
 function evaluateParameterMatcher(

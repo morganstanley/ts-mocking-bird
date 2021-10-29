@@ -19,7 +19,7 @@ const MockMap = new Map<string, any[] | undefined>();
 export function proxyModule<T>(originalModule: T): WrappedModule & T {
     const wrappedModule = { ___moduleId: v4() } as WrappedModule & T;
 
-    Object.keys(originalModule).forEach(key => {
+    Object.keys(originalModule).forEach((key) => {
         const originalValue = (originalModule as any)[key];
         (wrappedModule as any)[key] =
             typeof originalValue === 'function' ? wrapFunction(wrappedModule, key, originalValue) : originalValue;
