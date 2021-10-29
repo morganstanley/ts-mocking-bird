@@ -1,7 +1,7 @@
 name: NPM Publish 
 on:
   release:
-    types: [created]
+    types: [published]
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -12,10 +12,9 @@ jobs:
       with:
         node-version: '14.x'
     - run: npm ci
-    - uses: JS-DevTools/npm-publish@v1
-      with:
-        token: ${{ secrets.NPM_TOKEN }}      
-    - uses: JamesIves/github-pages-deploy-action@4.1.5
+    - run: npm publish
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       with:
         branch: gh-pages
         folder: docs
