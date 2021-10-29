@@ -14,4 +14,8 @@ jobs:
     - run: npm ci
     - uses: JS-DevTools/npm-publish@v1
       with:
-        token: ${{ secrets.NPM_TOKEN }}
+        token: ${{ secrets.NPM_TOKEN }}      
+    - uses: JamesIves/github-pages-deploy-action@4.1.5
+      with:
+        branch: gh-pages
+        folder: docs
