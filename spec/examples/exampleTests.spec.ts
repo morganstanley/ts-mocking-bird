@@ -103,12 +103,7 @@ describe('verify function calls', () => {
         systemUnderTest.service.functionTwo('someValue');
 
         expect(systemUnderTest).toBeDefined();
-        expect(
-            mockedService
-                .withFunction('functionTwo')
-                .withParameters('someValue')
-                .strict(),
-        ).wasCalledOnce();
+        expect(mockedService.withFunction('functionTwo').withParameters('someValue').strict()).wasCalledOnce();
     });
 
     it('should create and use a function verifier', () => {

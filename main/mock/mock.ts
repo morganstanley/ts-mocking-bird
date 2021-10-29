@@ -31,7 +31,7 @@ export class Mock {
 
             setup: (...operators: OperatorFunction<T, C>[]) => {
                 let operatorMocked = mocked;
-                operators.forEach(operator => (operatorMocked = operator(mocked)));
+                operators.forEach((operator) => (operatorMocked = operator(mocked)));
                 return operatorMocked;
             },
 

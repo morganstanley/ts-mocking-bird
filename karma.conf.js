@@ -12,7 +12,7 @@ console.log(`testPath: ${testEntryFile}`);
 console.log(`configFile: ${configFile}`);
 console.log(`coverage: ${coverage}`);
 
-module.exports = function(config) {
+module.exports = function (config) {
     baseConfig(config);
 
     const reporters = ['progress', 'kjhtml', 'junit'];

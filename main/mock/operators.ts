@@ -63,7 +63,7 @@ export function setupFunction<T, C extends ConstructorFunction<T>, U extends Fun
 export function setupStaticFunction<
     T,
     C extends ConstructorFunction<T>,
-    U extends FunctionName<T, C, 'staticFunction'>
+    U extends FunctionName<T, C, 'staticFunction'>,
 >(functionName: U, mockFunction?: C[U]): OperatorFunction<T, C> {
     return (mocked: IMocked<T, C>) => {
         const functionReplacement = (...args: LookupParams<T, C, 'staticFunction', U>) => {
@@ -162,7 +162,7 @@ function definePropertyImpl<
     T,
     C extends ConstructorFunction<T>,
     U extends GetterTypes,
-    K extends FunctionName<T, C, U>
+    K extends FunctionName<T, C, U>,
 >(
     mocked: IMocked<T, C>,
     lookupType: U,
@@ -242,7 +242,7 @@ function trackFunctionCall<
     T,
     C extends ConstructorFunction<T>,
     U extends FunctionTypes,
-    K extends FunctionName<T, C, U>
+    K extends FunctionName<T, C, U>,
 >(mock: IMocked<T, C>, lookupType: U, functionName: K, params: LookupParams<T, C, U, K>) {
     const lookup = getLookup(mock, lookupType);
 

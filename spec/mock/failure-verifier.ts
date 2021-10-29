@@ -18,7 +18,7 @@ export function verifyJestFailure(
     message: string,
     ...params: any[]
 ) {
-    const result = (matcher.compare(verifier, ...params) as unknown) as jest.CustomMatcherResult;
+    const result = matcher.compare(verifier, ...params) as unknown as jest.CustomMatcherResult;
 
     expect(result.pass).toBeFalsy();
     expect(result.message()).toEqual(message);

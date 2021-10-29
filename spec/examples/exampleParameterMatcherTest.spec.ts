@@ -53,7 +53,7 @@ describe('match function paramters', () => {
         sampleMock.mock.functionOne('one', 2, { name: 'Fred', id: 1 });
 
         expect(
-            sampleMock.withFunction('functionOne').withParameters('one', 2, person => person.id === 1),
+            sampleMock.withFunction('functionOne').withParameters('one', 2, (person) => person.id === 1),
         ).wasCalledOnce();
     });
 
@@ -64,9 +64,9 @@ describe('match function paramters', () => {
 
         expect(
             sampleMock.withFunction('functionOne').withParameters(toBe('one'), toBe(2), {
-                isExpectedValue: person => person.id === 1,
+                isExpectedValue: (person) => person.id === 1,
                 expectedDisplayValue: 'Person with id 1', // Used to display expected parameter value in failure message
-                parameterToString: person => `Person with id ${person.id}`, // Used to display value of actual parameters passed in failure message
+                parameterToString: (person) => `Person with id ${person.id}`, // Used to display value of actual parameters passed in failure message
             }),
         ).wasCalledOnce();
     });

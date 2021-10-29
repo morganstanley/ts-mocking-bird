@@ -11,7 +11,7 @@
         "build": "tsc -p main/tsconfig.json",
         "postbuild": "npm run copy",
         "copy": "copyfiles main/**/*.html main/**/*.css main/**/*.jpg dist",
-        "prebuild-release": "npm ci && npm run clean && npm run verify-release",
+        "prebuild-release": "npm run clean && npm run verify-release",
         "verify-release": "concurrently --kill-others-on-fail npm:lint npm:test npm:build",
         "build-release": "npm run copy-dist && typedoc",
         "watch-build": "tsc --watch",
