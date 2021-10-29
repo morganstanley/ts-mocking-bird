@@ -6,6 +6,7 @@ dist/spec/
 .vscode/
 readmeAssets/**/*
 docs/**/*
+.github/**/*
 
 karma.conf.js
 train-build.js
