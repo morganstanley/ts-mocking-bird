@@ -1,9 +1,5 @@
 {
-    "mode": "file",
-    "excludeNotExported": true,
-    "includeDeclarations": true,
     "excludeExternals": true,
     "excludePrivate": true,
-    "resolveJsonModule": true,
     "out": "docs"
 }
