@@ -6,6 +6,12 @@
  */
 ((defineProperty) => {
     Object.defineProperty = (obj, prop, desc) => {
+        if (prop === 'prototype' && typeof obj === 'function') {
+            // do not make class prototype properties writable
+            // if we try to do this things blow up in ng 13 (babel and zone.js)
+            return defineProperty(obj, prop, desc);
+        }
+
         desc.configurable = true;
         return defineProperty(obj, prop, desc);
     };
