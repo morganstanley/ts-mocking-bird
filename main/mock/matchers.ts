@@ -56,7 +56,10 @@ function mapToJestCustomMatcher(matcher: ICustomMatcher): jest.CustomMatcher {
     return (context: IFunctionVerifier<any, any>, received: any, ...actual: any[]) => {
         const result = matcher.compare(context, received, ...actual);
 
-        return { pass: result.pass, message: () => result.message || 'failed' };
+        return {
+            pass: result.pass,
+            message: typeof result.message === 'function' ? result.message : () => result.message || 'failed',
+        };
     };
 }
 
