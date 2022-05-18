@@ -30,6 +30,7 @@ export const matchers = {
     wasCalledAtLeastOnce,
 };
 
+/* istanbul ignore next */
 export function addMatchers() {
     // jasmine.addMatchers must be called in a before function so this will sometimes throw an error
     try {
@@ -37,6 +38,26 @@ export function addMatchers() {
     } catch (e) {
         // NOP
     }
+
+    try {
+        (expect as unknown as jest.Expect).extend({
+            wasCalled: mapToJestCustomMatcher(wasCalled()),
+            wasCalledOnce: mapToJestCustomMatcher(wasCalledOnce()),
+            wasNotCalled: mapToJestCustomMatcher(wasNotCalled()),
+            wasCalledAtLeastOnce: mapToJestCustomMatcher(wasCalledAtLeastOnce()),
+        });
+    } catch (e) {
+        // NOP
+    }
+}
+
+/* istanbul ignore next */
+function mapToJestCustomMatcher(matcher: ICustomMatcher): jest.CustomMatcher {
+    return (context: IFunctionVerifier<any, any>, received: any, ...actual: any[]) => {
+        const result = matcher.compare(context, received, ...actual);
+
+        return { pass: result.pass, message: () => result.message || 'failed' };
+    };
 }
 
 function wasCalled(): ICustomMatcher {

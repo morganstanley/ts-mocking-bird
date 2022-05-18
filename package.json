@@ -12,7 +12,7 @@
         "postbuild": "npm run copy",
         "copy": "copyfiles main/**/*.html main/**/*.css main/**/*.jpg dist",
         "prebuild-release": "npm run clean && npm run verify-release",
-        "verify-release": "concurrently --kill-others-on-fail npm:lint npm:test npm:build",
+        "verify-release": "concurrently --kill-others-on-fail npm:lint npm:test npm:build npm:test:jest",
         "build-release": "npm run copy-dist && typedoc main/index.ts",
         "watch-build": "tsc --watch",
         "test": "karma start --singleRun --browsers ChromeHeadlessNoSandbox",
@@ -28,7 +28,7 @@
     "devDependencies": {
         "@jsdevtools/coverage-istanbul-loader": "^3.0.5",
         "@types/jasmine": "^3.10.1",
-        "@types/jest": "^27.5.1",
+        "@types/jest": "^26.0.24",
         "@types/lodash": "^4.14.176",
         "@types/node": "^10.17.60",
         "@types/uuid": "^7.0.5",
@@ -47,6 +47,7 @@
         "eslint-plugin-promise": "^5.1.1",
         "jasmine": "^3.10.0",
         "jasmine-core": "^3.10.1",
+        "jest": "^26.6.3",
         "karma": "^6.3.17",
         "karma-chrome-launcher": "^3.1.0",
         "karma-coverage": "^2.2.0",
@@ -60,6 +61,7 @@
         "puppeteer": "^13.4.1",
         "rimraf": "^2.6.3",
         "source-map": "0.5.7",
+        "ts-jest": "^26.5.6",
         "ts-loader": "^9.2.7",
         "tsconfig-paths-webpack-plugin": "^3.5.1",
         "typedoc": "^0.22.12",
@@ -67,7 +69,17 @@
         "webpack": "^5.69.1"
     },
     "peerDependencies": {
+        "jest": ">=26",
+        "jasmine": ">=3",
         "typescript": ">=3.1"
+    },
+    "peerDependenciesMeta": {
+        "jest": {
+            "optional": true
+        },
+        "jasmine": {
+            "optional": true
+        }
     },
     "repository": {
         "type": "git",
