@@ -43,7 +43,10 @@ export function setupFunction<T, C extends ConstructorFunction<T>, U extends Fun
             mocked.functionReplacementLookup['function'] || {});
         functionLookup[functionName as string] = mockFunction;
 
-        if (mocked.mock[functionName] == null) {
+        // we do not replace an existing function in case it has already been destructured and sut already has a reference to it
+        // we do replace the mocked implementation above though
+        // eslint-disable-next-line @typescript-eslint/ban-types
+        if ((mocked.mock[functionName] as Function)?.name != functionReplacement.name) {
             mocked.mock[functionName] = functionReplacement as any;
         }
         mocked.functionCallLookup[functionName] = [];
@@ -53,7 +56,7 @@ export function setupFunction<T, C extends ConstructorFunction<T>, U extends Fun
 }
 
 /**
- * Mocks a staticfunction on an existing Mock.
+ * Mocks a static function on an existing Mock.
  * Allows function call verification to be performed later in the test.
  * You can optionally set a mock function implementation that will be called.
  *
@@ -83,7 +86,8 @@ export function setupStaticFunction<
             mocked.functionReplacementLookup['staticFunction'] || {});
         staticFunctionLookup[functionName as string] = mockFunction;
 
-        if (mocked.mockConstructor[functionName] == null) {
+        // eslint-disable-next-line @typescript-eslint/ban-types
+        if ((mocked.mockConstructor[functionName] as Function)?.name != functionReplacement.name) {
             mocked.mockConstructor[functionName] = functionReplacement as any;
         }
         mocked.staticFunctionCallLookup[functionName] = [];

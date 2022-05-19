@@ -1445,6 +1445,15 @@ describe('mock with statics', () => {
             expect(newMock.mockConstructor.functionWithParamsAndNoReturn('', 123, true)).toBeUndefined();
             expect(newMock.mockConstructor.functionWithParamsAndReturn('')).toBeUndefined();
         });
+
+        it(`should work with predefined function toString`, () => {
+            const mockedValue = 'mocked toString return value';
+            const toStringMock = Mock.create<SampleMockedClass, typeof SampleMockedClass>().setup(
+                setupStaticFunction('toString', () => mockedValue),
+            );
+
+            expect(toStringMock.mockConstructor.toString()).toEqual(mockedValue);
+        });
     });
 });
 
@@ -1455,6 +1464,10 @@ class SampleMockedClass {
     public propertyOne = '';
 
     constructor(_paramsOne: {}, _paramTwo: Date) {}
+
+    public static toString(): string {
+        return 'original toString';
+    }
 
     public static functionWithNoParamsAndNoReturn(): void {}
 
