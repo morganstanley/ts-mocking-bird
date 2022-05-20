@@ -3,8 +3,6 @@ name: Create Release
 on:
   push:
     branches: [ main ]
-  pull_request:
-    branches: [ main ]
   workflow_dispatch:
 
 jobs:
@@ -27,6 +25,7 @@ jobs:
         run: npm ci && npm run build-release
 
       - name: Release
+        if: github.repository == 'morganstanley/ts-mocking-bird'
         uses: justincy/github-action-npm-release@2.0.2
         id: release
         with:

@@ -1653,6 +1653,13 @@ describe('mock', () => {
             expect(newMock.functionWithParamsAndNoReturn('', 123, true)).toBeUndefined();
             expect(newMock.functionWithParamsAndReturn('')).toBeUndefined();
         });
+
+        it(`should work with predefined function toString`, () => {
+            const mockedValue = 'mocked toString return value';
+            const toStringMock = Mock.create<Buffer>().setup(setupFunction('toString', () => mockedValue));
+
+            expect(toStringMock.mock.toString()).toEqual(mockedValue);
+        });
     });
 
     describe('parameter comparison', () => {
