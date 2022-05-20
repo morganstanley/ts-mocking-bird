@@ -1,4 +1,4 @@
-name: Build
+name: Compatible Jest Versions
 
 on:
   push:
@@ -14,7 +14,7 @@ jobs:
 
     strategy:
       matrix:
-        jest-version: [25.x, 26.x 27.x]
+        jest-version: [26.x, 27.x]
 
     steps:
     - uses: actions/checkout@v2
