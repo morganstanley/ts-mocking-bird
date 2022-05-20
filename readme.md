@@ -28,7 +28,7 @@ Requires a minimum Typescript version of 3.1.
 
 # Framework support
 
-This library has been extensively used with jasmine and has been tested without issue with jest. The mocking functionality should work in any environment as it has no dependencies on any particular framework. The import replacement functionality uses the jasmine `beforeAll` / `afterAll` and `beforeEach` / `afterEach` so will not work in other environments.
+This library has been tested with and supports Jasmine versions 1 and 2 and Jest versions 26 and 27. The mocking functionality should work in any environment as it has no dependencies on any particular framework. The import replacement functionality uses the jasmine `beforeAll` / `afterAll` and `beforeEach` / `afterEach` so will not work in other environments.
 
 # Usage
 
