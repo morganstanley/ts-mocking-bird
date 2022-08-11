@@ -14,7 +14,7 @@ jobs:
 
     strategy:
       matrix:
-        jasmine-version: [2.x, 3.x]
+        jasmine-version: [2.x, 3.x, 4.x]
 
     steps:
     - uses: actions/checkout@v2
