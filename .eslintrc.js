@@ -20,7 +20,7 @@ module.exports = {
     plugins: ['@typescript-eslint'],
     ignorePatterns: ['dist/', 'reports/', 'docs/'],
     rules: {
-        'prettier/prettier': ['error', prettierConfig],
+        'prettier/prettier': ['error', { trailingComma: 'all', tabWidth: 4, singleQuote: true, printWidth: 120 }],
         '@typescript-eslint/explicit-module-boundary-types': 'off',
         '@typescript-eslint/no-explicit-any': 'off',
         '@typescript-eslint/no-unused-vars': 'off',
