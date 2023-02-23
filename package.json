@@ -1,6 +1,6 @@
 {
     "name": "@morgan-stanley/ts-mocking-bird",
-    "version": "0.6.4",
+    "version": "0.7.0",
     "description": "A fully type safe mocking, call verification and import replacement library for jasmine and jest",
     "license": "Apache-2.0",
     "author": "Morgan Stanley",
@@ -71,7 +71,7 @@
     },
     "peerDependencies": {
         "jasmine": "2.x || 3.x || 4.x",
-        "jest": "26.x || 27.x || 28.x",
+        "jest": "26.x || 27.x || 28.x || 29.x",
         "typescript": ">=4.2"
     },
     "peerDependenciesMeta": {
