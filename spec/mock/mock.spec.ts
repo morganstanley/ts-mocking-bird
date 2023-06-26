@@ -886,7 +886,7 @@ describe('mock', () => {
         });
 
         it('called on checker returned from setup function', () => {
-            const verifier = mocked.setupProperty('propertyOne');
+            const verifier = mocked.setupProperty('propertyOne').getter;
 
             get(mock.propertyOne);
 
@@ -1098,24 +1098,60 @@ describe('mock', () => {
     });
 
     describe('defineProperty', () => {
-        it('called directly on mock instance', () => {
-            mocked.setup(defineProperty('propertyOne'));
+        describe('getter', () => {
+            it('called directly on mock instance', () => {
+                mocked.setup(defineProperty('propertyOne'));
 
-            get(mock.propertyOne);
+                get(mock.propertyOne);
 
-            expect(mocked.withGetter('propertyOne')).wasCalledAtLeastOnce();
+                expect(mocked.withGetter('propertyOne')).wasCalledAtLeastOnce();
+            });
+
+            it('called on checker returned from setup function', () => {
+                const verifier = mocked.defineProperty('propertyOne').getter;
+
+                get(mock.propertyOne);
+
+                expect(verifier).wasCalledAtLeastOnce();
+            });
         });
 
-        it('called on checker returned from setup function', () => {
-            const verifier = mocked.defineProperty('propertyOne');
+        describe('setter', () => {
+            it('called directly on mock instance', () => {
+                mocked.setup(defineProperty('propertyOne'));
 
-            get(mock.propertyOne);
+                mock.propertyOne = 'one';
 
-            expect(verifier).wasCalledAtLeastOnce();
+                expect(mocked.withSetter('propertyOne')).wasCalledAtLeastOnce();
+            });
+
+            it('called on checker returned from setup function', () => {
+                const verifier = mocked.defineProperty('propertyOne').setter;
+
+                mock.propertyOne = 'one';
+
+                expect(verifier).wasCalledAtLeastOnce();
+            });
         });
     });
 
     describe('withSetter', () => {
+        it('called directly on mock instance', () => {
+            mocked.setup(setupProperty('propertyOne'));
+
+            mock.propertyOne = 'one';
+
+            expect(mocked.withSetter('propertyOne')).wasCalledAtLeastOnce();
+        });
+
+        it('called on checker returned from setup function', () => {
+            const verifier = mocked.setupProperty('propertyOne').setter;
+
+            mock.propertyOne = 'one';
+
+            expect(verifier).wasCalledAtLeastOnce();
+        });
+
         describe('assertion with parameters', () => {
             beforeEach(() => {
                 mocked.setup(defineProperty('propertyOne'));
