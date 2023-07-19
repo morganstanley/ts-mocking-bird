@@ -176,7 +176,10 @@ export interface IMocked<T, C extends ConstructorFunction<T> = never> {
      * @param propertyname
      * @param value
      */
-    setupProperty<K extends keyof T>(propertyname: K, value?: T[K]): IFunctionVerifier<T, 'getter', C>;
+    setupProperty<K extends keyof T>(
+        propertyname: K,
+        value?: T[K],
+    ): { getter: IFunctionVerifier<T, 'getter', C>; setter: IFunctionVerifier<T, 'setter', C> };
     /**
      * Defines a single property and allows getters and setters to be defined.
      * Returns a function verifier to verify get and set operations
@@ -189,7 +192,7 @@ export interface IMocked<T, C extends ConstructorFunction<T> = never> {
         propertyname: K,
         getter?: () => T[K],
         setter?: (value: T[K]) => void,
-    ): IFunctionVerifier<T, 'getter', C>;
+    ): { getter: IFunctionVerifier<T, 'getter', C>; setter: IFunctionVerifier<T, 'setter', C> };
 
     /**
      * Sets up a single static function and returns a function verifier to verify calls made and parameters passed.
@@ -207,7 +210,10 @@ export interface IMocked<T, C extends ConstructorFunction<T> = never> {
      * @param propertyname
      * @param value
      */
-    setupStaticProperty<K extends keyof C>(propertyname: K, value?: C[K]): IFunctionVerifier<T, 'staticGetter', C>;
+    setupStaticProperty<K extends keyof C>(
+        propertyname: K,
+        value?: C[K],
+    ): { getter: IFunctionVerifier<T, 'staticGetter', C>; setter: IFunctionVerifier<T, 'staticSetter', C> };
     /**
      * Defines a single static property and allows getters and setters to be defined.
      * Returns a function verifier to verify get and set operations
@@ -220,7 +226,7 @@ export interface IMocked<T, C extends ConstructorFunction<T> = never> {
         propertyname: K,
         getter?: () => C[K],
         setter?: (value: C[K]) => void,
-    ): IFunctionVerifier<T, 'staticGetter', C>;
+    ): { getter: IFunctionVerifier<T, 'staticGetter', C>; setter: IFunctionVerifier<T, 'staticSetter', C> };
 
     /**
      * Verifies calls to a previously setup function.

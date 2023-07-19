@@ -41,7 +41,7 @@ export class Mock {
             },
             setupProperty: <K extends keyof T>(propertyName: K, value?: T[K]) => {
                 setupProperty<T, C, K>(propertyName, value)(mocked);
-                return mocked.withGetter(propertyName);
+                return { getter: mocked.withGetter(propertyName), setter: mocked.withSetter(propertyName) };
             },
             defineProperty: <K extends keyof T>(
                 propertyName: K,
@@ -49,7 +49,7 @@ export class Mock {
                 setter?: (value: T[K]) => void,
             ) => {
                 defineProperty<T, C, K>(propertyName, getter, setter)(mocked);
-                return mocked.withGetter(propertyName);
+                return { getter: mocked.withGetter(propertyName), setter: mocked.withSetter(propertyName) };
             },
 
             setupStaticFunction: <K extends keyof FunctionsOnly<C>>(functionName: K, mockFunction?: any) => {
@@ -58,7 +58,7 @@ export class Mock {
             },
             setupStaticProperty: <K extends keyof C>(propertyName: K, value?: C[K]) => {
                 setupStaticProperty<T, C, K>(propertyName, value)(mocked);
-                return mocked.withStaticGetter(propertyName);
+                return { getter: mocked.withStaticGetter(propertyName), setter: mocked.withStaticSetter(propertyName) };
             },
             defineStaticProperty: <K extends keyof C>(
                 propertyName: K,
@@ -66,7 +66,7 @@ export class Mock {
                 setter?: (value: C[K]) => void,
             ) => {
                 defineStaticProperty<T, C, K>(propertyName, getter, setter)(mocked);
-                return mocked.withStaticGetter(propertyName);
+                return { getter: mocked.withStaticGetter(propertyName), setter: mocked.withStaticSetter(propertyName) };
             },
 
             withFunction: <U extends keyof FunctionsOnly<T>>(functionName: U) =>
