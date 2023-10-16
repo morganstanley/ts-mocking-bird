@@ -29,9 +29,9 @@ export type VerifierParams<
 
 export function createConstructorParameterVerifier<T, C extends ConstructorFunction<T>>(
     mocked: IMocked<T, C>,
-): IFunctionWithParametersVerification<ConstructorParams<C>, T, 'constructor', C> {
+): IFunctionWithParametersVerification<ConstructorParams<C>, T, 'constructorFunction', C> {
     return {
-        ...createFunctionVerifier(mocked, 'constructor', 'constructor'),
+        ...createFunctionVerifier(mocked, 'constructorFunction', 'constructorFunction'),
         /**
          * withParameters and withParametersEqualTo should have signatures:
          *
@@ -44,9 +44,9 @@ export function createConstructorParameterVerifier<T, C extends ConstructorFunct
          * so we internally type the function as any. This does not affect the extrnal facing function type
          */
         withParameters: ((...parameters: ParameterMatcher<any>[]) =>
-            verifyParameters(parameters, mocked, 'constructor', 'constructor', false)) as any,
+            verifyParameters(parameters, mocked, 'constructorFunction', 'constructorFunction', false)) as any,
         withParametersEqualTo: ((...parameters: ParameterMatcher<any>[]) =>
-            verifyParameters(parameters, mocked, 'constructor', 'constructor', true)) as any,
+            verifyParameters(parameters, mocked, 'constructorFunction', 'constructorFunction', true)) as any,
     };
 }
 
@@ -167,10 +167,16 @@ export function verifyFunctionCalled<T, C extends ConstructorFunction<T>, U exte
     let errorMessageSetupFunction: string;
     let errorMessageDescription: string;
 
-    const functionCalls: LookupParams<T, C, U, any>[] | undefined = getLookup(mock, type)[functionName];
+    const functionCallsLookup = getLookup(mock, type);
+
+    console.log(`functionCallsLookup`, { functionCallsLookup });
+
+    const functionCalls: LookupParams<T, C, U, any>[] | undefined = functionCallsLookup[functionName];
+
+    console.log(`functionCalls`, { functionCalls });
 
     switch (type) {
-        case 'constructor':
+        case 'constructorFunction':
             expectationMessage = `Expected constructor to be called`;
             errorMessageSetupFunction = `Mock.setupConstructor()`;
             errorMessageDescription = `Constructor`;
@@ -213,9 +219,12 @@ export function verifyFunctionCalled<T, C extends ConstructorFunction<T>, U exte
     }
 
     if (functionCalls === undefined) {
-        return createCustomMatcherFailResult(
-            `${errorMessageDescription} "${functionName}" has not been setup. Please setup using ${errorMessageSetupFunction} before verifying calls.`,
-        );
+        const message =
+            type === 'constructorFunction'
+                ? `Constructor has not been setup. Please setup using ${errorMessageSetupFunction} before verifying calls.`
+                : `${errorMessageDescription} "${functionName}" has not been setup. Please setup using ${errorMessageSetupFunction} before verifying calls.`;
+
+        return createCustomMatcherFailResult(message);
     }
 
     const parameterMatchResults = functionCalls.map((params) => matchParameters(params, parameterMatchers));

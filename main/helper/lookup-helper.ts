@@ -5,7 +5,7 @@ export function getLookup<T, C extends ConstructorFunction<T>, U extends LookupT
     lookupType: U,
 ): FunctionCallLookup<T, C, U> {
     switch (lookupType) {
-        case 'constructor':
+        case 'constructorFunction':
             return mock.constructorCallLookup as FunctionCallLookup<T, C, U>;
         case 'function':
             return mock.functionCallLookup as FunctionCallLookup<T, C, U>;

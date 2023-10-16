@@ -217,6 +217,14 @@ describe('mock', () => {
                 `Property "propertyTwo" has not been setup. Please setup using Mock.setupProperty() before verifying calls.`,
             );
         });
+
+        it('withConstructor will fail with a meaningful error if we try to assert a function that is not setup', () => {
+            verifyFailure(
+                mocked.withConstructor(),
+                matchers.wasNotCalled(),
+                `Constructor has not been setup. Please setup using Mock.setupConstructor() before verifying calls.`,
+            );
+        });
     });
 
     describe('withFunction', () => {
