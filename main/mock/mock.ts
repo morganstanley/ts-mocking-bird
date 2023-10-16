@@ -3,17 +3,23 @@ import { addMatchers } from './matchers';
 import {
     defineProperty,
     defineStaticProperty,
+    setupConstructor,
     setupFunction,
     setupProperty,
     setupStaticFunction,
     setupStaticProperty,
 } from './operators';
-import { createFunctionParameterVerifier, createFunctionVerifier } from './verifiers';
+import {
+    createConstructorParameterVerifier,
+    createFunctionParameterVerifier,
+    createFunctionVerifier,
+} from './verifiers';
 
 export class Mock {
     public static create<T, C extends ConstructorFunction<T> = never>(): IMocked<T, C> {
         addMatchers();
         const mocked: IMocked<T, C> = {
+            constructorCallLookup: {},
             functionCallLookup: {},
             setterCallLookup: {},
             getterCallLookup: {},
@@ -26,8 +32,7 @@ export class Mock {
 
             mock: {} as T,
 
-            // eslint-disable-next-line @typescript-eslint/no-empty-function
-            mockConstructor: ((..._args: any[]) => {}) as any,
+            mockConstructor: class MockConstructor {} as C,
 
             setup: (...operators: OperatorFunction<T, C>[]) => {
                 let operatorMocked = mocked;
@@ -35,6 +40,10 @@ export class Mock {
                 return operatorMocked;
             },
 
+            setupConstructor: () => {
+                setupConstructor<T, C>()(mocked);
+                return mocked.withConstructor();
+            },
             setupFunction: <K extends keyof FunctionsOnly<T>>(functionName: K, mockFunction?: any) => {
                 setupFunction<T, C, K>(functionName, mockFunction)(mocked);
                 return mocked.withFunction(functionName);
@@ -69,6 +78,7 @@ export class Mock {
                 return { getter: mocked.withStaticGetter(propertyName), setter: mocked.withStaticSetter(propertyName) };
             },
 
+            withConstructor: () => createConstructorParameterVerifier(mocked),
             withFunction: <U extends keyof FunctionsOnly<T>>(functionName: U) =>
                 createFunctionParameterVerifier(mocked, 'function', functionName),
             withSetter: <U extends keyof T>(functionName: U) =>
