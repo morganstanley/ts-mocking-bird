@@ -319,9 +319,5 @@ function trackCall<T, C extends ConstructorFunction<T>, U extends LookupType, K 
         lookup[name] = functionCalls;
     }
 
-    if (typeof functionCalls?.push != 'function') {
-        console.log(`WTF ${typeof functionCalls}`, { functionCalls });
-    }
-
     functionCalls.push(params);
 }

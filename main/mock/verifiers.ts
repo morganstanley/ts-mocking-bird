@@ -168,12 +168,7 @@ export function verifyFunctionCalled<T, C extends ConstructorFunction<T>, U exte
     let errorMessageDescription: string;
 
     const functionCallsLookup = getLookup(mock, type);
-
-    console.log(`functionCallsLookup`, { functionCallsLookup });
-
     const functionCalls: LookupParams<T, C, U, any>[] | undefined = functionCallsLookup[functionName];
-
-    console.log(`functionCalls`, { functionCalls });
 
     switch (type) {
         case 'constructorFunction':
