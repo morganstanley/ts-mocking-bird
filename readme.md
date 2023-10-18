@@ -116,6 +116,19 @@ expect(
 ).wasCalledOnce();
 ```
 
+### Verify Constructor Parameters
+
+```ts
+const mockInstance = Mock.create<ClassWithInstanceArgument, typeof ClassWithInstanceArgument>().setup(
+            setupConstructor(),
+        );
+
+new mockInstance.mockConstructor(serviceInstance);
+
+expect(mockInstance.withConstructor().withParameters(serviceInstance)).wasCalledOnce();
+
+```
+
 ### Verify Getter:
 ```typescript
 const mockedService: IMocked<IMyService> = Mock.create<IMyService>().setup(setupProperty('propOne'));
