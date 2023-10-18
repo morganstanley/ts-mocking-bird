@@ -15,7 +15,7 @@ import {
     toBeDefined,
     toEqual,
 } from '../../main';
-import { defineProperty, setupFunction, setupProperty } from '../../main/mock/operators';
+import { defineProperty, setupConstructor, setupFunction, setupProperty } from '../../main/mock/operators';
 import { verifyFailure, verifyJestFailure } from './failure-verifier';
 
 describe('mock', () => {
@@ -215,6 +215,14 @@ describe('mock', () => {
                 mocked.withSetter('propertyTwo'),
                 matchers.wasNotCalled(),
                 `Property "propertyTwo" has not been setup. Please setup using Mock.setupProperty() before verifying calls.`,
+            );
+        });
+
+        it('withConstructor will fail with a meaningful error if we try to assert a function that is not setup', () => {
+            verifyFailure(
+                mocked.withConstructor(),
+                matchers.wasNotCalled(),
+                `Constructor has not been setup. Please setup using Mock.setupConstructor() before verifying calls.`,
             );
         });
     });
@@ -857,18 +865,595 @@ describe('mock', () => {
                 });
 
                 it('should count function calls the same regardless of called via mock or constructor', () => {
-                    const constructedInstace = new mocked.mockConstructor({}, new Date());
+                    const constructedInstance = new mocked.mockConstructor();
 
-                    constructedInstace.functionWithParamsAndReturn('one', 123, true);
+                    constructedInstance.functionWithParamsAndReturn('one', 123, true);
 
                     mock.functionWithParamsAndReturn('two', 123, true);
-                    constructedInstace.functionWithParamsAndReturn('one', 456, true);
+                    constructedInstance.functionWithParamsAndReturn('one', 456, true);
                     mock.functionWithParamsAndReturn('one', 456, false);
 
                     verifyFailure(
                         mocked.withFunction('functionWithParamsAndReturn').withParameters('one', 123, true).strict(),
                         matchers.wasCalled(),
                         `Expected "functionWithParamsAndReturn" to be called 2 times with params ["one", 123, true] and 0 times with any other parameters but it was called 1 times with matching parameters and 4 times in total.\n[\n[\"one\",123,true]\n[\"two\",123,true]\n[\"one\",456,true]\n[\"one\",456,false]\n]`,
+                        2,
+                    );
+                });
+            });
+        });
+    });
+
+    describe('withConstructor', () => {
+        it('called directly on mock instance', () => {
+            mocked.setup(setupConstructor());
+
+            new mocked.mockConstructor();
+
+            expect(mocked.withConstructor()).wasCalledAtLeastOnce();
+        });
+
+        it('called on checker returned from setup function', () => {
+            const verifier = mocked.setupConstructor();
+
+            new mocked.mockConstructor();
+
+            expect(verifier).wasCalledAtLeastOnce();
+        });
+
+        describe('assertion with no parameters', () => {
+            beforeEach(() => {
+                mocked.setup(setupConstructor());
+            });
+            afterEach(() => {
+                delete (expect as any).extend;
+            });
+
+            describe('wasCalledAtLeastOnce()', () => {
+                it('should not fail when function has been called once', () => {
+                    new mocked.mockConstructor();
+
+                    expect(mocked.withConstructor()).wasCalledAtLeastOnce();
+                });
+
+                it('should not fail when function has been called multiple times', () => {
+                    new mocked.mockConstructor();
+                    new mocked.mockConstructor();
+                    new mocked.mockConstructor();
+
+                    expect(mocked.withConstructor()).wasCalledAtLeastOnce();
+                });
+
+                it('should fail when function has not been called', () => {
+                    verifyFailure(
+                        mocked.withConstructor(),
+                        matchers.wasCalledAtLeastOnce(),
+                        `Expected constructor to be called but it was not.`,
+                    );
+                });
+
+                it('when running in jest it should return a CustomMatcherResult with a function for message', () => {
+                    (expect as any).extend = () => console.log(`Temp function to fool we're using jest`);
+
+                    verifyJestFailure(
+                        mocked.withConstructor(),
+                        matchers.wasCalledAtLeastOnce(),
+                        `Expected constructor to be called but it was not.`,
+                    );
+                });
+            });
+
+            describe('wasNotCalled()', () => {
+                it('should fail when function has been called once', () => {
+                    new mocked.mockConstructor();
+
+                    verifyFailure(
+                        mocked.withConstructor(),
+                        matchers.wasNotCalled(),
+                        `Expected constructor to be called 0 times but it was called 1 times with matching parameters and 1 times in total.`,
+                    );
+                });
+
+                it('should fail when function has been called multiple times', () => {
+                    new mocked.mockConstructor();
+                    new mocked.mockConstructor();
+                    new mocked.mockConstructor();
+
+                    verifyFailure(
+                        mocked.withConstructor(),
+                        matchers.wasNotCalled(),
+                        `Expected constructor to be called 0 times but it was called 3 times with matching parameters and 3 times in total.`,
+                    );
+                });
+
+                it('should not fail when function has not been called', () => {
+                    expect(mocked.withConstructor()).wasNotCalled();
+                });
+            });
+
+            describe('wasCalled(0)', () => {
+                it('should fail when function has been called once', () => {
+                    new mocked.mockConstructor();
+
+                    verifyFailure(
+                        mocked.withConstructor(),
+                        matchers.wasCalled(),
+                        `Expected constructor to be called 0 times but it was called 1 times with matching parameters and 1 times in total.`,
+                        0,
+                    );
+                });
+
+                it("should throw an error if 'times: number' not passed to wasCalled", () => {
+                    expect(() => (expect(mocked.withConstructor()) as any).wasCalled()).toThrowError(
+                        'Expected call count must be passed to wasCalled(times: number). To verify that it was called at least once use wasCalledAtLeastOnce().',
+                    );
+                });
+
+                it('should fail when function has been called multiple times', () => {
+                    new mocked.mockConstructor();
+                    new mocked.mockConstructor();
+                    new mocked.mockConstructor();
+
+                    verifyFailure(
+                        mocked.withConstructor(),
+                        matchers.wasCalled(),
+                        `Expected constructor to be called 0 times but it was called 3 times with matching parameters and 3 times in total.`,
+                        0,
+                    );
+                });
+
+                it('should not fail when function has not been called', () => {
+                    expect(mocked.withConstructor()).wasCalled(0);
+                });
+            });
+
+            describe('wasCalledOnce', () => {
+                it('should not fail when function has been called once', () => {
+                    new mocked.mockConstructor();
+
+                    expect(mocked.withConstructor()).wasCalledOnce();
+                });
+
+                it('should fail when function has been called multiple times', () => {
+                    new mocked.mockConstructor();
+                    new mocked.mockConstructor();
+                    new mocked.mockConstructor();
+
+                    verifyFailure(
+                        mocked.withConstructor(),
+                        matchers.wasCalledOnce(),
+                        `Expected constructor to be called 1 times but it was called 3 times with matching parameters and 3 times in total.`,
+                    );
+                });
+
+                it('should fail when function has not been called', () => {
+                    verifyFailure(
+                        mocked.withConstructor(),
+                        matchers.wasCalledOnce(),
+                        `Expected constructor to be called 1 times but it was called 0 times with matching parameters and 0 times in total.`,
+                    );
+                });
+            });
+
+            describe('wasCalled(1)', () => {
+                it('should not fail when function has been called once', () => {
+                    new mocked.mockConstructor();
+
+                    expect(mocked.withConstructor()).wasCalled(1);
+                });
+
+                it('should fail when function has been called multiple times', () => {
+                    new mocked.mockConstructor();
+                    new mocked.mockConstructor();
+                    new mocked.mockConstructor();
+
+                    verifyFailure(
+                        mocked.withConstructor(),
+                        matchers.wasCalled(),
+                        `Expected constructor to be called 1 times but it was called 3 times with matching parameters and 3 times in total.`,
+                        1,
+                    );
+                });
+
+                it('should fail when function has not been called', () => {
+                    verifyFailure(
+                        mocked.withConstructor(),
+                        matchers.wasCalled(),
+                        `Expected constructor to be called 1 times but it was called 0 times with matching parameters and 0 times in total.`,
+                        1,
+                    );
+                });
+            });
+
+            describe('wasCalled(2)', () => {
+                it('should fail when function has been called once', () => {
+                    new mocked.mockConstructor();
+
+                    verifyFailure(
+                        mocked.withConstructor(),
+                        matchers.wasCalled(),
+                        `Expected constructor to be called 2 times but it was called 1 times with matching parameters and 1 times in total.`,
+                        2,
+                    );
+                });
+
+                it('should not fail when function has been called twice', () => {
+                    new mocked.mockConstructor();
+                    new mocked.mockConstructor();
+
+                    expect(mocked.withConstructor()).wasCalled(2);
+                });
+
+                it('should fail when function has been called multiple times', () => {
+                    new mocked.mockConstructor();
+                    new mocked.mockConstructor();
+                    new mocked.mockConstructor();
+
+                    verifyFailure(
+                        mocked.withConstructor(),
+                        matchers.wasCalled(),
+                        `Expected constructor to be called 2 times but it was called 3 times with matching parameters and 3 times in total.`,
+                        2,
+                    );
+                });
+
+                it('should fail when function has not been called', () => {
+                    verifyFailure(
+                        mocked.withConstructor(),
+                        matchers.wasCalled(),
+                        `Expected constructor to be called 2 times but it was called 0 times with matching parameters and 0 times in total.`,
+                        2,
+                    );
+                });
+            });
+        });
+
+        describe('assertion with parameters', () => {
+            const paramOne = 'one';
+            const paramTwo = 123;
+
+            beforeEach(() => {
+                mocked.setup(setupConstructor());
+            });
+
+            describe('wasCalledAtLeastOnce()', () => {
+                it('should not fail when function has been called once with matching params', () => {
+                    new mocked.mockConstructor(paramOne, paramTwo);
+
+                    expect(mocked.withConstructor().withParameters(paramOne, paramTwo)).wasCalledAtLeastOnce();
+                });
+
+                it(`should fail when function has been called once with "two" instead of "one"`, () => {
+                    new mocked.mockConstructor('two', paramTwo);
+
+                    verifyFailure(
+                        mocked.withConstructor().withParameters(paramOne, paramTwo),
+                        matchers.wasCalledAtLeastOnce(),
+                        `Expected constructor to be called with params ["one", 123] but it was only called with these parameters:\n[\n["two",123]\n]`,
+                    );
+                });
+
+                it(`should fail when function has been called once with "456" instead of "123"`, () => {
+                    new mocked.mockConstructor(paramOne, 456);
+
+                    verifyFailure(
+                        mocked.withConstructor().withParameters(paramOne, 123),
+                        matchers.wasCalledAtLeastOnce(),
+                        `Expected constructor to be called with params ["one", 123] but it was only called with these parameters:\n[\n["one",456]\n]`,
+                    );
+                });
+
+                it('should fail when function has been called once with missing parameters', () => {
+                    new mocked.mockConstructor(paramOne);
+
+                    verifyFailure(
+                        mocked.withConstructor().withParameters(paramOne, paramTwo),
+                        matchers.wasCalledAtLeastOnce(),
+                        `Expected constructor to be called with params ["one", 123] but it was only called with these parameters:\n[\n["one"]\n]`,
+                    );
+                });
+
+                it('should not fail when function has been called multiple times', () => {
+                    new mocked.mockConstructor(paramOne, paramTwo);
+                    new mocked.mockConstructor(paramOne, paramTwo);
+                    new mocked.mockConstructor(paramOne, paramTwo);
+
+                    expect(mocked.withConstructor().withParameters(paramOne, paramTwo)).wasCalledAtLeastOnce();
+                });
+
+                it('should fail when function has not been called', () => {
+                    verifyFailure(
+                        mocked.withConstructor().withParameters('one', 123),
+                        matchers.wasCalledAtLeastOnce(),
+                        `Expected constructor to be called with params ["one", 123] but it was not.`,
+                    );
+                });
+            });
+
+            describe('wasNotCalled()', () => {
+                it('should fail when function has been called once with matching parameters', () => {
+                    new mocked.mockConstructor(paramOne, paramTwo);
+
+                    verifyFailure(
+                        mocked.withConstructor().withParameters(paramOne, paramTwo),
+                        matchers.wasNotCalled(),
+                        `Expected constructor to be called 0 times with params ["one", 123] but it was called 1 times with matching parameters and 1 times in total.\n[\n["one",123]\n]`,
+                    );
+                });
+
+                it('should not fail when function has been called once with different parameters', () => {
+                    new mocked.mockConstructor('two', paramTwo);
+
+                    expect(mocked.withConstructor().withParameters(paramOne, paramTwo)).wasNotCalled();
+                });
+
+                it('should fail when function has been called multiple times with matching params', () => {
+                    new mocked.mockConstructor(paramOne, paramTwo);
+                    new mocked.mockConstructor(paramOne, paramTwo);
+                    new mocked.mockConstructor(paramOne, paramTwo);
+
+                    verifyFailure(
+                        mocked.withConstructor().withParameters(paramOne, paramTwo),
+                        matchers.wasNotCalled(),
+                        `Expected constructor to be called 0 times with params ["one", 123] but it was called 3 times with matching parameters and 3 times in total.\n[\n[\"one\",123]\n[\"one\",123]\n[\"one\",123]\n]`,
+                    );
+                });
+
+                it('should not fail when function has not been called', () => {
+                    expect(mocked.withConstructor().withParameters(paramOne, paramTwo)).wasNotCalled();
+                });
+            });
+
+            describe('wasCalledOnce()', () => {
+                it('should not fail when function has been called once with matching parameters', () => {
+                    new mocked.mockConstructor(paramOne, paramTwo);
+
+                    expect(mocked.withConstructor().withParameters(paramOne, paramTwo)).wasCalledOnce();
+                });
+
+                it('should not fail when function has been called once with matching parameters and many times with other params', () => {
+                    new mocked.mockConstructor(paramOne, paramTwo);
+
+                    new mocked.mockConstructor('two', paramTwo);
+                    new mocked.mockConstructor('two', paramTwo);
+                    new mocked.mockConstructor('two', paramTwo);
+
+                    expect(mocked.withConstructor().withParameters(paramOne, paramTwo)).wasCalledOnce();
+                });
+
+                it('should fail when function has been called multiple times', () => {
+                    new mocked.mockConstructor(paramOne, paramTwo);
+                    new mocked.mockConstructor(paramOne, paramTwo);
+                    new mocked.mockConstructor(paramOne, paramTwo);
+
+                    verifyFailure(
+                        mocked.withConstructor().withParameters(paramOne, paramTwo),
+                        matchers.wasCalledOnce(),
+                        `Expected constructor to be called 1 times with params ["one", 123] but it was called 3 times with matching parameters and 3 times in total.\n[\n[\"one\",123]\n[\"one\",123]\n[\"one\",123]\n]`,
+                    );
+                });
+
+                it('should fail when function has not been called with matching params but multiple times with other params', () => {
+                    new mocked.mockConstructor('two', paramTwo);
+                    new mocked.mockConstructor('two', paramTwo);
+                    new mocked.mockConstructor('two', paramTwo);
+
+                    verifyFailure(
+                        mocked.withConstructor().withParameters(paramOne, paramTwo),
+                        matchers.wasCalledOnce(),
+                        `Expected constructor to be called 1 times with params ["one", 123] but it was called 0 times with matching parameters and 3 times in total.\n[\n[\"two\",123]\n[\"two\",123]\n[\"two\",123]\n]`,
+                    );
+                });
+            });
+
+            describe('wasCalled(2)', () => {
+                it('should fail when function has been called once with correct parameters', () => {
+                    new mocked.mockConstructor(paramOne, paramTwo);
+
+                    new mocked.mockConstructor('two', paramTwo);
+                    new mocked.mockConstructor('two', paramTwo);
+                    new mocked.mockConstructor('two', paramTwo);
+
+                    verifyFailure(
+                        mocked.withConstructor().withParameters(paramOne, paramTwo),
+                        matchers.wasCalled(),
+                        `Expected constructor to be called 2 times with params ["one", 123] but it was called 1 times with matching parameters and 4 times in total.\n[\n[\"one\",123]\n[\"two\",123]\n[\"two\",123]\n[\"two\",123]\n]`,
+                        2,
+                    );
+                });
+
+                it('should fail when function has been called twice with incorrect params', () => {
+                    new mocked.mockConstructor('two', paramTwo);
+                    new mocked.mockConstructor('two', paramTwo);
+
+                    verifyFailure(
+                        mocked.withConstructor().withParameters(paramOne, paramTwo),
+                        matchers.wasCalled(),
+                        `Expected constructor to be called 2 times with params ["one", 123] but it was called 0 times with matching parameters and 2 times in total.\n[\n[\"two\",123]\n[\"two\",123]\n]`,
+                        2,
+                    );
+                });
+
+                it('should not fail when function has been called twice with correct params and multiple times with different params', () => {
+                    new mocked.mockConstructor(paramOne, paramTwo);
+                    new mocked.mockConstructor(paramOne, paramTwo);
+
+                    new mocked.mockConstructor('two', paramTwo);
+                    new mocked.mockConstructor('two', paramTwo);
+
+                    expect(mocked.withConstructor().withParameters(paramOne, paramTwo)).wasCalled(2);
+                });
+
+                it('should fail when function has been called multiple times with matching params', () => {
+                    new mocked.mockConstructor(paramOne, paramTwo);
+                    new mocked.mockConstructor(paramOne, paramTwo);
+                    new mocked.mockConstructor(paramOne, paramTwo);
+
+                    verifyFailure(
+                        mocked.withConstructor().withParameters(paramOne, paramTwo),
+                        matchers.wasCalled(),
+                        `Expected constructor to be called 2 times with params ["one", 123] but it was called 3 times with matching parameters and 3 times in total.\n[\n[\"one\",123]\n[\"one\",123]\n[\"one\",123]\n]`,
+                        2,
+                    );
+                });
+            });
+        });
+
+        describe('assertion with params and explicit', () => {
+            beforeEach(() => {
+                mocked.setup(setupConstructor());
+            });
+
+            describe('wasNotCalled()', () => {
+                it('should fail when function has been called once with matching parameters', () => {
+                    new mocked.mockConstructor('one', 123, true);
+
+                    verifyFailure(
+                        mocked.withConstructor().withParameters('one', 123, true).strict(),
+                        matchers.wasNotCalled(),
+                        `Expected constructor to be called 0 times with params ["one", 123, true] and 0 times with any other parameters but it was called 1 times with matching parameters and 1 times in total.\n[\n["one",123,true]\n]`,
+                    );
+                });
+
+                it('should fail when function has been called once with different parameters', () => {
+                    new mocked.mockConstructor('two', 123, true);
+
+                    verifyFailure(
+                        mocked.withConstructor().withParameters('one', 123, true).strict(),
+                        matchers.wasNotCalled(),
+                        `Expected constructor to be called 0 times with params ["one", 123, true] and 0 times with any other parameters but it was called 0 times with matching parameters and 1 times in total.\n[\n["two",123,true]\n]`,
+                    );
+                });
+
+                it('should fail when function has been called multiple times with matching params', () => {
+                    new mocked.mockConstructor('one', 123, true);
+                    new mocked.mockConstructor('one', 123, true);
+                    new mocked.mockConstructor('one', 123, true);
+
+                    verifyFailure(
+                        mocked.withConstructor().withParameters('one', 123, true).strict(),
+                        matchers.wasNotCalled(),
+                        `Expected constructor to be called 0 times with params ["one", 123, true] and 0 times with any other parameters but it was called 3 times with matching parameters and 3 times in total.\n[\n[\"one\",123,true]\n[\"one\",123,true]\n[\"one\",123,true]\n]`,
+                    );
+                });
+
+                it('should not fail when function has not been called', () => {
+                    expect(mocked.withConstructor().withParameters('one', 123, true).strict()).wasNotCalled();
+                });
+            });
+
+            describe('wasCalledOnce()', () => {
+                it('should not fail when function has been called once with matching parameters', () => {
+                    new mocked.mockConstructor('one', 123, true);
+
+                    expect(mocked.withConstructor().withParameters('one', 123, true).strict()).wasCalledOnce();
+                });
+
+                it('should fail when function has been called once with matching parameters and many times with other params', () => {
+                    new mocked.mockConstructor('one', 123, true);
+
+                    new mocked.mockConstructor('two', 123, true);
+                    new mocked.mockConstructor('one', 456, true);
+                    new mocked.mockConstructor('one', 456, false);
+
+                    verifyFailure(
+                        mocked.withConstructor().withParameters('one', 123, true).strict(),
+                        matchers.wasCalledOnce(),
+                        `Expected constructor to be called 1 times with params ["one", 123, true] and 0 times with any other parameters but it was called 1 times with matching parameters and 4 times in total.\n[\n[\"one\",123,true]\n[\"two\",123,true]\n[\"one\",456,true]\n[\"one\",456,false]\n]`,
+                    );
+                });
+
+                it('should fail when function has been called multiple times', () => {
+                    new mocked.mockConstructor('one', 123, true);
+                    new mocked.mockConstructor('one', 123, true);
+                    new mocked.mockConstructor('one', 123, true);
+
+                    verifyFailure(
+                        mocked.withConstructor().withParameters('one', 123, true).strict(),
+                        matchers.wasCalledOnce(),
+                        `Expected constructor to be called 1 times with params ["one", 123, true] and 0 times with any other parameters but it was called 3 times with matching parameters and 3 times in total.\n[\n[\"one\",123,true]\n[\"one\",123,true]\n[\"one\",123,true]\n]`,
+                    );
+                });
+
+                it('should fail when function has not been called with matching params but multiple times with other params', () => {
+                    new mocked.mockConstructor('two', 123, true);
+                    new mocked.mockConstructor('one', 456, true);
+                    new mocked.mockConstructor('one', 456, false);
+
+                    verifyFailure(
+                        mocked.withConstructor().withParameters('one', 123, true).strict(),
+                        matchers.wasCalledOnce(),
+                        `Expected constructor to be called 1 times with params ["one", 123, true] and 0 times with any other parameters but it was called 0 times with matching parameters and 3 times in total.\n[\n[\"two\",123,true]\n[\"one\",456,true]\n[\"one\",456,false]\n]`,
+                    );
+                });
+            });
+
+            describe('wasCalled(2)', () => {
+                it('should fail when function has been called once with correct parameters', () => {
+                    new mocked.mockConstructor('one', 123, true);
+
+                    new mocked.mockConstructor('two', 123, true);
+                    new mocked.mockConstructor('one', 456, true);
+                    new mocked.mockConstructor('one', 456, false);
+
+                    verifyFailure(
+                        mocked.withConstructor().withParameters('one', 123, true).strict(),
+                        matchers.wasCalled(),
+                        `Expected constructor to be called 2 times with params ["one", 123, true] and 0 times with any other parameters but it was called 1 times with matching parameters and 4 times in total.\n[\n[\"one\",123,true]\n[\"two\",123,true]\n[\"one\",456,true]\n[\"one\",456,false]\n]`,
+                        2,
+                    );
+                });
+
+                it('should fail when function has been called twice with incorrect params', () => {
+                    new mocked.mockConstructor('two', 123, true);
+                    new mocked.mockConstructor('one', 456, true);
+
+                    verifyFailure(
+                        mocked.withConstructor().withParameters('one', 123, true).strict(),
+                        matchers.wasCalled(),
+                        `Expected constructor to be called 2 times with params ["one", 123, true] and 0 times with any other parameters but it was called 0 times with matching parameters and 2 times in total.\n[\n[\"two\",123,true]\n[\"one\",456,true]\n]`,
+                        2,
+                    );
+                });
+
+                it('should fail when function has been called twice with correct params and multiple times with different params', () => {
+                    new mocked.mockConstructor('one', 123, true);
+                    new mocked.mockConstructor('one', 123, true);
+
+                    new mocked.mockConstructor('two', 123, true);
+                    new mocked.mockConstructor('one', 456, true);
+                    new mocked.mockConstructor('one', 456, false);
+
+                    verifyFailure(
+                        mocked.withConstructor().withParameters('one', 123, true).strict(),
+                        matchers.wasCalled(),
+                        `Expected constructor to be called 2 times with params ["one", 123, true] and 0 times with any other parameters but it was called 2 times with matching parameters and 5 times in total.\n[\n[\"one\",123,true]\n[\"one\",123,true]\n[\"two\",123,true]\n[\"one\",456,true]\n[\"one\",456,false]\n]`,
+                        2,
+                    );
+                });
+
+                it('should fail when function has been called multiple times with matching params', () => {
+                    new mocked.mockConstructor('one', 123, true);
+                    new mocked.mockConstructor('one', 123, true);
+                    new mocked.mockConstructor('one', 123, true);
+
+                    verifyFailure(
+                        mocked.withConstructor().withParameters('one', 123, true).strict(),
+                        matchers.wasCalled(),
+                        `Expected constructor to be called 2 times with params ["one", 123, true] and 0 times with any other parameters but it was called 3 times with matching parameters and 3 times in total.\n[\n[\"one\",123,true]\n[\"one\",123,true]\n[\"one\",123,true]\n]`,
+                        2,
+                    );
+                });
+
+                it('should fail when function has not been called with matching params but has been called with different params', () => {
+                    new mocked.mockConstructor('two', 123, true);
+                    new mocked.mockConstructor('one', 456, true);
+                    new mocked.mockConstructor('one', 456, false);
+
+                    verifyFailure(
+                        mocked.withConstructor().withParameters('one', 123, true).strict(),
+                        matchers.wasCalled(),
+                        `Expected constructor to be called 2 times with params ["one", 123, true] and 0 times with any other parameters but it was called 0 times with matching parameters and 3 times in total.\n[\n[\"two\",123,true]\n[\"one\",456,true]\n[\"one\",456,false]\n]`,
                         2,
                     );
                 });
@@ -1071,7 +1656,7 @@ describe('mock', () => {
                 });
 
                 it('should count function calls the same regardless of called via mock or constructor', () => {
-                    const constructedInstance = new mocked.mockConstructor({}, new Date());
+                    const constructedInstance = new mocked.mockConstructor();
 
                     get(mock.propertyOne);
                     get(constructedInstance.propertyOne);
@@ -1373,7 +1958,7 @@ describe('mock', () => {
                 });
 
                 it('should count function calls the same regardless of called via mock or constructor', () => {
-                    const constructedInstance = new mocked.mockConstructor({}, new Date());
+                    const constructedInstance = new mocked.mockConstructor();
 
                     mock.propertyOne = 'one';
                     constructedInstance.propertyOne = 'one';
@@ -2113,7 +2698,7 @@ class SampleMockedClass {
     public propertyTwo = 123;
     public propertyThree = true;
 
-    constructor(_paramsOne: {}, _paramTwo: Date) {}
+    constructor(_paramOne?: string, _paramTwo?: number, _paramThree?: boolean) {}
 
     public functionWithNoParamsAndNoReturn(): void {}
 

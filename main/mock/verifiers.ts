@@ -1,6 +1,7 @@
 import { getLookup, runningInJest } from '../helper';
 import {
     ConstructorFunction,
+    ConstructorParams,
     FunctionName,
     FunctionParams,
     IFunctionVerifier,
@@ -10,12 +11,12 @@ import {
     IMocked,
     IParameterMatcher,
     IStrictFunctionVerification,
+    LookupFunction,
     LookupParams,
     LookupType,
     MatchFunction,
     ParameterMatcher,
     SetterTypes,
-    VerifierTarget,
 } from './contracts';
 import { isParameterMatcher, mapItemToString, toBe, toEqual } from './parameterMatchers';
 
@@ -24,7 +25,30 @@ export type VerifierParams<
     C extends ConstructorFunction<T>,
     U extends LookupType,
     K extends FunctionName<T, C, U>,
-> = U extends SetterTypes ? [VerifierTarget<T, C, U>[K]] : FunctionParams<VerifierTarget<T, C, U>[K]>;
+> = U extends SetterTypes ? [LookupFunction<T, C, U, K>] : FunctionParams<LookupFunction<T, C, U, K>>;
+
+export function createConstructorParameterVerifier<T, C extends ConstructorFunction<T>>(
+    mocked: IMocked<T, C>,
+): IFunctionWithParametersVerification<ConstructorParams<C>, T, 'constructorFunction', C> {
+    return {
+        ...createFunctionVerifier(mocked, 'constructorFunction', 'constructorFunction'),
+        /**
+         * withParameters and withParametersEqualTo should have signatures:
+         *
+         * withParameters: (...parameters: FunctionParameterMatchers<VerifierParams<T, C, U, K>>)
+         * withParametersEqualTo: (...parameters: FunctionParameterMatchers<VerifierParams<T, C, U, K>>)
+         *
+         * but this gives the error: [ts] A rest parameter must be of an array type. [2370]
+         * https://github.com/microsoft/TypeScript/issues/29919
+         *
+         * so we internally type the function as any. This does not affect the extrnal facing function type
+         */
+        withParameters: ((...parameters: ParameterMatcher<any>[]) =>
+            verifyParameters(parameters, mocked, 'constructorFunction', 'constructorFunction', false)) as any,
+        withParametersEqualTo: ((...parameters: ParameterMatcher<any>[]) =>
+            verifyParameters(parameters, mocked, 'constructorFunction', 'constructorFunction', true)) as any,
+    };
+}
 
 export function createFunctionParameterVerifier<
     T,
@@ -143,9 +167,16 @@ export function verifyFunctionCalled<T, C extends ConstructorFunction<T>, U exte
     let errorMessageSetupFunction: string;
     let errorMessageDescription: string;
 
-    const functionCalls: LookupParams<T, C, U, any>[] | undefined = getLookup(mock, type)[functionName];
+    const functionCallsLookup = getLookup(mock, type);
+    const functionCalls: LookupParams<T, C, U, any>[] | undefined = functionCallsLookup[functionName];
 
     switch (type) {
+        case 'constructorFunction':
+            expectationMessage = `Expected constructor to be called`;
+            errorMessageSetupFunction = `Mock.setupConstructor()`;
+            errorMessageDescription = `Constructor`;
+            break;
+
         case 'staticGetter':
             expectationMessage = `Expected static property "${functionName}" getter to be called`;
             errorMessageSetupFunction = `Mock.setupStaticProperty()`;
@@ -183,9 +214,12 @@ export function verifyFunctionCalled<T, C extends ConstructorFunction<T>, U exte
     }
 
     if (functionCalls === undefined) {
-        return createCustomMatcherFailResult(
-            `${errorMessageDescription} "${functionName}" has not been setup. Please setup using ${errorMessageSetupFunction} before verifying calls.`,
-        );
+        const message =
+            type === 'constructorFunction'
+                ? `Constructor has not been setup. Please setup using ${errorMessageSetupFunction} before verifying calls.`
+                : `${errorMessageDescription} "${functionName}" has not been setup. Please setup using ${errorMessageSetupFunction} before verifying calls.`;
+
+        return createCustomMatcherFailResult(message);
     }
 
     const parameterMatchResults = functionCalls.map((params) => matchParameters(params, parameterMatchers));

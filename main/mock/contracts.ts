@@ -38,34 +38,55 @@ export type FunctionCallLookup<T, C extends ConstructorFunction<T>, U extends Lo
     [P in FunctionName<T, C, U>]?: LookupParams<T, C, U, P>[];
 };
 
+export type LookupFunction<
+    T,
+    C extends ConstructorFunction<T>,
+    U extends LookupType,
+    K extends FunctionName<T, C, U>,
+> = VerifierTarget<T, C, U>[K];
+
 export type LookupParams<
     T,
     C extends ConstructorFunction<T>,
     U extends LookupType,
     K extends FunctionName<T, C, U>,
-> = U extends FunctionTypes
-    ? FunctionParams<VerifierTarget<T, C, U>[K]>
+> = U extends 'constructorFunction'
+    ? ConstructorParams<C>
+    : U extends FunctionTypes
+    ? FunctionParams<LookupFunction<T, C, U, K>>
     : U extends SetterTypes
-    ? [VerifierTarget<T, C, U>[K]]
+    ? [LookupFunction<T, C, U, K>]
     : [];
+
 export type FunctionParams<T> = T extends (...args: infer P) => any ? P : never;
 
 export type ConstructorFunction<T> = (abstract new (...args: any[]) => T) | (new (...args: any[]) => T);
+
+export type ConstructorParams<T extends ConstructorFunction<any>> = T extends abstract new (
+    ...args: infer RAbstract
+) => T
+    ? RAbstract
+    : T extends new (...args: infer R) => any
+    ? R
+    : never;
 
 export type StaticLookupTypes = 'staticFunction' | 'staticGetter' | 'staticSetter';
 export type InstanceLookupTypes = 'function' | 'getter' | 'setter';
 export type SetterTypes = 'staticSetter' | 'setter';
 export type GetterTypes = 'staticGetter' | 'getter';
 export type FunctionTypes = 'staticFunction' | 'function';
-export type LookupType = StaticLookupTypes | InstanceLookupTypes;
+export type LookupType = StaticLookupTypes | InstanceLookupTypes | 'constructorFunction';
 
-export type VerifierTarget<T, C extends ConstructorFunction<T>, U extends LookupType> = U extends StaticLookupTypes
+export type VerifierTarget<T, C extends ConstructorFunction<T>, U extends LookupType> = U extends 'constructorFunction'
+    ? { constructorFunction: C }
+    : U extends StaticLookupTypes
     ? U extends FunctionTypes
         ? FunctionsOnly<C>
         : C
     : U extends FunctionTypes
     ? FunctionsOnly<T>
     : T;
+
 export type FunctionName<T, C extends ConstructorFunction<T>, U extends LookupType> = keyof VerifierTarget<T, C, U>;
 
 export interface IFunctionWithParametersVerification<
@@ -137,6 +158,7 @@ export interface IMocked<T, C extends ConstructorFunction<T> = never> {
      */
     mockConstructor: C;
 
+    constructorCallLookup: FunctionCallLookup<T, C, 'constructorFunction'>;
     functionCallLookup: FunctionCallLookup<T, C, 'function'>;
     setterCallLookup: FunctionCallLookup<T, C, 'setter'>;
     getterCallLookup: FunctionCallLookup<T, C, 'getter'>;
@@ -159,6 +181,8 @@ export interface IMocked<T, C extends ConstructorFunction<T> = never> {
      * @param operators
      */
     setup(...operators: OperatorFunction<T, C>[]): IMocked<T, C>;
+
+    setupConstructor(): IFunctionWithParametersVerification<ConstructorParams<C>, T, 'constructorFunction', C>;
 
     /**
      * Sets up a single function and returns a function verifier to verify calls made and parameters passed.
@@ -227,6 +251,14 @@ export interface IMocked<T, C extends ConstructorFunction<T> = never> {
         getter?: () => C[K],
         setter?: (value: C[K]) => void,
     ): { getter: IFunctionVerifier<T, 'staticGetter', C>; setter: IFunctionVerifier<T, 'staticSetter', C> };
+
+    /**
+     * Verifies calls to constructor.
+     * expect(myMock.withFunction("functionName")).wasNotCalled():
+     * expect(myMock.withFunction("functionName")).wasCalledOnce():
+     * expect(myMock.withFunction("functionName").withParameters("one", 2)).wasCalledOnce():
+     */
+    withConstructor(): IFunctionWithParametersVerification<ConstructorParams<C>, T, 'constructorFunction', C>;
 
     /**
      * Verifies calls to a previously setup function.

@@ -2,6 +2,7 @@
 import { getLookup } from '../helper';
 import {
     ConstructorFunction,
+    ConstructorParams,
     FunctionCallLookup,
     FunctionName,
     FunctionTypes,
@@ -12,6 +13,27 @@ import {
     OperatorFunction,
     SetterTypes,
 } from './contracts';
+
+/**
+ * Mocks a function on an existing Mock.
+ * Allows function call verification to be performed later in the test.
+ * You can optionally set a mock function implementation that will be called.
+ *
+ * @param functionName
+ * @param mockFunction
+ */
+export function setupConstructor<T, C extends ConstructorFunction<T>>(): OperatorFunction<T, C> {
+    return (mocked: IMocked<T, C>) => {
+        mocked.mockConstructor = class MockConstructor {
+            constructor(...args: ConstructorParams<C>) {
+                trackConstructorCall(mocked, args as any);
+            }
+        } as C;
+        mocked.constructorCallLookup['constructorFunction'] = [];
+
+        return mocked;
+    };
+}
 
 /**
  * Mocks a function on an existing Mock.
@@ -240,6 +262,15 @@ function definePropertyImpl<
     }
 
     return mocked;
+}
+
+export function trackConstructorCall<T, C extends ConstructorFunction<T>>(
+    mock: IMocked<T, C>,
+    params: LookupParams<T, C, 'constructorFunction', 'constructorFunction'>,
+) {
+    const lookup = getLookup(mock, 'constructorFunction');
+
+    trackCall(lookup, 'constructorFunction', params);
 }
 
 function trackFunctionCall<
