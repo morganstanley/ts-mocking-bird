@@ -24,19 +24,20 @@ jobs:
       - name: Install node modules and verify build
         run: npm ci && npm run build-release
 
-      - name: Release
-        if: github.repository == 'morganstanley/ts-mocking-bird'
-        uses: justincy/github-action-npm-release@2.0.2
-        id: release
-        with:
-          token: ${{ secrets.RELEASE_TOKEN }}
-
-      - name: Print release output
-        if: ${{ steps.release.outputs.released == 'true' }}
-        run: echo Release ID ${{ steps.release.outputs.release_id }}
-
       - name: Publish
-        if: steps.release.outputs.released == 'true'
-        uses: JS-DevTools/npm-publish@v1
+        if: github.repository == 'morganstanley/ts-mocking-bird'
+        uses: JS-DevTools/npm-publish@v2
+        id: publish
         with:
           token: ${{ secrets.NPM_TOKEN }}
+
+      - name: Print release output
+        if: ${{ steps.publish.outputs.type }}
+        run: echo Release ID ${{ steps.publish.outputs.id }}
+
+
+      - uses: "marvinpinto/action-automatic-releases@latest"
+        if: ${{ steps.publish.outputs.type }}
+        with:
+          repo_token: "${{ secrets.RELEASE_TOKEN }}"
+          prerelease: false
