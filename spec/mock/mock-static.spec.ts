@@ -700,20 +700,40 @@ describe('mock with statics', () => {
     });
 
     describe('defineStaticProperty', () => {
-        it('called directly on mock instance', () => {
-            mocked.setup(defineStaticProperty('propertyOne'));
+        describe('getter', () => {
+            it('called directly on mock instance', () => {
+                mocked.setup(defineStaticProperty('propertyOne'));
 
-            get(mocked.mockConstructor.propertyOne);
+                get(mocked.mockConstructor.propertyOne);
 
-            expect(mocked.withStaticGetter('propertyOne')).wasCalledAtLeastOnce();
+                expect(mocked.withStaticGetter('propertyOne')).wasCalledAtLeastOnce();
+            });
+
+            it('called on checker returned from setup function', () => {
+                const verifier = mocked.defineStaticProperty('propertyOne').getter;
+
+                get(mocked.mockConstructor.propertyOne);
+
+                expect(verifier).wasCalledAtLeastOnce();
+            });
         });
 
-        it('called on checker returned from setup function', () => {
-            const verifier = mocked.defineStaticProperty('propertyOne');
+        describe('setter', () => {
+            it('called directly on mock instance', () => {
+                mocked.setup(defineStaticProperty('propertyOne'));
 
-            get(mocked.mockConstructor.propertyOne);
+                mocked.mockConstructor.propertyOne = 'one';
 
-            expect(verifier).wasCalledAtLeastOnce();
+                expect(mocked.withStaticSetter('propertyOne')).wasCalledAtLeastOnce();
+            });
+
+            it('called on checker returned from setup function', () => {
+                const verifier = mocked.defineStaticProperty('propertyOne').setter;
+
+                mocked.mockConstructor.propertyOne = 'one';
+
+                expect(verifier).wasCalledAtLeastOnce();
+            });
         });
     });
 
@@ -727,7 +747,7 @@ describe('mock with statics', () => {
         });
 
         it('called on checker returned from setup function', () => {
-            const verifier = mocked.setupStaticProperty('propertyOne');
+            const verifier = mocked.setupStaticProperty('propertyOne').getter;
 
             get(mocked.mockConstructor.propertyOne);
 

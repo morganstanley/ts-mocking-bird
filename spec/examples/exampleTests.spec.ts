@@ -6,6 +6,7 @@ import {
     setupFunction,
     setupProperty,
     setupStaticFunction,
+    setupConstructor,
 } from '../../main';
 import { ClassWithConstructorArgument, ClassWithInstanceArgument } from './exampleImplementation';
 import { IMyService, MyService } from './exampleImports';
@@ -116,5 +117,18 @@ describe('verify function calls', () => {
 
         expect(systemUnderTest).toBeDefined();
         expect(functionVerifier.withParameters('someValue')).wasCalledOnce();
+    });
+});
+
+describe('verify constructor calls', () => {
+    it(`should verify that constructor was called`, () => {
+        const mockInstance = Mock.create<ClassWithInstanceArgument, typeof ClassWithInstanceArgument>().setup(
+            setupConstructor(),
+        );
+        const mockService = Mock.create<IMyService>();
+
+        new mockInstance.mockConstructor(mockService.mock);
+
+        expect(mockInstance.withConstructor().withParameters(mockService.mock)).wasCalledOnce();
     });
 });

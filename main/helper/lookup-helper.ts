@@ -5,6 +5,8 @@ export function getLookup<T, C extends ConstructorFunction<T>, U extends LookupT
     lookupType: U,
 ): FunctionCallLookup<T, C, U> {
     switch (lookupType) {
+        case 'constructorFunction':
+            return mock.constructorCallLookup as FunctionCallLookup<T, C, U>;
         case 'function':
             return mock.functionCallLookup as FunctionCallLookup<T, C, U>;
         case 'getter':
@@ -18,5 +20,6 @@ export function getLookup<T, C extends ConstructorFunction<T>, U extends LookupT
         case 'staticSetter':
             return mock.staticSetterCallLookup as FunctionCallLookup<T, C, U>;
     }
+
     throw new Error(`Unknown lookup type: ${lookupType}`);
 }
