@@ -3,5 +3,7 @@
     "editor.tabSize": 4,
     "editor.detectIndentation": false,
     "typescript.tsdk": "node_modules\\typescript\\lib",
-    "editor.codeActionsOnSave": { "source.fixAll.eslint": true }
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": "explicit"
+    }
 }
