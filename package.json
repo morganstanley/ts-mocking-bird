@@ -27,7 +27,7 @@
     },
     "devDependencies": {
         "@jsdevtools/coverage-istanbul-loader": "^3.0.5",
-        "@types/jasmine": "^3.10.1",
+        "@types/jasmine": "^5.1.4",
         "@types/jest": "^27.5.1",
         "@types/lodash": "^4.14.176",
         "@types/node": "^10.17.60",
@@ -45,7 +45,7 @@
         "eslint-plugin-node": "^11.1.0",
         "eslint-plugin-prettier": "^4.0.0",
         "eslint-plugin-promise": "^5.1.1",
-        "jasmine": "^3.10.0",
+        "jasmine": "^5.4.0",
         "jasmine-core": "^3.10.1",
         "jest": "^27.5.1",
         "karma": "^6.3.17",
