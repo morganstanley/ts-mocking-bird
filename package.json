@@ -34,7 +34,7 @@
         "@types/uuid": "^7.0.5",
         "@typescript-eslint/eslint-plugin": "^4.33.0",
         "@typescript-eslint/parser": "^4.33.0",
-        "chromedriver": "^130.0.2",
+        "chromedriver": "^131.0.4",
         "circular-dependency-plugin": "^5.2.2",
         "concurrently": "^9.1.0",
         "copyfiles": "^1.2.0",
