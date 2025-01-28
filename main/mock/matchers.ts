@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-namespace */
-import { ICustomMatcher, IFunctionVerifier } from './contracts';
+import { IJasmineMatcher, IFunctionVerifier } from './contracts';
 import { verifyFunctionCalled } from './verifiers';
+import type { expect as vitestExpect } from 'vitest';
 
 declare global {
     namespace jasmine {
@@ -31,7 +32,7 @@ export const matchers = {
 };
 
 /* istanbul ignore next */
-export function addMatchers() {
+export async function addMatchers(expectParam?: jest.Expect | typeof vitestExpect): Promise<void> {
     // jasmine.addMatchers must be called in a before function so this will sometimes throw an error
     try {
         jasmine.addMatchers(matchers);
@@ -40,11 +41,11 @@ export function addMatchers() {
     }
 
     try {
-        (expect as unknown as jest.Expect).extend({
-            wasCalled: mapToJestCustomMatcher(wasCalled()),
-            wasCalledOnce: mapToJestCustomMatcher(wasCalledOnce()),
-            wasNotCalled: mapToJestCustomMatcher(wasNotCalled()),
-            wasCalledAtLeastOnce: mapToJestCustomMatcher(wasCalledAtLeastOnce()),
+        ((expectParam ?? expect) as unknown as jest.Expect).extend({
+            wasCalled: mapToCustomMatcher(wasCalled()),
+            wasCalledOnce: mapToCustomMatcher(wasCalledOnce()),
+            wasNotCalled: mapToCustomMatcher(wasNotCalled()),
+            wasCalledAtLeastOnce: mapToCustomMatcher(wasCalledAtLeastOnce()),
         });
     } catch (e) {
         // NOP
@@ -52,7 +53,7 @@ export function addMatchers() {
 }
 
 /* istanbul ignore next */
-function mapToJestCustomMatcher(matcher: ICustomMatcher): jest.CustomMatcher {
+function mapToCustomMatcher(matcher: IJasmineMatcher) {
     return (context: IFunctionVerifier<any, any>, received: any, ...actual: any[]) => {
         const result = matcher.compare(context, received, ...actual);
 
@@ -63,7 +64,7 @@ function mapToJestCustomMatcher(matcher: ICustomMatcher): jest.CustomMatcher {
     };
 }
 
-function wasCalled(): ICustomMatcher {
+function wasCalled(): IJasmineMatcher {
     return {
         compare: (actual: IFunctionVerifier<any, any>, times: number) => {
             if (typeof times !== 'number') {
@@ -77,7 +78,7 @@ function wasCalled(): ICustomMatcher {
     };
 }
 
-function wasCalledOnce(): ICustomMatcher {
+function wasCalledOnce(): IJasmineMatcher {
     return {
         compare: (actual: IFunctionVerifier<any, any>) => {
             return verifyFunctionCalled(1, actual) as any;
@@ -85,7 +86,7 @@ function wasCalledOnce(): ICustomMatcher {
     };
 }
 
-function wasNotCalled(): ICustomMatcher {
+function wasNotCalled(): IJasmineMatcher {
     return {
         compare: (actual: IFunctionVerifier<any, any>) => {
             return verifyFunctionCalled(0, actual) as any;
@@ -93,7 +94,7 @@ function wasNotCalled(): ICustomMatcher {
     };
 }
 
-function wasCalledAtLeastOnce(): ICustomMatcher {
+function wasCalledAtLeastOnce(): IJasmineMatcher {
     return {
         compare: (actual: IFunctionVerifier<any, any>) => {
             return verifyFunctionCalled(undefined, actual) as any;

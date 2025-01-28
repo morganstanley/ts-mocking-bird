@@ -28,4 +28,4 @@ jobs:
     - run: npm ci
     - run: npm run build
     - run: npm install typescript@${{ matrix.typescript-version }} 
-    - run: npx tsc spec/ts-compat-test.ts --noEmit --skipLibCheck
+    - run: npm run compatibility-test

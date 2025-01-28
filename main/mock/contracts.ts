@@ -337,9 +337,11 @@ export interface IJasmineCustomMatcherResult {
     message?: string;
 }
 
-export interface ICustomMatcher {
-    compare<T>(actual: T, expected: T, ...args: any[]): IJasmineCustomMatcherResult;
-    compare(actual: any, ...expected: any[]): IJasmineCustomMatcherResult;
-    negativeCompare?<T>(actual: T, expected: T, ...args: any[]): IJasmineCustomMatcherResult;
-    negativeCompare?(actual: any, ...expected: any[]): IJasmineCustomMatcherResult;
-}
+type Matchers<TResult> = {
+    compare<T>(actual: T, expected: T, ...args: any[]): TResult;
+    compare(actual: any, ...expected: any[]): TResult;
+    negativeCompare?<T>(actual: T, expected: T, ...args: any[]): TResult;
+    negativeCompare?(actual: any, ...expected: any[]): TResult;
+};
+
+export type IJasmineMatcher = Matchers<IJasmineCustomMatcherResult>;
