@@ -16,7 +16,7 @@ const MockMap = new Map<string, any[] | undefined>();
  * This will not replace statics on classes or replace constant values in the module
  * @param originalModule
  */
-export function proxyModule<T>(originalModule: T): WrappedModule & T {
+export function proxyModule<T extends Record<string, any>>(originalModule: T): WrappedModule & T {
     const wrappedModule = { ___moduleId: v4() } as WrappedModule & T;
 
     Object.keys(originalModule).forEach((key) => {

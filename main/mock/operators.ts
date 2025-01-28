@@ -62,13 +62,13 @@ export function setupFunction<T, C extends ConstructorFunction<T>, U extends Fun
         };
 
         const functionLookup = (mocked.functionReplacementLookup['function'] =
-            mocked.functionReplacementLookup['function'] || {});
+            mocked.functionReplacementLookup['function'] || {}) as Partial<Record<string, T[U]>>;
         functionLookup[functionName as string] = mockFunction;
 
         // we do not replace an existing function in case it has already been destructured and sut already has a reference to it
         // we do replace the mocked implementation above though
         // eslint-disable-next-line @typescript-eslint/ban-types
-        if ((mocked.mock[functionName] as Function)?.name != functionReplacement.name) {
+        if ((mocked.mock[functionName] as unknown as Function)?.name != functionReplacement.name) {
             mocked.mock[functionName] = functionReplacement as any;
         }
         mocked.functionCallLookup[functionName] = [];
@@ -105,11 +105,11 @@ export function setupStaticFunction<
         };
 
         const staticFunctionLookup = (mocked.functionReplacementLookup['staticFunction'] =
-            mocked.functionReplacementLookup['staticFunction'] || {});
+            mocked.functionReplacementLookup['staticFunction'] || {}) as Partial<Record<string, C[U]>>;
         staticFunctionLookup[functionName as string] = mockFunction;
 
         // eslint-disable-next-line @typescript-eslint/ban-types
-        if ((mocked.mockConstructor[functionName] as Function)?.name != functionReplacement.name) {
+        if ((mocked.mockConstructor[functionName] as unknown as Function)?.name != functionReplacement.name) {
             mocked.mockConstructor[functionName] = functionReplacement as any;
         }
         mocked.staticFunctionCallLookup[functionName] = [];

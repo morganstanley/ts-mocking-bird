@@ -178,37 +178,37 @@ export function verifyFunctionCalled<T, C extends ConstructorFunction<T>, U exte
             break;
 
         case 'staticGetter':
-            expectationMessage = `Expected static property "${functionName}" getter to be called`;
+            expectationMessage = `Expected static property "${String(functionName)}" getter to be called`;
             errorMessageSetupFunction = `Mock.setupStaticProperty()`;
             errorMessageDescription = `Static property`;
             break;
 
         case 'staticSetter':
-            expectationMessage = `Expected static property "${functionName}" to be set`;
+            expectationMessage = `Expected static property "${String(functionName)}" to be set`;
             errorMessageSetupFunction = `Mock.setupStaticProperty()`;
             errorMessageDescription = `Static property`;
             break;
 
         case 'staticFunction':
-            expectationMessage = `Expected static function "${functionName}" to be called`;
+            expectationMessage = `Expected static function "${String(functionName)}" to be called`;
             errorMessageSetupFunction = `Mock.setupStaticFunction()`;
             errorMessageDescription = `Static function`;
             break;
 
         case 'getter':
-            expectationMessage = `Expected property "${functionName}" getter to be called`;
+            expectationMessage = `Expected property "${String(functionName)}" getter to be called`;
             errorMessageSetupFunction = `Mock.setupProperty()`;
             errorMessageDescription = `Property`;
             break;
 
         case 'setter':
-            expectationMessage = `Expected property "${functionName}" to be set`;
+            expectationMessage = `Expected property "${String(functionName)}" to be set`;
             errorMessageSetupFunction = `Mock.setupProperty()`;
             errorMessageDescription = `Property`;
             break;
 
         default:
-            expectationMessage = `Expected "${functionName}" to be called`;
+            expectationMessage = `Expected "${String(functionName)}" to be called`;
             errorMessageSetupFunction = `Mock.setupFunction()`;
             errorMessageDescription = `Function`;
     }
@@ -217,7 +217,9 @@ export function verifyFunctionCalled<T, C extends ConstructorFunction<T>, U exte
         const message =
             type === 'constructorFunction'
                 ? `Constructor has not been setup. Please setup using ${errorMessageSetupFunction} before verifying calls.`
-                : `${errorMessageDescription} "${functionName}" has not been setup. Please setup using ${errorMessageSetupFunction} before verifying calls.`;
+                : `${errorMessageDescription} "${String(
+                      functionName,
+                  )}" has not been setup. Please setup using ${errorMessageSetupFunction} before verifying calls.`;
 
         return createCustomMatcherFailResult(message);
     }
