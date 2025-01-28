@@ -39,7 +39,7 @@ interface IImportCopy<T> {
  * @param target The original object. Could be an import: 'import * as myImport from "./importLocation"'
  * @param mocks Object containing functions or properties to replace
  */
-export function replaceProperties<T>(target: T, mocks: Partial<T>) {
+export function replaceProperties<T extends Record<string, any>>(target: T, mocks: Partial<T>) {
     const descriptors = getDescriptors(target, mocks);
 
     beforeAll(() => {
@@ -126,7 +126,7 @@ function getDescriptors<T extends {}, TMock extends Partial<T>>(original: T, moc
 
 function getDescriptor<T extends object, K extends keyof T>(target: object, key: K): TypedPropertyDescriptor<T[K]> {
     if (target == null) {
-        throw Error(`Could not resolve property descriptor ${key}`);
+        throw Error(`Could not resolve property descriptor ${String(key)}`);
     }
 
     const descriptor = Object.getOwnPropertyDescriptor(target, key);
