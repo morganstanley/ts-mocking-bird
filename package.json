@@ -27,7 +27,7 @@
         "watch-test:jest": "jest --watch",
         "watch-test-coverage": "karma start",
         "lint:fix": "eslint . --ext .ts,.js --fix",
-        "compatibility-test": "npx tsc spec/ts-compat-test.ts --noEmit --skipLibCheck --watch"
+        "compatibility-test": "npx tsc spec/ts-compat-test.ts --noEmit --skipLibCheck"
     },
     "devDependencies": {
         "@jsdevtools/coverage-istanbul-loader": "^3.0.5",
