@@ -5,6 +5,11 @@ export default defineConfig({
         environment: 'jsdom',
         reporters: ['default'],
         globals: true,
-        setupFiles: 'spec/test-setup.ts',
+        include: ['**/spec/examples/*.spec.ts'],
+        alias: {
+            // this is required as we run vitest against precompiled source
+            // we need to do this as setting the prototype of the mocked class constructor fails when compiling within vitest
+            '../../main': '../../dist/main',
+        },
     },
 });

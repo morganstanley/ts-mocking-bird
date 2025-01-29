@@ -93,7 +93,9 @@ export class Mock {
                 createFunctionVerifier(mocked, 'staticGetter', functionName),
         };
 
-        Object.setPrototypeOf(mocked.mockConstructor, mocked.mock as any);
+        //Object.setPrototypeOf(mocked.mockConstructor, mocked.mock as any);
+
+        mocked.mockConstructor.prototype = mocked.mock as any;
 
         return mocked;
     }
