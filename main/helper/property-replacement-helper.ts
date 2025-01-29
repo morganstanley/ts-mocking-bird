@@ -1,3 +1,10 @@
+import type {
+    afterAll as vitestAfterAll,
+    afterEach as vitestAfterEach,
+    beforeAll as vitestBeforeAll,
+    beforeEach as vitestBeforeEach,
+} from 'vitest';
+
 /* eslint-disable @typescript-eslint/ban-types */
 /**
  * This is hacky and should never be done in non-test code
@@ -21,13 +28,13 @@ type PropertyDescriptors<T> = {
     [P in keyof T]: TypedPropertyDescriptor<T[P]>;
 };
 
-interface IImportReplacement<T extends {}> {
+export interface IImportReplacement<T extends {}> {
     package: T;
     mocks: Partial<T>;
 }
 
 interface IImportCopy<T> {
-    packageWithReplacements: T;
+    objectWithReplacements: T;
     descriptors: PropertyDescriptors<Partial<T>>;
 }
 
@@ -38,16 +45,23 @@ interface IImportCopy<T> {
  *
  * @param target The original object. Could be an import: 'import * as myImport from "./importLocation"'
  * @param mocks Object containing functions or properties to replace
+ * @param functions Optional object containing beforeAll and afterAll functions to use instead of the global ones
  */
-export function replaceProperties<T extends Record<string, any>>(target: T, mocks: Partial<T>) {
+export function replaceProperties<T extends Record<string, any>>(
+    target: T,
+    mocks: Partial<T>,
+    functions?: { beforeAll: typeof vitestBeforeAll; afterAll: typeof vitestAfterAll },
+) {
     const descriptors = getDescriptors(target, mocks);
 
-    beforeAll(() => {
-        replaceImports(mocks, target);
+    // if a function is passed in we use that, otherwise we use the global beforeAll
+    // a function will need to be passed in for vitest when running in non global mode
+    (functions?.beforeAll ?? beforeAll)(() => {
+        replacePropertiesImpl(mocks, target);
     });
 
-    afterAll(() => {
-        revertImports(target, descriptors);
+    (functions?.afterAll ?? afterAll)(() => {
+        revertProperties(target, descriptors);
     });
 }
 
@@ -88,25 +102,29 @@ export const mockImports = replaceProperties;
  * })
  *
  * @param callback a function used to setup your mocks and to return an array of import replacements
+ * @param functions Optional object containing beforeEach and afterEach functions to use instead of the global ones
  */
-export function replacePropertiesBeforeEach(callback: () => IImportReplacement<any>[]) {
+export function replacePropertiesBeforeEach(
+    callback: () => IImportReplacement<any>[],
+    functions?: { beforeEach: typeof vitestBeforeEach; afterEach: typeof vitestAfterEach },
+) {
     const importCopies: IImportCopy<any>[] = [];
 
-    beforeEach(() => {
+    (functions?.beforeEach ?? beforeEach)(() => {
         const mockedImports = callback();
 
         mockedImports.forEach((importReplacement) => {
             importCopies.push({
-                packageWithReplacements: importReplacement.package,
+                objectWithReplacements: importReplacement.package,
                 descriptors: getDescriptors(importReplacement.package, importReplacement.mocks),
             });
 
-            replaceImports(importReplacement.mocks, importReplacement.package);
+            replacePropertiesImpl(importReplacement.mocks, importReplacement.package);
         });
     });
 
-    afterEach(() => {
-        importCopies.forEach((copy) => revertImports(copy.packageWithReplacements, copy.descriptors));
+    (functions?.afterEach ?? afterEach)(() => {
+        importCopies.forEach((copy) => revertProperties(copy.objectWithReplacements, copy.descriptors));
     });
 }
 
@@ -138,22 +156,22 @@ function getDescriptor<T extends object, K extends keyof T>(target: object, key:
     return descriptor;
 }
 
-function replaceImports<T>(mocks: Partial<T>, originalPackage: T) {
-    for (const importName in mocks) {
-        if (mocks[importName] != null) {
-            const mockDescriptor = getDescriptor(mocks, importName as never);
+function replacePropertiesImpl<T>(replacements: Partial<T>, originalPackage: T) {
+    for (const propertyName in replacements) {
+        if (replacements[propertyName] != null) {
+            const mockDescriptor = getDescriptor(replacements, propertyName as never);
             try {
-                Object.defineProperty(originalPackage, importName, mockDescriptor);
+                Object.defineProperty(originalPackage, propertyName, mockDescriptor);
             } catch (e) {
                 throw new Error(
-                    `Error when trying to mock import '${importName}':\n${e}\nPlease see readme about likely cause and ways to resolve`,
+                    `Error when trying to mock import '${propertyName}':\n${e}\nPlease see readme about likely cause and ways to resolve`,
                 );
             }
         }
     }
 }
 
-function revertImports<T>(packageWithReplacements: T, descriptors: PropertyDescriptors<Partial<T>>) {
+function revertProperties<T>(packageWithReplacements: T, descriptors: PropertyDescriptors<Partial<T>>) {
     for (const key in descriptors) {
         if (descriptors[key] != null) {
             Object.defineProperty(packageWithReplacements, key, descriptors[key]);
