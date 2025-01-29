@@ -24,7 +24,7 @@ Documentation: https://morganstanley.github.io/ts-mocking-bird/
 
 # Typescript Version
 
-Requires a minimum Typescript version of 4.2. 
+Requires a minimum Typescript version of 5.0. 
 
 # Framework support
 
