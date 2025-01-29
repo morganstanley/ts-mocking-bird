@@ -380,6 +380,35 @@ describe('replace imports', () => {
 });
 ```
 
+## Vitest
+
+This package has been tested with and can be used with `vitest`. In some scenarios it needs to be used in a slightly different way. THis is because by default `vitest` does not use global functions such as `beforeEach`, `expect` and so on. 
+
+ * if `addMatchers()` is called in a test setup file for example and `vitest` is running in a non global mode then the `expect` function must be passed to `addMatchers`:
+
+```ts
+import { expect } from "vitest";
+import { addMatchers } from "@morgan-stanley/ts-mocking-bird";
+
+addMatchers(expect);
+```
+ * if using `replaceProperties` or `replacePropertiesBeforeEach` the `beforeEach`, `afterEach`, `beforeAll` and `afterAll` functions must be passed in when vitest is not running in global mode:
+
+```ts
+import { beforeAll, afterAll, beforeEach, afterEach} from "vitest";
+import { replaceProperties, replacePropertiesBeforeEach } from "@morgan-stanley/ts-mocking-bird";
+
+replaceProperties(targetObject, mockedProperties, { beforeAll, afterAll });
+replacePropertiesBeforeEach(() => {
+    mockService = Mock.create<IMyService>();
+    mockPackage = Mock.create<typeof myImport>().setup(setupFunction('someFunction'));
+
+    return [{ package: myImport, mocks: { ...mockPackage.mock, MyService: mockService.mockConstructor } }];
+
+}, { beforeEach, afterEach });
+
+```
+
 # Webpack 4 issues
 
 If you get an error such as
