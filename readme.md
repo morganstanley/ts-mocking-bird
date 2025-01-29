@@ -28,7 +28,7 @@ Requires a minimum Typescript version of 5.0.
 
 # Framework support
 
-This library has been tested with and supports Jasmine versions 1 and 2 and Jest versions 26 and 27. The mocking functionality should work in any environment as it has no dependencies on any particular framework. The import replacement functionality uses the jasmine `beforeAll` / `afterAll` and `beforeEach` / `afterEach` so will not work in other environments.
+This library has been tested with and supports Jasmine versions 2 - 5, Jest versions 26 - 29 and vitest version 3. The mocking functionality should work in any environment as it has no dependencies on any particular framework.
 
 # Usage
 
@@ -79,9 +79,9 @@ const systemUnderTest = new ClassWithConstructorArgument(mockedService.mockConst
 ## Verify Calls
 [Examples](https://github.com/morganstanley/ts-mocking-bird/tree/master/spec/examples/exampleTests.spec.ts)
 
-### Jasmine / Jest Matchers
+### Adding Custom Matchers
 
-When a mock is created using `Mock.create()` the custom matchers that are used by `ts-mocking-bird` are automatically setup. However this can only be done if the creation occurs within a `before` function. If you need to manually setup the custom matchers please call `addMatchers()`:
+When a mock is created using `Mock.create()` the custom matchers that are used by `ts-mocking-bird` are automatically setup in jest, jasmine or vitest - whichever framework you are using. However this can only be done if the creation occurs within a `before` function. If you need to manually setup the custom matchers please call `addMatchers()`:
 
 ```typescript
 import { addMatchers } from '@morgan-stanley/ts-mocking-bird'
@@ -92,6 +92,8 @@ describe("my test", () => {
     })
 })
 ```
+
+For jasmine this has to be done in a `beforeEach` or `beforeAll` function but for jest and vitest it can be done in the test setup file.
 
 ### Verify that a function was called a number of times without checking parameters
 ```typescript
@@ -115,6 +117,8 @@ expect(
         .strict(),
 ).wasCalledOnce();
 ```
+
+**NOTE:** `.withParameters` doe a strict equality check on the value you give it. It you want to see if the values are equal (for example two identical objects that are different instances) use `.withParametersEqualTo`.
 
 ### Verify Constructor Parameters
 
