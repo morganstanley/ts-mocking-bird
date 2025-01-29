@@ -32,7 +32,7 @@ export const matchers = {
 };
 
 /* istanbul ignore next */
-export async function addMatchers(expectParam?: jest.Expect | typeof vitestExpect): Promise<void> {
+export function addMatchers(expectParam?: jest.Expect | typeof vitestExpect) {
     // jasmine.addMatchers must be called in a before function so this will sometimes throw an error
     try {
         jasmine.addMatchers(matchers as any);
