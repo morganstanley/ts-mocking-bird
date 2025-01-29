@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-namespace */
-import { IJasmineMatcher, IFunctionVerifier } from './contracts';
+import { ICustomMatcher, IFunctionVerifier } from './contracts';
 import { verifyFunctionCalled } from './verifiers';
 import type { expect as vitestExpect } from 'vitest';
 
@@ -35,7 +35,7 @@ export const matchers = {
 export async function addMatchers(expectParam?: jest.Expect | typeof vitestExpect): Promise<void> {
     // jasmine.addMatchers must be called in a before function so this will sometimes throw an error
     try {
-        jasmine.addMatchers(matchers);
+        jasmine.addMatchers(matchers as any);
     } catch (e) {
         // NOP
     }
@@ -53,7 +53,7 @@ export async function addMatchers(expectParam?: jest.Expect | typeof vitestExpec
 }
 
 /* istanbul ignore next */
-function mapToCustomMatcher(matcher: IJasmineMatcher) {
+function mapToCustomMatcher(matcher: ICustomMatcher) {
     return (context: IFunctionVerifier<any, any>, received: any, ...actual: any[]) => {
         const result = matcher.compare(context, received, ...actual);
 
@@ -64,7 +64,7 @@ function mapToCustomMatcher(matcher: IJasmineMatcher) {
     };
 }
 
-function wasCalled(): IJasmineMatcher {
+function wasCalled(): ICustomMatcher {
     return {
         compare: (actual: IFunctionVerifier<any, any>, times: number) => {
             if (typeof times !== 'number') {
@@ -78,7 +78,7 @@ function wasCalled(): IJasmineMatcher {
     };
 }
 
-function wasCalledOnce(): IJasmineMatcher {
+function wasCalledOnce(): ICustomMatcher {
     return {
         compare: (actual: IFunctionVerifier<any, any>) => {
             return verifyFunctionCalled(1, actual) as any;
@@ -86,7 +86,7 @@ function wasCalledOnce(): IJasmineMatcher {
     };
 }
 
-function wasNotCalled(): IJasmineMatcher {
+function wasNotCalled(): ICustomMatcher {
     return {
         compare: (actual: IFunctionVerifier<any, any>) => {
             return verifyFunctionCalled(0, actual) as any;
@@ -94,7 +94,7 @@ function wasNotCalled(): IJasmineMatcher {
     };
 }
 
-function wasCalledAtLeastOnce(): IJasmineMatcher {
+function wasCalledAtLeastOnce(): ICustomMatcher {
     return {
         compare: (actual: IFunctionVerifier<any, any>) => {
             return verifyFunctionCalled(undefined, actual) as any;
