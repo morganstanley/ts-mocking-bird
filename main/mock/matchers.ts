@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 import { ICustomMatcher, IFunctionVerifier } from './contracts';
 import { verifyFunctionCalled } from './verifiers';
+import type { expect as vitestExpect } from 'vitest';
 
 declare global {
     namespace jasmine {
@@ -31,20 +32,20 @@ export const matchers = {
 };
 
 /* istanbul ignore next */
-export function addMatchers() {
+export function addMatchers(expectParam?: jest.Expect | typeof vitestExpect) {
     // jasmine.addMatchers must be called in a before function so this will sometimes throw an error
     try {
-        jasmine.addMatchers(matchers);
+        jasmine.addMatchers(matchers as any);
     } catch (e) {
         // NOP
     }
 
     try {
-        (expect as unknown as jest.Expect).extend({
-            wasCalled: mapToJestCustomMatcher(wasCalled()),
-            wasCalledOnce: mapToJestCustomMatcher(wasCalledOnce()),
-            wasNotCalled: mapToJestCustomMatcher(wasNotCalled()),
-            wasCalledAtLeastOnce: mapToJestCustomMatcher(wasCalledAtLeastOnce()),
+        ((expectParam ?? expect) as unknown as jest.Expect).extend({
+            wasCalled: mapToCustomMatcher(wasCalled()),
+            wasCalledOnce: mapToCustomMatcher(wasCalledOnce()),
+            wasNotCalled: mapToCustomMatcher(wasNotCalled()),
+            wasCalledAtLeastOnce: mapToCustomMatcher(wasCalledAtLeastOnce()),
         });
     } catch (e) {
         // NOP
@@ -52,7 +53,7 @@ export function addMatchers() {
 }
 
 /* istanbul ignore next */
-function mapToJestCustomMatcher(matcher: ICustomMatcher): jest.CustomMatcher {
+function mapToCustomMatcher(matcher: ICustomMatcher) {
     return (context: IFunctionVerifier<any, any>, received: any, ...actual: any[]) => {
         const result = matcher.compare(context, received, ...actual);
 

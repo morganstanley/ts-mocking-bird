@@ -1,8 +1,8 @@
-import { IFunctionVerifier } from '../../main';
+import { ICustomMatcher, IFunctionVerifier } from '../../main';
 
 export function verifyFailure(
     verifier: IFunctionVerifier<any, any, any>,
-    matcher: jasmine.CustomMatcher,
+    matcher: ICustomMatcher,
     message: string,
     ...params: any[]
 ) {
@@ -14,7 +14,7 @@ export function verifyFailure(
 
 export function verifyJestFailure(
     verifier: IFunctionVerifier<any, any, any>,
-    matcher: jasmine.CustomMatcher,
+    matcher: ICustomMatcher,
     message: string,
     ...params: any[]
 ) {

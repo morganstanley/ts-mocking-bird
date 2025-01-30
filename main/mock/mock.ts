@@ -93,7 +93,7 @@ export class Mock {
                 createFunctionVerifier(mocked, 'staticGetter', functionName),
         };
 
-        mocked.mockConstructor.prototype = mocked.mock;
+        mocked.mockConstructor.prototype = mocked.mock as any;
 
         return mocked;
     }

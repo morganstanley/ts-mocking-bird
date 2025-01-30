@@ -10,6 +10,7 @@ import { SampleClass } from '../sut/sample-sut';
 
 import { setupFunction, setupProperty } from '../../main/mock/operators';
 import * as sampleImport from '../sut/sample-import';
+import { AfterAllListener, BeforeAllListener } from '@vitest/runner';
 
 describe('property replacement helper', () => {
     let setterValues: string[];
@@ -131,6 +132,50 @@ describe('property replacement helper', () => {
             classInstanceOne.sampleGetterSetter = 'mockedSetterValueOne';
             expect(setterValues).toEqual([]);
             expect(mockedSetterValues).toEqual(['mockedSetterValueOne']);
+        });
+
+        it("should reset values when 'afterAll' is called", () => {
+            const originalObject = {
+                propOne: 'originalPropOne',
+                propTwo: 'originalPropTwo',
+            };
+
+            let beforeAllCallback: BeforeAllListener | undefined;
+            let afterAllCallback: AfterAllListener | undefined;
+
+            replaceProperties(
+                originalObject,
+                {
+                    propOne: 'mockedPropOne',
+                    propTwo: 'mockedPropTwo',
+                },
+                {
+                    afterAll: (callback) => (afterAllCallback = callback),
+                    beforeAll: (callback) => (beforeAllCallback = callback),
+                },
+            );
+
+            // beforeAll not called yet
+            expect(originalObject.propOne).toEqual('originalPropOne');
+            expect(originalObject.propTwo).toEqual('originalPropTwo');
+
+            if (beforeAllCallback != null) {
+                beforeAllCallback({} as any);
+            } else {
+                throw new Error('beforeAllCallback is not defined');
+            }
+
+            expect(originalObject.propOne).toEqual('mockedPropOne');
+            expect(originalObject.propTwo).toEqual('mockedPropTwo');
+
+            if (afterAllCallback != null) {
+                afterAllCallback({} as any);
+            } else {
+                throw new Error('afterAllCallback is not defined');
+            }
+
+            expect(originalObject.propOne).toEqual('originalPropOne');
+            expect(originalObject.propTwo).toEqual('originalPropTwo');
         });
     });
 
