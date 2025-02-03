@@ -3,7 +3,7 @@ import type {
     afterEach as vitestAfterEach,
     beforeAll as vitestBeforeAll,
     beforeEach as vitestBeforeEach,
-} from 'vitest';
+} from '../mock/framework.contracts';
 
 /* eslint-disable @typescript-eslint/ban-types */
 /**
@@ -50,7 +50,7 @@ interface IImportCopy<T> {
 export function replaceProperties<T extends Record<string, any>>(
     target: T,
     mocks: Partial<T>,
-    functions?: { beforeAll: typeof vitestBeforeAll; afterAll: typeof vitestAfterAll },
+    functions?: { beforeAll: vitestBeforeAll; afterAll: vitestAfterAll },
 ) {
     const descriptors = getDescriptors(target, mocks);
 
@@ -106,7 +106,7 @@ export const mockImports = replaceProperties;
  */
 export function replacePropertiesBeforeEach(
     callback: () => IImportReplacement<any>[],
-    functions?: { beforeEach: typeof vitestBeforeEach; afterEach: typeof vitestAfterEach },
+    functions?: { beforeEach: vitestBeforeEach; afterEach: vitestAfterEach },
 ) {
     const importCopies: IImportCopy<any>[] = [];
 

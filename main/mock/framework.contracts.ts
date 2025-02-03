@@ -26,3 +26,10 @@ export interface ICustomMatcher {
     negativeCompare?<T>(actual: T, expected: T, ...args: any[]): IJasmineCustomMatcherResult;
     negativeCompare?(actual: any, ...expected: any[]): IJasmineCustomMatcherResult;
 }
+
+type TestLifecycleListener = () => Promise<void> | void;
+
+export type afterAll = (fn: TestLifecycleListener, timeout?: number) => void;
+export type afterEach = (fn: TestLifecycleListener, timeout?: number) => void;
+export type beforeAll = (fn: TestLifecycleListener, timeout?: number) => void;
+export type beforeEach = (fn: TestLifecycleListener, timeout?: number) => void;
