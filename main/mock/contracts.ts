@@ -320,26 +320,3 @@ export interface IMocked<T, C extends ConstructorFunction<T> = never> {
         propertyname: K,
     ): IFunctionWithParametersVerification<[C[K]], T, 'staticSetter', C>;
 }
-
-/**
- * Copied here from Jest types to avoid the need for consuming projects to install Jest types
- */
-export interface IJestCustomMatcherResult {
-    pass: boolean;
-    message: () => string;
-}
-
-/**
- * Copied here from Jasmine types to avoid the need for consuming projects to install Jasmine types
- */
-export interface IJasmineCustomMatcherResult {
-    pass: boolean;
-    message?: string;
-}
-
-export interface ICustomMatcher {
-    compare<T>(actual: T, expected: T, ...args: any[]): IJasmineCustomMatcherResult;
-    compare(actual: any, ...expected: any[]): IJasmineCustomMatcherResult;
-    negativeCompare?<T>(actual: T, expected: T, ...args: any[]): IJasmineCustomMatcherResult;
-    negativeCompare?(actual: any, ...expected: any[]): IJasmineCustomMatcherResult;
-}
