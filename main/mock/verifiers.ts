@@ -6,8 +6,6 @@ import {
     FunctionParams,
     IFunctionVerifier,
     IFunctionWithParametersVerification,
-    IJasmineCustomMatcherResult,
-    IJestCustomMatcherResult,
     IMocked,
     IParameterMatcher,
     IStrictFunctionVerification,
@@ -18,6 +16,7 @@ import {
     ParameterMatcher,
     SetterTypes,
 } from './contracts';
+import { IJasmineCustomMatcherResult, IJestCustomMatcherResult } from './framework.contracts';
 import { isParameterMatcher, mapItemToString, toBe, toEqual } from './parameterMatchers';
 
 export type VerifierParams<
