@@ -24,5 +24,9 @@ export function proxyJestModule(absolutePath: string): WrappedModule {
 }
 
 export function runningInJest(): boolean {
-    return typeof (expect as any).extend === 'function';
+    try {
+        return typeof (expect as any).extend === 'function';
+    } catch (e) {
+        return false;
+    }
 }
