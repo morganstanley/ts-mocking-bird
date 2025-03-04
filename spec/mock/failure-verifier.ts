@@ -1,4 +1,5 @@
-import { ICustomMatcher, IFunctionVerifier } from '../../main';
+import { IFunctionVerifier } from '../../main';
+import { ICustomMatcher } from '../../main/mock/framework.contracts';
 
 export function verifyFailure(
     verifier: IFunctionVerifier<any, any, any>,

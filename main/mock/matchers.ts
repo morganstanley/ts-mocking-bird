@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-namespace */
-import { ICustomMatcher, IFunctionVerifier } from './contracts';
+import { IFunctionVerifier } from './contracts';
 import { verifyFunctionCalled } from './verifiers';
-import type { expect as vitestExpect } from 'vitest';
+import { ExpectExtend, ICustomMatcher } from './framework.contracts';
 
 declare global {
     namespace jasmine {
@@ -32,7 +32,7 @@ export const matchers = {
 };
 
 /* istanbul ignore next */
-export function addMatchers(expectParam?: jest.Expect | typeof vitestExpect) {
+export function addMatchers(expectParam?: ExpectExtend) {
     // jasmine.addMatchers must be called in a before function so this will sometimes throw an error
     try {
         jasmine.addMatchers(matchers as any);
@@ -41,7 +41,7 @@ export function addMatchers(expectParam?: jest.Expect | typeof vitestExpect) {
     }
 
     try {
-        ((expectParam ?? expect) as unknown as jest.Expect).extend({
+        ((expectParam ?? expect) as ExpectExtend).extend({
             wasCalled: mapToCustomMatcher(wasCalled()),
             wasCalledOnce: mapToCustomMatcher(wasCalledOnce()),
             wasNotCalled: mapToCustomMatcher(wasNotCalled()),
