@@ -95,7 +95,7 @@
     "dependencies": {
         "lodash": "^4.17.16",
         "typedoc": "^0.27.6",
-        "uuid": "^7.0.3"
+        "uuid": "^11.1.0"
     },
     "publishConfig": {
         "access": "public"
