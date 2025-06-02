@@ -33,7 +33,7 @@
     "devDependencies": {
         "@jsdevtools/coverage-istanbul-loader": "^3.0.5",
         "@types/jasmine": "^5.1.4",
-        "@types/jest": "^27.5.1",
+        "@types/jest": "^29.5.14",
         "@types/lodash": "^4.14.176",
         "@types/node": "^20.17.16",
         "@types/uuid": "^7.0.5",
