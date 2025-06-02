@@ -33,7 +33,7 @@
     "devDependencies": {
         "@jsdevtools/coverage-istanbul-loader": "^3.0.5",
         "@types/jasmine": "^5.1.4",
-        "@types/jest": "^27.5.1",
+        "@types/jest": "^29.5.14",
         "@types/lodash": "^4.14.176",
         "@types/node": "^20.17.16",
         "@types/uuid": "^7.0.5",
@@ -61,7 +61,7 @@
         "karma-jasmine": "^5.1.0",
         "karma-jasmine-html-reporter": "^1.7.0",
         "karma-junit-reporter": "^2.0.1",
-        "karma-sourcemap-loader": "^0.3.8",
+        "karma-sourcemap-loader": "^0.4.0",
         "karma-webpack": "^5.0.0",
         "prettier": "^2.4.1",
         "puppeteer": "^24.7.2",
