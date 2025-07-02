@@ -63,7 +63,7 @@
         "karma-junit-reporter": "^2.0.1",
         "karma-sourcemap-loader": "^0.4.0",
         "karma-webpack": "^5.0.0",
-        "prettier": "^2.4.1",
+        "prettier": "^3.6.2",
         "puppeteer": "^24.7.2",
         "rimraf": "^6.0.1",
         "source-map": "0.7.4",
