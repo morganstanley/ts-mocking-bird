@@ -90,7 +90,7 @@
         }
     },
     "resolutions": {
-       "rollup": "npm:@rollup/wasm-node"
+       "rollup": "npm:@rollup/wasm-node@^4.0.0"
     },  
     "repository": {
         "type": "git",
