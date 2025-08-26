@@ -64,13 +64,14 @@
         "karma-sourcemap-loader": "^0.4.0",
         "karma-webpack": "^5.0.0",
         "prettier": "^2.4.1",
-        "puppeteer": "^24.7.2",
+        "puppeteer": "^24.17.0",
         "rimraf": "^6.0.1",
         "source-map": "0.7.4",
         "ts-jest": "^29.2.5",
         "ts-loader": "^9.2.7",
         "ts-node": "^10.9.2",
         "tsconfig-paths-webpack-plugin": "^4.2.0",
+        "typedoc": "^0.27.6",
         "typescript": "5.0",
         "vitest": "^3.0.4",
         "webpack": "^5.69.1"
@@ -88,13 +89,15 @@
             "optional": true
         }
     },
+    "resolutions": {
+       "rollup": "npm:@rollup/wasm-node@^4.0.0"
+    },  
     "repository": {
         "type": "git",
         "url": "git+https://github.com/morganstanley/ts-mocking-bird.git"
     },
     "dependencies": {
         "lodash": "^4.17.16",
-        "typedoc": "^0.27.6",
         "uuid": "^11.1.0"
     },
     "publishConfig": {
