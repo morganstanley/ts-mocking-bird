@@ -89,9 +89,9 @@
             "optional": true
         }
     },
-    "optionalDependencies": {
-      "@rollup/rollup-linux-x64-gnu": "4.9.5"
-    },
+    "resolutions": {
+       "rollup": "npm:@rollup/wasm-node"
+    },  
     "repository": {
         "type": "git",
         "url": "git+https://github.com/morganstanley/ts-mocking-bird.git"
