@@ -70,6 +70,7 @@
         "ts-jest": "^29.2.5",
         "ts-loader": "^9.2.7",
         "ts-node": "^10.9.2",
+        "typedoc": "^0.27.6",
         "tsconfig-paths-webpack-plugin": "^4.2.0",
         "typescript": "5.0",
         "vitest": "^3.0.4",
@@ -94,7 +95,6 @@
     },
     "dependencies": {
         "lodash": "^4.17.16",
-        "typedoc": "^0.27.6",
         "uuid": "^11.1.0"
     },
     "publishConfig": {
