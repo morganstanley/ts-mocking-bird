@@ -1,5 +1,5 @@
 # @morgan-stanley/ts-mocking-bird
-![Lifecycle Active](https://badgen.net/badge/Lifecycle/Active/green)
+![Lifecycle Active](https://img.shields.io/badge/Lifecycle-Active-brightgreen)
 ![npm](https://img.shields.io/npm/v/@morgan-stanley/ts-mocking-bird)
 [![Build Status](https://github.com/morganstanley/ts-mocking-bird/actions/workflows/build.yml/badge.svg)](https://github.com/Roaders/ts-mocking-bird/actions/workflows/build.yml)
 [![Known Vulnerabilities](https://snyk.io/test/github/morganstanley/ts-mocking-bird/badge.svg)](https://snyk.io/test/github/morganstanley/ts-mocking-bird})
