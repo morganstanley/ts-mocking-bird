@@ -1,6 +1,6 @@
 {
     "name": "@morgan-stanley/ts-mocking-bird",
-	"version": "2.0.0",
+    "version": "2.0.0",
     "description": "A fully type safe mocking, call verification and import replacement library for jasmine and jest",
     "license": "Apache-2.0",
     "author": "Morgan Stanley",
@@ -35,6 +35,7 @@
         "@jsdevtools/coverage-istanbul-loader": "^3.0.5",
         "@types/jasmine": "^6.0.0",
         "@types/jest": "^30.0.0",
+        "@types/lodash": "^4.17.24",
         "@types/lodash-es": "^4.17.12",
         "@types/node": "^25.3.5",
         "chromedriver": "^142.0.3",
@@ -57,6 +58,7 @@
         "karma-junit-reporter": "^2.0.1",
         "karma-sourcemap-loader": "^0.4.0",
         "karma-webpack": "^5.0.0",
+        "lodash": "^4.17.23",
         "prettier": "^3.8.1",
         "puppeteer": "^24.17.0",
         "rimraf": "^6.0.1",
@@ -77,25 +79,38 @@
         "typescript": ">=4.2"
     },
     "peerDependenciesMeta": {
-        "jest": {"optional": true},
-        "jasmine": {"optional": true}
+        "jest": {
+            "optional": true
+        },
+        "jasmine": {
+            "optional": true
+        }
     },
-    "resolutions": {"rollup": "npm:@rollup/wasm-node@^4.0.0"},
+    "resolutions": {
+        "rollup": "npm:@rollup/wasm-node@^4.0.0"
+    },
     "repository": {
         "type": "git",
         "url": "git+https://github.com/morganstanley/ts-mocking-bird.git"
     },
-    "dependencies": {"lodash-es": "^4.17.21"},
-    "publishConfig": {"access": "public"},
+    "dependencies": {
+        "lodash-es": "^4.17.21"
+    },
+    "publishConfig": {
+        "access": "public"
+    },
     "jest-comments": [
         "to run jest tests you will have to install jest first. This conflicts with karma so not installed by default",
         "we specify the config here rather than in a jest.config.js file as package.json config is more compatible with older versions of jest that we test against"
     ],
     "jest": {
         "preset": "ts-jest",
-        "testMatch": ["**/spec/examples/*.spec.ts"],
+        "testMatch": [
+            "**/spec/examples/*.spec.ts"
+        ],
         "moduleNameMapper": {
-            "^(\\.{1,2}/.*)\\.js$": "$1"
+            "^(\\.{1,2}/.*)\\.js$": "$1",
+            "^lodash-es$": "lodash"
         }
     },
     "type": "module"
