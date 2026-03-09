@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-types */
-/* eslint-disable @typescript-eslint/no-empty-function */
 import { addMatchers, IMocked, matchers, Mock } from '../../main/index.js';
 import {
     defineStaticProperty,

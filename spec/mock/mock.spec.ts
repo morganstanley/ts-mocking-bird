@@ -1,7 +1,4 @@
-/* eslint-disable @typescript-eslint/ban-types */
-/* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable no-useless-escape */
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 
 import {
     addMatchers,
@@ -23,7 +20,6 @@ describe('mock', () => {
     let mock: SampleMockedClass;
 
     // just a convenience to get a value and avoid compile / lint errors
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
     function get(_value: any) {}
 
     beforeEach(() => {

@@ -2,10 +2,8 @@ export type OperatorFunction<T, C extends ConstructorFunction<T>> = (value: IMoc
 
 export type MatchFunction<T> = (passedValue: T) => boolean;
 
-// eslint-disable-next-line @typescript-eslint/ban-types
 export type FunctionsOnly<T> = Pick<T, { [K in keyof T]: Required<T>[K] extends Function ? K : never }[keyof T]>;
 
-// eslint-disable-next-line @typescript-eslint/ban-types
 export type PropertiesOnly<T> = Pick<T, { [K in keyof T]: Required<T>[K] extends Function ? never : K }[keyof T]>;
 
 /**
@@ -53,10 +51,10 @@ export type LookupParams<
 > = U extends 'constructorFunction'
     ? ConstructorParams<C>
     : U extends FunctionTypes
-    ? FunctionParams<LookupFunction<T, C, U, K>>
-    : U extends SetterTypes
-    ? [LookupFunction<T, C, U, K>]
-    : [];
+      ? FunctionParams<LookupFunction<T, C, U, K>>
+      : U extends SetterTypes
+        ? [LookupFunction<T, C, U, K>]
+        : [];
 
 export type FunctionParams<T> = T extends (...args: infer P) => any ? P : never;
 
@@ -67,8 +65,8 @@ export type ConstructorParams<T extends ConstructorFunction<any>> = T extends ab
 ) => T
     ? RAbstract
     : T extends new (...args: infer R) => any
-    ? R
-    : never;
+      ? R
+      : never;
 
 export type StaticLookupTypes = 'staticFunction' | 'staticGetter' | 'staticSetter';
 export type InstanceLookupTypes = 'function' | 'getter' | 'setter';
@@ -80,12 +78,12 @@ export type LookupType = StaticLookupTypes | InstanceLookupTypes | 'constructorF
 export type VerifierTarget<T, C extends ConstructorFunction<T>, U extends LookupType> = U extends 'constructorFunction'
     ? { constructorFunction: C }
     : U extends StaticLookupTypes
-    ? U extends FunctionTypes
-        ? FunctionsOnly<C>
-        : C
-    : U extends FunctionTypes
-    ? FunctionsOnly<T>
-    : T;
+      ? U extends FunctionTypes
+          ? FunctionsOnly<C>
+          : C
+      : U extends FunctionTypes
+        ? FunctionsOnly<T>
+        : T;
 
 export type FunctionName<T, C extends ConstructorFunction<T>, U extends LookupType> = keyof VerifierTarget<T, C, U>;
 
@@ -131,8 +129,11 @@ export interface IFunctionWithParametersVerification<
     withParametersEqualTo(...args: FunctionParameterMatchers<P>): IStrictFunctionVerification<T, U, C>;
 }
 
-export interface IStrictFunctionVerification<T, U extends LookupType, C extends ConstructorFunction<T> = never>
-    extends IFunctionVerifier<T, U, C> {
+export interface IStrictFunctionVerification<
+    T,
+    U extends LookupType,
+    C extends ConstructorFunction<T> = never,
+> extends IFunctionVerifier<T, U, C> {
     /**
      * verify that the function has been called ONLY with the specified parameters and never without
      */
