@@ -14,9 +14,9 @@ import {
     toBe,
     toBeDefined,
     toEqual,
-} from '../../main';
-import { defineProperty, setupConstructor, setupFunction, setupProperty } from '../../main/mock/operators';
-import { verifyFailure, verifyJestFailure } from './failure-verifier';
+} from '../../main/index.js';
+import { defineProperty, setupConstructor, setupFunction, setupProperty } from '../../main/mock/operators.js';
+import { verifyFailure, verifyJestFailure } from './failure-verifier.js';
 
 describe('mock', () => {
     let mocked: IMocked<SampleMockedClass, typeof SampleMockedClass>;

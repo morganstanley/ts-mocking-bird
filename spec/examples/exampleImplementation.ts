@@ -1,4 +1,4 @@
-import { IMyService, MyService, someFunction } from './exampleImports';
+import { IMyService, MyService, someFunction } from './exampleImports.js';
 
 /**
  * An example class that we want to test by mocking its constructor arguments

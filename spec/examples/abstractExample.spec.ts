@@ -1,4 +1,4 @@
-import { Mock, setupFunction, setupStaticFunction } from '../../main';
+import { Mock, setupFunction, setupStaticFunction } from '../../main/index.js';
 
 abstract class MyAbstractClass {
     public static sampleStaticFunction() {

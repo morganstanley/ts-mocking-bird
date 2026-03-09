@@ -1,6 +1,6 @@
 const path = require('path');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
-const baseConfig = require('./karma.base.conf.js');
+const baseConfig = require('./karma.base.conf.cjs');
 const CircularDependencyPlugin = require('circular-dependency-plugin');
 
 const testEntryFile = 'spec/test.ts';
@@ -68,6 +68,9 @@ module.exports = function (config) {
             module: { rules },
             resolve: {
                 extensions: ['.ts', '.js'],
+                extensionAlias: {
+                    '.js': ['.ts', '.js'],
+                },
                 plugins: [new TsconfigPathsPlugin({ configFile })], // Supports non standard base url for absolute imports
             },
             mode: 'development',

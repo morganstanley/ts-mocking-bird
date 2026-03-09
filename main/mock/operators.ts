@@ -1,5 +1,5 @@
 /* eslint-disable no-case-declarations */
-import { getLookup } from '../helper';
+import { getLookup } from '../helper/index.js';
 import {
     ConstructorFunction,
     ConstructorParams,
@@ -12,7 +12,7 @@ import {
     LookupType,
     OperatorFunction,
     SetterTypes,
-} from './contracts';
+} from './contracts.js';
 
 /**
  * Mocks a function on an existing Mock.

@@ -17,7 +17,7 @@
         "postbuild:release": "typedoc main/index.ts",
         "watch-build": "tsc --watch -p main/tsconfig.json",
         "test": "npm run test:karma",
-        "test:karma": "karma start --singleRun --browsers ChromeHeadlessNoSandbox",
+        "test:karma": "karma start karma.conf.cjs --singleRun --browsers ChromeHeadlessNoSandbox",
         "test:jest": "jest",
         "pretest:vitest": "npm run build",
         "test:vitest": "vitest --run",
@@ -81,34 +81,26 @@
         "typescript": ">=4.2"
     },
     "peerDependenciesMeta": {
-        "jest": {
-            "optional": true
-        },
-        "jasmine": {
-            "optional": true
-        }
+        "jest": {"optional": true},
+        "jasmine": {"optional": true}
     },
-    "resolutions": {
-       "rollup": "npm:@rollup/wasm-node@^4.0.0"
-    },  
+    "resolutions": {"rollup": "npm:@rollup/wasm-node@^4.0.0"},
     "repository": {
         "type": "git",
         "url": "git+https://github.com/morganstanley/ts-mocking-bird.git"
     },
-    "dependencies": {
-        "lodash": "^4.17.16"
-    },
-    "publishConfig": {
-        "access": "public"
-    },
+    "dependencies": {"lodash": "^4.17.16"},
+    "publishConfig": {"access": "public"},
     "jest-comments": [
         "to run jest tests you will have to install jest first. This conflicts with karma so not installed by default",
         "we specify the config here rather than in a jest.config.js file as package.json config is more compatible with older versions of jest that we test against"
     ],
     "jest": {
         "preset": "ts-jest",
-        "testMatch": [
-            "**/spec/examples/*.spec.ts"
-        ]
-    }
+        "testMatch": ["**/spec/examples/*.spec.ts"],
+        "moduleNameMapper": {
+            "^(\\.{1,2}/.*)\\.js$": "$1"
+        }
+    },
+    "type": "module"
 }

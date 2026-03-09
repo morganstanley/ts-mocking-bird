@@ -1,4 +1,4 @@
-import { SampleClassImport, sampleFunctionOne, sampleFunctionThree, sampleFunctionTwo } from './sample-import';
+import { SampleClassImport, sampleFunctionOne, sampleFunctionThree, sampleFunctionTwo } from './sample-import.js';
 
 export class SampleClass {
     public wrapFunctionOne() {

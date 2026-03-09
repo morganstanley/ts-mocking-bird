@@ -1,5 +1,5 @@
 import { isEqual } from 'lodash';
-import { IParameterMatcher } from './contracts';
+import { IParameterMatcher } from './contracts.js';
 
 export function isParameterMatcher(matcher: unknown): matcher is IParameterMatcher<any> {
     const typedMatcher = matcher as IParameterMatcher<any>;
