@@ -18,6 +18,17 @@ jobs:
     strategy:
       matrix:
         jest-version: [26.x, 27.x, 28.x, 29.x, 30.x]
+        include:
+          - jest-version: 26.x
+            ts-jest-version: 26.x
+          - jest-version: 27.x
+            ts-jest-version: 27.x
+          - jest-version: 28.x
+            ts-jest-version: 28.x
+          - jest-version: 29.x
+            ts-jest-version: 29.x
+          - jest-version: 30.x
+            ts-jest-version: 29.x
 
     steps:
     - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
@@ -26,5 +37,5 @@ jobs:
       with:
         node-version: 22.x
     - run: npm ci
-    - run: npm install jest@${{ matrix.jest-version }} ts-jest@${{ matrix.jest-version }} @types/jest@${{ matrix.jest-version }} --legacy-peer-deps
+    - run: npm install jest@${{ matrix.jest-version }} ts-jest@${{ matrix.ts-jest-version }} @types/jest@${{ matrix.jest-version }} --legacy-peer-deps
     - run: npm run test:jest
