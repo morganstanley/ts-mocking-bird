@@ -35,7 +35,7 @@
         "@jsdevtools/coverage-istanbul-loader": "^3.0.5",
         "@types/jasmine": "^6.0.0",
         "@types/jest": "^30.0.0",
-        "@types/lodash": "^4.14.176",
+        "@types/lodash-es": "^4.17.12",
         "@types/node": "^25.3.5",
         "chromedriver": "^142.0.3",
         "circular-dependency-plugin": "^5.2.2",
@@ -85,7 +85,7 @@
         "type": "git",
         "url": "git+https://github.com/morganstanley/ts-mocking-bird.git"
     },
-    "dependencies": {"lodash": "^4.17.16"},
+    "dependencies": {"lodash-es": "^4.17.21"},
     "publishConfig": {"access": "public"},
     "jest-comments": [
         "to run jest tests you will have to install jest first. This conflicts with karma so not installed by default",
