@@ -17,7 +17,7 @@ jobs:
 
     strategy:
       matrix:
-        jest-version: [26.x, 27.x, 28.x, 29.x]
+        jest-version: [26.x, 27.x, 28.x, 29.x, 30.x]
 
     steps:
     - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
