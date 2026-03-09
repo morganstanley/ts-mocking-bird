@@ -11,10 +11,10 @@
         "build": "tsc -p main/tsconfig.json",
         "postbuild": "npm run copy",
         "copy": "copyfiles main/**/*.html main/**/*.css main/**/*.jpg dist",
-        "prebuild-release": "npm run clean",
-        "verify-release": "npm run build && concurrently --kill-others-on-fail npm:lint npm:test:karma npm:test:jest npm:test:vitest",
-        "build-release": "npm run verify-release",
-        "postbuild-release": "typedoc main/index.ts",
+        "prebuild:release": "npm run clean",
+        "verify:release": "npm run build && concurrently --kill-others-on-fail npm:lint npm:test:karma npm:test:jest npm:test:vitest",
+        "build:release": "npm run verify:release",
+        "postbuild:release": "typedoc main/index.ts",
         "watch-build": "tsc --watch -p main/tsconfig.json",
         "test": "npm run test:karma",
         "test:karma": "karma start --singleRun --browsers ChromeHeadlessNoSandbox",
@@ -36,7 +36,6 @@
         "@types/jest": "^29.5.14",
         "@types/lodash": "^4.14.176",
         "@types/node": "^25.3.5",
-        "@types/uuid": "^7.0.5",
         "@typescript-eslint/eslint-plugin": "^5.62.0",
         "@typescript-eslint/parser": "^5.62.0",
         "chromedriver": "^142.0.3",
@@ -97,8 +96,7 @@
         "url": "git+https://github.com/morganstanley/ts-mocking-bird.git"
     },
     "dependencies": {
-        "lodash": "^4.17.16",
-        "uuid": "^11.1.0"
+        "lodash": "^4.17.16"
     },
     "publishConfig": {
         "access": "public"
