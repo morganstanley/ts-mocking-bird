@@ -1,5 +1,5 @@
 /* eslint-disable no-case-declarations */
-import { getLookup } from '../helper';
+import { getLookup } from '../helper/index.js';
 import {
     ConstructorFunction,
     ConstructorParams,
@@ -12,7 +12,7 @@ import {
     LookupType,
     OperatorFunction,
     SetterTypes,
-} from './contracts';
+} from './contracts.js';
 
 /**
  * Mocks a function on an existing Mock.
@@ -67,7 +67,7 @@ export function setupFunction<T, C extends ConstructorFunction<T>, U extends Fun
 
         // we do not replace an existing function in case it has already been destructured and sut already has a reference to it
         // we do replace the mocked implementation above though
-        // eslint-disable-next-line @typescript-eslint/ban-types
+
         if ((mocked.mock[functionName] as unknown as Function)?.name != functionReplacement.name) {
             mocked.mock[functionName] = functionReplacement as any;
         }
@@ -108,7 +108,6 @@ export function setupStaticFunction<
             mocked.functionReplacementLookup['staticFunction'] || {}) as Partial<Record<string, C[U]>>;
         staticFunctionLookup[functionName as string] = mockFunction;
 
-        // eslint-disable-next-line @typescript-eslint/ban-types
         if ((mocked.mockConstructor[functionName] as unknown as Function)?.name != functionReplacement.name) {
             mocked.mockConstructor[functionName] = functionReplacement as any;
         }

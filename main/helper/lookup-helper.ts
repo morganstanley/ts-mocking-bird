@@ -1,4 +1,4 @@
-import { ConstructorFunction, FunctionCallLookup, IMocked, LookupType } from '../mock';
+import { ConstructorFunction, FunctionCallLookup, IMocked, LookupType } from '../mock/index.js';
 
 export function getLookup<T, C extends ConstructorFunction<T>, U extends LookupType>(
     mock: IMocked<T, C>,

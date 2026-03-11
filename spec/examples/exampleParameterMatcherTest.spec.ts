@@ -1,4 +1,4 @@
-import { any, Mock, setupFunction, toBe, toBeDefined } from '../../main';
+import { any, Mock, setupFunction, toBe, toBeDefined } from '../../main/index.js';
 
 describe('match function paramters', () => {
     interface IPerson {

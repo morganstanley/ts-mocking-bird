@@ -1,5 +1,5 @@
-import { ConstructorFunction, FunctionsOnly, IMocked, OperatorFunction } from './contracts';
-import { addMatchers } from './matchers';
+import { ConstructorFunction, FunctionsOnly, IMocked, OperatorFunction } from './contracts.js';
+import { addMatchers } from './matchers.js';
 import {
     defineProperty,
     defineStaticProperty,
@@ -8,12 +8,12 @@ import {
     setupProperty,
     setupStaticFunction,
     setupStaticProperty,
-} from './operators';
+} from './operators.js';
 import {
     createConstructorParameterVerifier,
     createFunctionParameterVerifier,
     createFunctionVerifier,
-} from './verifiers';
+} from './verifiers.js';
 
 export class Mock {
     public static create<T, C extends ConstructorFunction<T> = never>(): IMocked<T, C> {

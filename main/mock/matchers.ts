@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-namespace */
-import { IFunctionVerifier } from './contracts';
-import { verifyFunctionCalled } from './verifiers';
-import { ExpectExtend, ICustomMatcher } from './framework.contracts';
+import { IFunctionVerifier } from './contracts.js';
+import { verifyFunctionCalled } from './verifiers.js';
+import { ExpectExtend, ICustomMatcher } from './framework.contracts.js';
 
 declare global {
     namespace jasmine {

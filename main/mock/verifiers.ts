@@ -1,4 +1,4 @@
-import { getLookup, runningInJest } from '../helper';
+import { getLookup, runningInJest } from '../helper/index.js';
 import {
     ConstructorFunction,
     ConstructorParams,
@@ -15,9 +15,9 @@ import {
     MatchFunction,
     ParameterMatcher,
     SetterTypes,
-} from './contracts';
-import { IJasmineCustomMatcherResult, IJestCustomMatcherResult } from './framework.contracts';
-import { isParameterMatcher, mapItemToString, toBe, toEqual } from './parameterMatchers';
+} from './contracts.js';
+import { IJasmineCustomMatcherResult, IJestCustomMatcherResult } from './framework.contracts.js';
+import { isParameterMatcher, mapItemToString, toBe, toEqual } from './parameterMatchers.js';
 
 export type VerifierParams<
     T,

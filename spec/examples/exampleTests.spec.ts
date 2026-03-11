@@ -7,9 +7,9 @@ import {
     setupProperty,
     setupStaticFunction,
     setupConstructor,
-} from '../../main';
-import { ClassWithConstructorArgument, ClassWithInstanceArgument } from './exampleImplementation';
-import { IMyService, MyService } from './exampleImports';
+} from '../../main/index.js';
+import { ClassWithConstructorArgument, ClassWithInstanceArgument } from './exampleImplementation.js';
+import { IMyService, MyService } from './exampleImports.js';
 
 describe('create mocks', () => {
     it('should create a mocked service and instantiate system under test', () => {

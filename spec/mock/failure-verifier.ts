@@ -1,5 +1,5 @@
-import { IFunctionVerifier } from '../../main';
-import { ICustomMatcher } from '../../main/mock/framework.contracts';
+import { IFunctionVerifier } from '../../main/index.js';
+import { ICustomMatcher } from '../../main/mock/framework.contracts.js';
 
 export function verifyFailure(
     verifier: IFunctionVerifier<any, any, any>,

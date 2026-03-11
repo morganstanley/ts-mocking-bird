@@ -1,14 +1,12 @@
-/* eslint-disable @typescript-eslint/ban-types */
-/* eslint-disable @typescript-eslint/no-empty-function */
-import { addMatchers, IMocked, matchers, Mock } from '../../main';
+import { addMatchers, IMocked, matchers, Mock } from '../../main/index.js';
 import {
     defineStaticProperty,
     setupFunction,
     setupProperty,
     setupStaticFunction,
     setupStaticProperty,
-} from '../../main/mock/operators';
-import { verifyFailure } from './failure-verifier';
+} from '../../main/mock/operators.js';
+import { verifyFailure } from './failure-verifier.js';
 
 describe('mock with statics', () => {
     // just a convenience to get a value and avoid compile / lint errors
