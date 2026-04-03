@@ -38,7 +38,7 @@
         "@types/lodash": "^4.17.24",
         "@types/lodash-es": "^4.17.12",
         "@types/node": "^25.3.5",
-        "chromedriver": "^142.0.3",
+        "chromedriver": "^147.0.0",
         "circular-dependency-plugin": "^5.2.2",
         "concurrently": "^9.1.0",
         "copyfiles": "^1.2.0",
