@@ -34,7 +34,7 @@ module.exports = function (config) {
     const plugins = [new CircularDependencyPlugin({ exclude: /node_modules/ })];
 
     if (coverage) {
-        reporters.push('coverage-istanbul');
+        reporters.push('coverage');
 
         rules.push({
             test: /\.ts$/,
