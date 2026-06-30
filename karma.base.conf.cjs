@@ -41,18 +41,16 @@ module.exports = function (config) {
             outputFile: 'TESTS.xml',
         },
 
-        coverageIstanbulReporter: {
-            reports: ['html', 'text-summary', 'cobertura', 'lcov'],
-            fixWebpackSourcePaths: true,
+        coverageReporter: {
             dir: path.join('reports', 'coverage'),
-            'report-config': {
-                // all options available at: https://github.com/istanbuljs/istanbul-reports/blob/590e6b0089f67b723a1fdf57bc7ccc080ff189d7/lib/html/index.js#L135-L137
-                html: {
-                    // outputs the report in ./coverage/html
-                    subdir: 'html',
-                },
-            },
-            thresholds: {
+            reporters: [
+                // outputs the html report in ./reports/coverage/html
+                { type: 'html', subdir: 'html' },
+                { type: 'text-summary' },
+                { type: 'cobertura' },
+                { type: 'lcov' },
+            ],
+            check: {
                 global: {
                     // thresholds for all files
                     statements: 90,
