@@ -1,8 +1,20 @@
 // Karma configuration
 
+const fs = require('fs');
 const path = require('path');
 
-process.env.CHROME_BIN = require('puppeteer').executablePath();
+// Only override CHROME_BIN with the puppeteer-managed Chrome when the current
+// value is absent or points to a binary that does not exist on disk.
+if (!process.env.CHROME_BIN || !fs.existsSync(process.env.CHROME_BIN)) {
+    try {
+        const puppeteerPath = require('puppeteer').executablePath();
+        if (fs.existsSync(puppeteerPath)) {
+            process.env.CHROME_BIN = puppeteerPath;
+        }
+    } catch (_e) {
+        // puppeteer is not available; rely on the system-provided CHROME_BIN
+    }
+}
 
 module.exports = function (config) {
     config.set({
