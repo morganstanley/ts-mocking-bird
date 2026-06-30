@@ -2681,6 +2681,52 @@ describe('mock', () => {
             });
         });
     });
+
+    describe('IFunctionVerifier argument validation', () => {
+        const invalidArgCases: Array<{ description: string; value: unknown }> = [
+            { description: 'undefined', value: undefined },
+            { description: 'null', value: null },
+            { description: 'a raw function', value: () => {} },
+            { description: 'a plain object', value: { foo: 'bar' } },
+            { description: 'a string', value: 'notAVerifier' },
+            { description: 'a number', value: 42 },
+            { description: 'a mock object (not a verifier)', value: Mock.create<SampleMockedClass>().mock },
+        ];
+
+        invalidArgCases.forEach(({ description, value }) => {
+            describe(`when passed ${description}`, () => {
+                it('wasNotCalled should throw a descriptive Error', () => {
+                    expect(() => matchers.wasNotCalled().compare(value as any)).toThrowError(
+                        /Expected an IFunctionVerifier from mock\.withFunction/,
+                    );
+                });
+
+                it('wasCalledOnce should throw a descriptive Error', () => {
+                    expect(() => matchers.wasCalledOnce().compare(value as any)).toThrowError(
+                        /Expected an IFunctionVerifier from mock\.withFunction/,
+                    );
+                });
+
+                it('wasCalledAtLeastOnce should throw a descriptive Error', () => {
+                    expect(() => matchers.wasCalledAtLeastOnce().compare(value as any)).toThrowError(
+                        /Expected an IFunctionVerifier from mock\.withFunction/,
+                    );
+                });
+
+                it('wasCalled should throw a descriptive Error', () => {
+                    expect(() => matchers.wasCalled().compare(value as any, 1)).toThrowError(
+                        /Expected an IFunctionVerifier from mock\.withFunction/,
+                    );
+                });
+            });
+        });
+
+        it('valid IFunctionVerifier should not throw', () => {
+            mocked.setupFunction('functionWithNoParamsAndNoReturn');
+            const verifier = mocked.withFunction('functionWithNoParamsAndNoReturn');
+            expect(() => matchers.wasNotCalled().compare(verifier)).not.toThrow();
+        });
+    });
 });
 
 class SampleMockedClass {

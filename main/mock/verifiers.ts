@@ -152,10 +152,29 @@ function mapParameterToMatcher(
     return equals ? toEqual(param) : toBe(param);
 }
 
+/**
+ * Returns true if the given value looks like a valid IFunctionVerifier produced by mock.withFunction(),
+ * mock.withGetter(), mock.withSetter(), etc.
+ */
+export function isFunctionVerifier(value: unknown): value is IFunctionVerifier<any, any, any> {
+    if (value == null || typeof value !== 'object') {
+        return false;
+    }
+    const v = value as Record<string, unknown>;
+    return typeof v['type'] === 'string' && 'functionName' in v && typeof v['getMock'] === 'function' && typeof v['strictCallCount'] === 'boolean';
+}
+
 export function verifyFunctionCalled<T, C extends ConstructorFunction<T>, U extends LookupType>(
     times: number | undefined,
     verifier: IFunctionVerifier<T, U, C>,
 ): IJasmineCustomMatcherResult | IJestCustomMatcherResult {
+    if (!isFunctionVerifier(verifier)) {
+        const received = verifier === null ? 'null' : Array.isArray(verifier) ? 'array' : typeof verifier;
+        throw new Error(
+            `Expected an IFunctionVerifier from mock.withFunction() / mock.withGetter() / mock.withSetter() etc.; got ${received}. Did you accidentally pass a raw function, a mock object, or forget to call mock.withFunction()?`,
+        );
+    }
+
     const mock = verifier.getMock();
     const type = verifier.type;
     const functionName = verifier.functionName;
