@@ -28,7 +28,8 @@
         "watch-test:jest": "jest --watch",
         "watch-test-coverage": "karma start",
         "lint:fix": "eslint . --fix",
-        "compatibility-test": "npx tsc spec/ts-compat-test.ts --noEmit --skipLibCheck"
+        "compatibility-test": "npx tsc spec/ts-compat-test.ts --noEmit --skipLibCheck",
+        "compatibility-test-v6": "npx tsc spec/ts-compat-test.ts --noEmit --skipLibCheck --ignoreConfig"
     },
     "devDependencies": {
         "@eslint/js": "^10.0.1",
